@@ -15,6 +15,11 @@ namespace Template
             Vector3 a = Read(arr, start + 0);
             Vector3 b = Read(arr, start + 3);
             Vector3 c = Read(arr, start + 6);
+            return Normal(a, b, c);
+        }
+
+        public static Vector3 Normal(Vector3 a, Vector3 b, Vector3 c)
+        {
             Vector3 u = b - a;
             Vector3 v = c - a;
             Vector3 n = new Vector3();

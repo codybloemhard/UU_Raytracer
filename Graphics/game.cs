@@ -30,9 +30,9 @@ namespace Template
             s.AddUniformVar("uMaxHeight");
             s.AddUniformVar("uLightDir");
 
-            //hmTerrain = new TerrainHeightMap("vPos", "vNor", "../../assets/map0.png", hScale, s);
-            gnTerrain = new TerrainGenerated("vPos", "vNor", hScale);
-            gnTerrain.Bake(s);
+            hmTerrain = new TerrainHeightMap("vPos", "vNor", "../../assets/map0.png", hScale, s);
+            //gnTerrain = new TerrainGenerated("vPos", "vNor", hScale, s);
+            //gnTerrain.Bake(s);
         }
         
         public void Update()
@@ -63,8 +63,8 @@ namespace Template
             s.SetVar("uMaxHeight", hScale);
             s.SetVar("uLightDir", lightDir);
 
-            //hmTerrain.Render(s);
-            gnTerrain.Render(s);
+            hmTerrain.Render(s);
+            //gnTerrain.Render(s);
         }
     }
 }

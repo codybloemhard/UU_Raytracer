@@ -17,7 +17,7 @@ namespace Template
         public TerrainHeightMap(string pos, string nor, string file, float hScale, Shader s)
         {
             img = new Surface(file);
-            mesh = new TerrainMesh(pos, nor, img.width, img.height, hScale);
+            mesh = new TerrainMesh(pos, nor, img.width, img.height, hScale, s);
             for (int y = 0; y < mesh.h; y++)
                 for (int x = 0; x < mesh.w; x++)
                     mesh.map[x, y] = ((float)(img.pixels[x + y * mesh.w] & 255)) / 256;
