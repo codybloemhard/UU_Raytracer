@@ -23,8 +23,16 @@ namespace Template
         public void Init()
         {
             s = new Shader("../../assets/gridTerrainVS.glsl", "../../assets/gridTerrainFS.glsl");
-            //hmTerrain = new TerrainHeightMap("../../assets/map0.png", hScale, s);
-            gnTerrain = new TerrainGenerated(hScale, s);
+            //s = new Shader("../../assets/tariqVS.glsl", "../../assets/tariqFS.glsl");
+            s.AddAttributeVar("vPos");
+            s.AddAttributeVar("vNor");
+            s.AddUniformVar("uMat");
+            s.AddUniformVar("uMaxHeight");
+            s.AddUniformVar("uLightDir");
+
+            //hmTerrain = new TerrainHeightMap("vPos", "vNor", "../../assets/map0.png", hScale, s);
+            gnTerrain = new TerrainGenerated("vPos", "vNor", hScale);
+            gnTerrain.Bake(s);
         }
         
         public void Update()
@@ -50,8 +58,13 @@ namespace Template
             m *= Matrix4.CreateTranslation(0, 0, -hScale * 3.0f);
             m *= Matrix4.CreatePerspectiveFieldOfView(1.6f, 16f/9f, .1f, 100000000);
 
-            //hmTerrain.Render(ref m, lightDir);
-            gnTerrain.Render(ref m, lightDir);
+            s.Use();
+            s.SetVar("uMat", ref m);
+            s.SetVar("uMaxHeight", hScale);
+            s.SetVar("uLightDir", lightDir);
+
+            //hmTerrain.Render(s);
+            gnTerrain.Render(s);
         }
     }
 }

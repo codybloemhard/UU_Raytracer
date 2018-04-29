@@ -15,14 +15,10 @@ namespace Template
         private int size = 512;
         private float scale = 1f;
 
-        public TerrainGenerated(float hScale, Shader s)
+        public TerrainGenerated(string pos, string nor, float hScale)
         {
-            mesh = new TerrainMesh(size, size, hScale, s);
+            mesh = new TerrainMesh(pos, nor, size, size, hScale);
             Generate();
-
-            mesh.BakeMap();
-            mesh.CalcNormals();
-            mesh.UpdateMesh();
         }
 
         public void Generate()
@@ -42,9 +38,16 @@ namespace Template
             mesh.NormalizeMap();
         }
 
-        public void Render(ref Matrix4 m, Vector3 lightDir)
+        public void Bake(Shader s)
         {
-            mesh.Render(ref m, lightDir);
+            mesh.BakeMap();
+            mesh.CalcNormals();
+            mesh.UpdateMesh(s);
+        }
+
+        public void Render(Shader s)
+        {
+            mesh.Render(s);
         }
     }
 }

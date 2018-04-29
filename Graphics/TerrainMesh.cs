@@ -12,7 +12,6 @@ namespace Template
     public class TerrainMesh
     {
         public float[,] map;
-        private Shader s;
         private Mesh mesh;
         private Vector3[,] normals;
         private float[] vertexData, normalData;
@@ -21,16 +20,15 @@ namespace Template
         public int w { get; private set; }
         public int h { get; private set; }
 
-        public TerrainMesh(int w, int h, float hScale, Shader s)
+        public TerrainMesh(string pos, string nor, int w, int h, float hScale)
         {
-            this.s = s;
             this.hScale = hScale;
             this.w = w;
             this.h = h;
             halfW = w / 2;
             halfH = h / 2;
 
-            mesh = new Mesh("vPos", "vNor");
+            mesh = new Mesh(pos, nor);
             int len = (w - 1) * (h - 1) * 2 * 3 * 3;
             normals = new Vector3[w, h];
             vertexData = new float[len];
@@ -67,17 +65,6 @@ namespace Template
 
                     i += 18;
                 }
-
-            BakeMap();
-            CalcNormals();
-
-            s.AddAttributeVar("vPos");
-            s.AddAttributeVar("vNor");
-            s.AddUniformVar("uMat");
-            s.AddUniformVar("uMaxHeight");
-            s.AddUniformVar("uLightDir");
-
-            UpdateMesh();
         }
         
         public void NormalizeMap()
@@ -175,7 +162,7 @@ namespace Template
                 }
         }
 
-        public void UpdateMesh()
+        public void UpdateMesh(Shader s)
         {
             mesh.SetBuffer(vertexData, vertexData.Length, BufferType.VERTEX);
             mesh.SetBuffer(normalData, normalData.Length, BufferType.NORMAL);
@@ -183,13 +170,8 @@ namespace Template
             mesh.UploadBuffer(s, BufferType.NORMAL);
         }
 
-        public void Render(ref Matrix4 m, Vector3 lightDir)
+        public void Render(Shader s)
         {
-            s.Use();
-            s.SetVar("uMat", ref m);
-            s.SetVar("uMaxHeight", hScale);
-            s.SetVar("uLightDir", lightDir);
-
             mesh.Render(s);
         }
     }
