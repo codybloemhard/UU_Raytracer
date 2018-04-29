@@ -14,10 +14,10 @@ namespace Template
         private TerrainMesh mesh;
         private Surface img;
 
-        public TerrainHeightMap(string file, float hScale, Shader s)
+        public TerrainHeightMap(string pos, string nor, string file, float hScale, Shader s)
         {
             img = new Surface(file);
-            mesh = new TerrainMesh(img.width, img.height, hScale, s);
+            mesh = new TerrainMesh(pos, nor, img.width, img.height, hScale);
             for (int y = 0; y < mesh.h; y++)
                 for (int x = 0; x < mesh.w; x++)
                     mesh.map[x, y] = ((float)(img.pixels[x + y * mesh.w] & 255)) / 256;
@@ -25,12 +25,12 @@ namespace Template
             mesh.NormalizeMap();
             mesh.BakeMap();
             mesh.CalcNormals();
-            mesh.UpdateMesh();
+            mesh.UpdateMesh(s);
         }
 
-        public void Render(ref Matrix4 m, Vector3 lightDir)
+        public void Render(Shader s)
         {
-            mesh.Render(ref m, lightDir);
+            mesh.Render(s);
         }
     }
 }
