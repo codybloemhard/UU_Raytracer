@@ -14,19 +14,20 @@ namespace Template
         
         private Shader s;
         private TerrainHeightMap hmTerrain;
-        private TerrainGenerated gnTerrain;
+        //private TerrainGenerated gnTerrain;   //procedural terrain
         private float hScale = 50;
 
-        private Vector3 lightDir = new Vector3(1, 0.5f, 1.5f);
+        //private Vector3 lightDir = new Vector3(1, 0.5f, 1.5f);    //niet nodig voor dit effect
         private const float degToRad = 0.0174532925f;
 
         public void Init()
         {
-            s = new Shader("../../assets/gridTerrainVS.glsl", "../../assets/gridTerrainFS.glsl");
-            //hmTerrain = new TerrainHeightMap("../../assets/map0.png", hScale, s);
-            gnTerrain = new TerrainGenerated(hScale, s);
+            //s = new Shader("../../assets/gridTerrainVS.glsl", "../../assets/gridTerrainFS.glsl");     //procedural terrain
+            //gnTerrain = new TerrainGenerated(hScale, s);      //procedural terrain
+            s = new Shader("../../assets/tariqVS.glsl", "../../assets/tariqFS.glsl");
+            hmTerrain = new TerrainHeightMap("../../assets/map0.png", hScale, s);
         }
-        
+
         public void Update()
         {
             t += 1f;
@@ -35,7 +36,7 @@ namespace Template
 
         public void Render()
         {
-            GL.ClearColor(Color.Black);
+            GL.ClearColor(Color.White);         //background
             GL.Enable(EnableCap.Texture2D);
             GL.Enable(EnableCap.DepthTest);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -50,8 +51,8 @@ namespace Template
             m *= Matrix4.CreateTranslation(0, 0, -hScale * 3.0f);
             m *= Matrix4.CreatePerspectiveFieldOfView(1.6f, 16f/9f, .1f, 100000000);
 
-            //hmTerrain.Render(ref m, lightDir);
-            gnTerrain.Render(ref m, lightDir);
+            hmTerrain.Render(ref m, Vector3.Zero);
+            //gnTerrain.Render(ref m, lightDir);        //procedural terrain
         }
     }
 }
