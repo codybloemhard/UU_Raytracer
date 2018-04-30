@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Drawing;
+using System.Security.Cryptography;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -13,16 +14,14 @@ namespace Template
         public Vector3 a, b, c;
     }
 
-    public class SphereMesh
+    public class SphereMesh : Mesh
     {
-        private Mesh mesh;
         private int res = 6;
         private float[] vertices, normals;
         uint[] indices;
 
-        public SphereMesh(Shader s)
+        public SphereMesh(Shader s) : base("vPos", "vNor")
         {
-            mesh = new Mesh("vPos", "vNor");
             Facet3[] f = new Facet3[(int)Math.Pow(4, res)];
             CreateUnitSphere(res, f);
             vertices = new float[f.Length * 3 * 3];
@@ -65,12 +64,12 @@ namespace Template
 
             Generate();
 
-            mesh.SetBuffer(vertices, BufferType.VERTEX);
-            mesh.SetBuffer(normals, BufferType.NORMAL);
-            mesh.SetIndices(indices);
-            mesh.UploadBuffer(s, BufferType.VERTEX);
-            mesh.UploadBuffer(s, BufferType.NORMAL);
-            mesh.UploadIndices(s);
+            SetBuffer(vertices, BufferType.VERTEX);
+            SetBuffer(normals, BufferType.NORMAL);
+            SetIndices(indices);
+            UploadBuffer(s, BufferType.VERTEX);
+            UploadBuffer(s, BufferType.NORMAL);
+            UploadIndices(s);
         }
 
         private void Generate()
@@ -143,11 +142,6 @@ namespace Template
                 facets[j].c.Normalize();
             }
             return n;
-        }
-
-        public void Render(Shader s)
-        {
-            mesh.Render(s);
         }
     }
 }
