@@ -25,7 +25,6 @@ namespace Template
         public void Init()
         {
             s = new Shader("../../shaders/gridTerrainVS.glsl", "../../shaders/gridTerrainFS.glsl");
-            //s = new Shader("../../shaders/tariqVS.glsl", "../../shaders/tariqFS.glsl");
             s.AddAttributeVar("vPos");
             s.AddAttributeVar("vNor");
             s.AddUniformVar("uMat");
