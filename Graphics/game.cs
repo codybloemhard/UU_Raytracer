@@ -24,14 +24,14 @@ namespace Template
 
         public void Init()
         {
-            s = new Shader("../../assets/gridTerrainVS.glsl", "../../assets/gridTerrainFS.glsl");
-            //s = new Shader("../../assets/tariqVS.glsl", "../../assets/tariqFS.glsl");
+            s = new Shader("../../shaders/gridTerrainVS.glsl", "../../shaders/gridTerrainFS.glsl");
+            //s = new Shader("../../shaders/tariqVS.glsl", "../../shaders/tariqFS.glsl");
             s.AddAttributeVar("vPos");
             s.AddAttributeVar("vNor");
             s.AddUniformVar("uMat");
             s.AddUniformVar("uMaxHeight");
             s.AddUniformVar("uLightDir");
-
+            
             if (mode == 0)
                 hmTerrain = new TerrainHeightMap("vPos", "vNor", "../../assets/map0.png", hScale, s);
             else if (mode == 1)
