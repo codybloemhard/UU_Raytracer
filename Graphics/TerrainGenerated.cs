@@ -9,6 +9,7 @@ using OpenTK.Input;
 
 namespace Template
 {
+    [Obsolete] // Use Terrain object or improve it dont create mseh holders but objects which can go inside scene
     public class TerrainGenerated
     {
         private TerrainMesh mesh;
