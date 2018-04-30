@@ -11,13 +11,15 @@ namespace Template
     public class Game
     {
         private float t;
+        private int mode = 1;
         
         private Shader s;
         private TerrainHeightMap hmTerrain;
         private TerrainGenerated gnTerrain;
+        private SphereMesh sphere;
         private float hScale = 50;
 
-        private Vector3 lightDir = new Vector3(1, 0.5f, 1.5f);
+        private Vector3 lightDir = new Vector3(1f, 0f, 1f);
         private const float degToRad = 0.0174532925f;
 
         public void Init()
@@ -30,9 +32,16 @@ namespace Template
             s.AddUniformVar("uMaxHeight");
             s.AddUniformVar("uLightDir");
 
-            //hmTerrain = new TerrainHeightMap("vPos", "vNor", "../../assets/map0.png", hScale, s);
-            gnTerrain = new TerrainGenerated("vPos", "vNor", hScale);
-            gnTerrain.Bake(s);
+            if (mode == 0)
+                hmTerrain = new TerrainHeightMap("vPos", "vNor", "../../assets/map0.png", hScale, s);
+            else if (mode == 1)
+            {
+                gnTerrain = new TerrainGenerated("vPos", "vNor", hScale, s);
+                gnTerrain.Bake(s);
+            }
+            else if (mode == 2)
+                sphere = new SphereMesh(s);
+            if (mode == 2) hScale = 1f;
         }
         
         public void Update()
@@ -63,8 +72,9 @@ namespace Template
             s.SetVar("uMaxHeight", hScale);
             s.SetVar("uLightDir", lightDir);
 
-            //hmTerrain.Render(s);
-            gnTerrain.Render(s);
+            if (mode == 0) hmTerrain.Render(s);
+            else if (mode == 1) gnTerrain.Render(s);
+            else if (mode == 2) sphere.Render(s);
         }
     }
 }

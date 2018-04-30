@@ -15,9 +15,9 @@ namespace Template
         private int size = 512;
         private float scale = 1f;
 
-        public TerrainGenerated(string pos, string nor, float hScale)
+        public TerrainGenerated(string pos, string nor, float hScale, Shader s)
         {
-            mesh = new TerrainMesh(pos, nor, size, size, hScale);
+            mesh = new TerrainMesh(pos, nor, size, size, hScale, s);
             Generate();
         }
 

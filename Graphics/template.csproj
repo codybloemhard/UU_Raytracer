@@ -71,6 +71,7 @@
     <Compile Include="Mesh.cs" />
     <Compile Include="Perlin.cs" />
     <Compile Include="Shader.cs" />
+    <Compile Include="SphereMesh.cs" />
     <Compile Include="surface.cs" />
     <Compile Include="template.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

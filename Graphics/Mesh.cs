@@ -21,6 +21,8 @@ namespace Template
         private int[] buffers;
         private string[] bVars;
         private int size;
+        private int indexB;
+        private uint[] indices;
 
         public Mesh(string sPos, string sNor)
         {
@@ -33,18 +35,29 @@ namespace Template
 
             for(int i = 0; i < 2; i++)
                 buffers[i] = GL.GenBuffer();
+            indexB = GL.GenBuffer();    
         }
         
-        public void SetBuffer(float[] b, int size, BufferType type)
+        public void SetBuffer(float[] b, BufferType type)
         {
             if(type == BufferType.VERTEX)
-                this.size = size;
+                this.size = b.Length;
             data[(int)type] = b;
+        }
+
+        public void SetIndices(uint[] i)
+        {
+            indices = i;
         }
 
         public float[] Buffer(BufferType type)
         {
             return data[(int)type];
+        }
+
+        public uint[] Indices()
+        {
+            return indices;
         }
 
         public void UploadBuffer(Shader s, BufferType type)
@@ -61,12 +74,23 @@ namespace Template
                 VertexAttribPointerType.Float, false, 0, 0);
         }
 
+        public void UploadIndices(Shader s)
+        {
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, indexB);
+            GL.BufferData<uint>(
+                BufferTarget.ElementArrayBuffer,
+                (IntPtr)(indices.Length * sizeof(uint)),
+                indices,
+                BufferUsageHint.StaticDraw
+                );
+        }
+
         public void Render(Shader s)
         {
-            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, indexB);
             for (int i = 0; i < bVars.Length; i++)
                 GL.EnableVertexAttribArray(s.GetVar(bVars[i]));
-            GL.DrawArrays(PrimitiveType.Triangles, 0, size);
+            GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
         }
     }
 }
