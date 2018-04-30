@@ -66,10 +66,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Camera.cs" />
     <Compile Include="game.cs" />
     <Compile Include="Help.cs" />
     <Compile Include="Mesh.cs" />
+    <Compile Include="Object.cs" />
     <Compile Include="Perlin.cs" />
+    <Compile Include="Scene.cs" />
     <Compile Include="Shader.cs" />
     <Compile Include="SphereMesh.cs" />
     <Compile Include="surface.cs" />
@@ -78,6 +81,7 @@
     <Compile Include="TerrainGenerated.cs" />
     <Compile Include="TerrainHeightMap.cs" />
     <Compile Include="TerrainMesh.cs" />
+    <Compile Include="TerrainObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -100,6 +104,15 @@
     <Content Include="..\.gitignore">
       <Link>.gitignore</Link>
     </Content>
+    <Content Include="assets\font.png" />
+    <Content Include="assets\gridTerrainFS.glsl" />
+    <Content Include="assets\gridTerrainVS.glsl" />
+    <Content Include="assets\map0.png" />
+    <Content Include="assets\map1.png" />
+    <Content Include="assets\map2.png" />
+    <Content Include="assets\map3.png" />
+    <Content Include="assets\tariqFS.glsl" />
+    <Content Include="assets\tariqVS.glsl" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
