@@ -38,14 +38,14 @@ namespace Template
             indexB = GL.GenBuffer();    
         }
         
-        public void SetBuffer(float[] b, int size, BufferType type)
+        public void SetBuffer(float[] b, BufferType type)
         {
             if(type == BufferType.VERTEX)
-                this.size = size;
+                this.size = b.Length;
             data[(int)type] = b;
         }
 
-        public void SetIndices(uint[] i, int size)
+        public void SetIndices(uint[] i)
         {
             indices = i;
         }

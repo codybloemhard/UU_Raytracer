@@ -39,10 +39,9 @@ namespace Template
             for (int x = 0; x < w; x++)
                 for (int y = 0; y < h; y++)
                 {
-                    vertexData[i + 0] = x - halfW;
-                    vertexData[i + 1] = y - halfH;
-                    vertexData[i + 2] = 0;
-                    i += 3;
+                    vertexData[i++] = x - halfW;
+                    vertexData[i++] = y - halfH;
+                    vertexData[i++] = 0;
                 }
             //create indices
             uint[] indices = new uint[(w - 1) * (h - 1) * 6];
@@ -50,16 +49,15 @@ namespace Template
             for (int x = 0; x < w - 1; x++)
                 for (int y = 0; y < h - 1; y++)
                 {
-                    indices[i + 0] = (uint)((x + 0) * w + (y + 0));
-                    indices[i + 1] = (uint)((x + 1) * w + (y + 0));
-                    indices[i + 2] = (uint)((x + 1) * w + (y + 1));
+                    indices[i++] = (uint)((x + 0) * w + (y + 0));
+                    indices[i++] = (uint)((x + 1) * w + (y + 0));
+                    indices[i++] = (uint)((x + 1) * w + (y + 1));
 
-                    indices[i + 3] = (uint)((x + 1) * w + (y + 1));
-                    indices[i + 4] = (uint)((x + 0) * w + (y + 1));
-                    indices[i + 5] = (uint)((x + 0) * w + (y + 0));
-                    i += 6;
+                    indices[i++] = (uint)((x + 1) * w + (y + 1));
+                    indices[i++] = (uint)((x + 0) * w + (y + 1));
+                    indices[i++] = (uint)((x + 0) * w + (y + 0));
                 }
-            mesh.SetIndices(indices, indices.Length);
+            mesh.SetIndices(indices);
             mesh.UploadIndices(s);
         }
         
@@ -125,17 +123,16 @@ namespace Template
             for (int x = 0; x < w - 0; x++)
                 for (int y = 0; y < h - 0; y++)
                 {
-                    normalData[i + 0] = normals[x, y].X;
-                    normalData[i + 1] = normals[x, y].Y;
-                    normalData[i + 2] = normals[x, y].Z;
-                    i += 3;
+                    normalData[i++] = normals[x, y].X;
+                    normalData[i++] = normals[x, y].Y;
+                    normalData[i++] = normals[x, y].Z;
                 }
         }
 
         public void UpdateMesh(Shader s)
         {
-            mesh.SetBuffer(vertexData, vertexData.Length, BufferType.VERTEX);
-            mesh.SetBuffer(normalData, normalData.Length, BufferType.NORMAL);
+            mesh.SetBuffer(vertexData, BufferType.VERTEX);
+            mesh.SetBuffer(normalData, BufferType.NORMAL);
             mesh.UploadBuffer(s, BufferType.VERTEX);
             mesh.UploadBuffer(s, BufferType.NORMAL);
         }

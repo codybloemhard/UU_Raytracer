@@ -29,5 +29,13 @@ namespace Template
             return n;
         }
 
+        public static Vector3 Midpoint(Vector3 a, Vector3 b)
+        {
+            Vector3 res = Vector3.Zero;
+            res.X = (a.X + b.X) / 2f;
+            res.Y = (a.Y + b.Y) / 2f;
+            res.Z = (a.Z + b.Z) / 2f;
+            return res;
+        }
     }
 }
