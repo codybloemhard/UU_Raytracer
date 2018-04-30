@@ -82,6 +82,7 @@
     <Compile Include="TerrainHeightMap.cs" />
     <Compile Include="TerrainMesh.cs" />
     <Compile Include="TerrainObject.cs" />
+    <Compile Include="VolumetricObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

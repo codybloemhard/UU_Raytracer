@@ -22,6 +22,7 @@ namespace Template
 
         public void Update()
         {
+            CurrentScene.Update();
             var delta = 0.2f;
             var keyState = Keyboard.GetState();
             if (keyState.IsKeyDown(Key.Left)) CurrentScene.CurrentCamera.Position += new Vector3(delta, 0, 0);
