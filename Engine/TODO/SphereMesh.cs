@@ -11,7 +11,7 @@ using OpenTK.Input;
 //http://paulbourke.net/geometry/circlesphere/
 namespace Engine.TODO
 {
-    struct Facet3
+    /*struct Facet3
     {
         public Vector3 a, b, c;
     }
@@ -111,21 +111,21 @@ namespace Engine.TODO
                 nstart = n;
                 for (j = 0; j < nstart; j++)
                 {
-                    /* Create initially copies for the new facets */
+                    /* Create initially copies for the new facets #1#
                     facets[n] = facets[j];
                     facets[n + 1] = facets[j];
                     facets[n + 2] = facets[j];
 
-                    /* Calculate the midpoints */
+                    /* Calculate the midpoints #1#
                     p1 = Help.Midpoint(facets[j].a, facets[j].b);
                     p2 = Help.Midpoint(facets[j].b, facets[j].c);
                     p3 = Help.Midpoint(facets[j].c, facets[j].a);
 
-                    /* Replace the current facet */
+                    /* Replace the current facet #1#
                     facets[j].b = p1;
                     facets[j].c = p3;
 
-                    /* Create the changed vertices in the new facets */
+                    /* Create the changed vertices in the new facets #1#
                     facets[n].a = p1;
                     facets[n].c = p2;
                     facets[n + 1].a = p3;
@@ -145,5 +145,5 @@ namespace Engine.TODO
             }
             return n;
         }
-    }
+    }*/
 }
