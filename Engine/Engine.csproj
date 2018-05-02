@@ -48,7 +48,8 @@
     <Compile Include="GameWindow.cs" />
     <Compile Include="Graphics\Mesh.cs" />
     <Compile Include="Graphics\Shader.cs" />
-    <Compile Include="Helpers\Help.cs" />
+    <Compile Include="Helpers\RegMath.cs" />
+    <Compile Include="Helpers\VectorAlgebra.cs" />
     <Compile Include="Helpers\Perlin.cs" />
     <Compile Include="Objects\Object.cs" />
     <Compile Include="Objects\TerrainGenerated.cs" />
