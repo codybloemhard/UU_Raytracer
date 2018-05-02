@@ -1,7 +1,10 @@
 ﻿using System;
+using Engine.Graphics;
+using Engine.Helpers;
+using Engine.TODO;
 using OpenTK;
 
-namespace Template
+namespace Engine.Objects
 {
     public class TerrainGenerated : VolumetricObject
     {
@@ -18,7 +21,7 @@ namespace Template
             this.scale = scale;
 
             //Shader = new Shader("../../shaders/gridTerrainVS.glsl", "../../shaders/gridTerrainFS.glsl"); // Its magic :S
-            Shader = new Shader("../../shaders/stdVS.glsl", "../../shaders/stdFS.glsl");
+            Shader = new Shader("assets/shaders/stdVS.glsl", "assets/shaders/stdFS.glsl");
             Shader.AddAttributeVar("vPos");
             Shader.AddAttributeVar("vNor");
             Shader.AddUniformVar("uViewM");

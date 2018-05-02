@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using Engine.Objects;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace Template
+namespace Engine
 {
     public class Camera : ITransformative
     {

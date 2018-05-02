@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Security.Permissions;
+using Engine;
+using Engine.Objects;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
 
 namespace Template
 {

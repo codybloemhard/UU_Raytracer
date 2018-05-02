@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using Engine.Graphics;
 using OpenTK;
 
-namespace Template
+namespace Engine.Objects
 {
     /// <summary>
     /// A basic 3d object

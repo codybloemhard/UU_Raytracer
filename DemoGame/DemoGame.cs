@@ -1,26 +1,29 @@
-﻿using System;
-using System.Drawing;
-using System.Drawing.Drawing2D;
+﻿using Engine;
+using Engine.Helpers;
+using Engine.Objects;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
+using Template;
+using GameWindow = Engine.GameWindow;
 
-namespace Template
+namespace DemoGame
 {
-    public class Game
+    public class DemoGame : Game
     {
-        private Scene CurrentScene { get; set; }
+        public static void Main(string[] args)
+        {
+            using (var win = new GameWindow(new DemoGame())) { win.Run(30.0, 60.0); }
+        }
 
-        public void Init()
+        public override void Init()
         {
             var camera = new Camera(new Vector3(0, 0, -50 * 3.0f), new Quaternion(0, 1 * 0.01f, 120 * Help.Deg2Rad));
             CurrentScene = new Scene(camera);
-
+            
             CurrentScene.Objects.Add(new TerrainGenerated(512, 1, 50));
-            //CurrentScene.Objects.Add(new TerrainImage("../../assets/kikker.png", 1, 10));
         }
 
-        public void Update()
+        public override void Update()
         {
             CurrentScene.Update();
             var delta = 0.2f;
@@ -33,7 +36,7 @@ namespace Template
             if (keyState.IsKeyDown(Key.S)) CurrentScene.CurrentCamera.Position += new Vector3(0, 0, -delta);
         }
 
-        public void Render()
+        public override void Render()
         {
             Matrix4 worldM = Matrix4.Identity;
             worldM *= Matrix4.CreateFromQuaternion(new Quaternion(0, 0, 0));

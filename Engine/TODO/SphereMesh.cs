@@ -2,12 +2,14 @@
 using System.IO;
 using System.Drawing;
 using System.Security.Cryptography;
+using Engine.Graphics;
+using Engine.Helpers;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 //http://paulbourke.net/geometry/circlesphere/
-namespace Template
+namespace Engine.TODO
 {
     struct Facet3
     {

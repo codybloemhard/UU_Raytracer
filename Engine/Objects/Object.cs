@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing.Drawing2D;
-using OpenTK;
+﻿using OpenTK;
 
-namespace Template
+namespace Engine.Objects
 {
     public interface ITransformative
     {
@@ -20,8 +17,9 @@ namespace Template
         /// <summary>
         /// Used to render the object on canvas. NOTHING ELSE
         /// </summary>
-        /// <param name="origin"></param>
-        void Render(Matrix4 viewM, Matrix4 worldM);
+        /// <param name="view"></param>
+        /// <param name="world"></param>
+        void Render(Matrix4 view, Matrix4 world);
     }
 
     /// <summary>
@@ -52,6 +50,8 @@ namespace Template
         /// </summary>
         public virtual void Update() { }
 
+        public abstract void Render(Matrix4 view, Matrix4 world);
+        
         public Matrix4 TransformMatrix(Matrix4 matrix)
         {
             matrix *= Matrix4.CreateFromQuaternion(Rotation);
@@ -59,7 +59,5 @@ namespace Template
             matrix *= Matrix4.CreateScale(Scale);
             return matrix;
         }
-
-        public abstract void Render(Matrix4 viewM, Matrix4 worldM);
     }
 }

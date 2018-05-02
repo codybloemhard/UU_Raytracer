@@ -1,23 +1,28 @@
 ﻿using System;
-using System.IO;
 using System.Drawing;
 using OpenTK;
-using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
-using OpenTK.Input;
 
-namespace Template
+namespace Engine
 {
-    public class OpenTKApp : GameWindow
+    public class GameWindow : OpenTK.GameWindow
     {
-        static Game game;
-        static bool terminated = false;
+        protected Game Game;
+
+        protected virtual Size GetSize()
+        {
+            return new Size(1600, 900);
+        }
+
+        public GameWindow(Game game)
+        {
+            Game = game;
+        }
 
         protected override void OnLoad(EventArgs e)
         {
             ClientSize = new Size(1600, 900);
-            game = new Game();
-            game.Init();
+            Game.Init();
             GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);
         }
 
@@ -33,28 +38,18 @@ namespace Template
             GL.LoadIdentity();
             GL.Ortho(-1.0, 1.0, -1.0, 1.0, 0.0, 4.0);
         }
-        
+
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             var keyboard = OpenTK.Input.Keyboard.GetState();
-            game.Update();
-            if (keyboard[OpenTK.Input.Key.Escape]) this.Exit();
+            Game.Update();
+            if (keyboard[OpenTK.Input.Key.Escape]) Exit();
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            if (terminated)
-            {
-                Exit();
-                return;
-            }
-            game.Render();
+            Game.Render();
             SwapBuffers();
-        }
-
-        public static void Main(string[] args)
-        {
-            using (OpenTKApp app = new OpenTKApp()) { app.Run(30.0, 60.0); }
         }
     }
 }

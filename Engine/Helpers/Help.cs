@@ -1,7 +1,7 @@
 ﻿using System;
 using OpenTK;
 
-namespace Template
+namespace Engine.Helpers
 { 
     public static class Help
     {

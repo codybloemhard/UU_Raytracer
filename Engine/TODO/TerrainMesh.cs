@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Drawing;
+﻿using Engine.Graphics;
+using Engine.Helpers;
 using OpenTK;
-using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
-using OpenTK.Input;
 
-namespace Template
+
+namespace Engine.TODO
 {
     public class TerrainMesh : Mesh
     {
