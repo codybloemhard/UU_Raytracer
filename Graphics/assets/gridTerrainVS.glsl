@@ -1,7 +1,9 @@
 #version 330
 in vec3 vPos;
 in vec3 vNor;
-uniform mat4 uMat;
+uniform mat4 uModelM;
+uniform mat4 uModelM;
+
 uniform float uMaxHeight;
 uniform vec3 uLightDir;
 

@@ -31,7 +31,7 @@ namespace Template
             matrix *= Matrix4.CreatePerspectiveFieldOfView(Fovy, Aspect, ZNear, ZFar);
             return matrix;
         }
-
+        
         /// <summary>
         /// Cull the objects to the only ones we need.
         /// TODO: actually do that

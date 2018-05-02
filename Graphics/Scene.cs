@@ -22,7 +22,7 @@ namespace Template
         }
 
         /// <summary>
-        /// Called very tick
+        /// Called every tick
         /// </summary>
         public void Update()
         {
@@ -37,13 +37,13 @@ namespace Template
             obj.Init();
         }
 
-        public void Render(Matrix4 origin)
+        public void Render(Matrix4 viewM, Matrix4 worldM)
         {
             CurrentCamera.Clear();
-            var m = CurrentCamera.TransformMatrix(origin);
+            viewM = CurrentCamera.TransformMatrix(Matrix4.Identity);
             var candidates = CurrentCamera.Cull(Objects);
             foreach (var candidate in candidates) {
-                candidate.Render(m);
+                candidate.Render(viewM, worldM);
             }
         }
     }

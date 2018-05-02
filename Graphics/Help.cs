@@ -5,6 +5,8 @@ namespace Template
 { 
     public static class Help
     {
+        public static float Deg2Rad = 0.0174532925f;
+        
         public static Vector3 Read(float[] arr, int start)
         {
             return new Vector3(arr[start + 0], arr[start + 1], arr[start + 2]);

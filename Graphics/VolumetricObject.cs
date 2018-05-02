@@ -22,31 +22,33 @@ namespace Template
             Shader = shader;
             Children = new List<Object>();
         }
-
+        
         /// <summary>
         /// Used to prepare all the shaders before drawing the object.
         /// Here shader should be enabled and all the uniforms should be set
         /// </summary>
-        /// <param name="baseMat"></param>
-        protected virtual void PrepareShaders(Matrix4 baseMat)
+        /// <param name="modelM"></param>
+        protected virtual void PrepareShaders(Matrix4 viewM, Matrix4 worldM, Matrix4 modelM)
         {
             if (Shader == null) return;
 
             Shader.Use();
-            Shader.SetVar("uMat", ref baseMat);
+            Shader.SetVar("uViewM", ref viewM);
+            Shader.SetVar("uWorldM", ref worldM);
+            Shader.SetVar("uModelM", ref modelM);
         }
 
-        public override void Render(Matrix4 origin)
+        public override void Render(Matrix4 viewM, Matrix4 worldM)
         {
-            var m = TransformMatrix(origin);
+            var modelM = TransformMatrix(Matrix4.Identity);
             if (Mesh != null && Shader != null) {
-                PrepareShaders(m);
+                PrepareShaders(viewM, worldM, modelM);
                 Shader.Use();
                 Mesh.Render(Shader);
             }
 
             foreach (var child in Children) {
-                child.Render(m);
+                child.Render(viewM, worldM);
             }
         }
     }

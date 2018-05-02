@@ -21,7 +21,7 @@ namespace Template
         /// Used to render the object on canvas. NOTHING ELSE
         /// </summary>
         /// <param name="origin"></param>
-        void Render(Matrix4 origin);
+        void Render(Matrix4 viewM, Matrix4 worldM);
     }
 
     /// <summary>
@@ -45,18 +45,12 @@ namespace Template
         /// <summary>
         /// Called when object is added to the scene
         /// </summary>
-        public virtual void Init()
-        {
-            
-        }
+        public virtual void Init() { }
 
         /// <summary>
         /// Called every tick if object is in the scene
         /// </summary>
-        public virtual void Update()
-        {
-            
-        }
+        public virtual void Update() { }
 
         public Matrix4 TransformMatrix(Matrix4 matrix)
         {
@@ -66,6 +60,6 @@ namespace Template
             return matrix;
         }
 
-        public abstract void Render(Matrix4 origin);
+        public abstract void Render(Matrix4 viewM, Matrix4 worldM);
     }
 }
