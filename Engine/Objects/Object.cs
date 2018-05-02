@@ -25,7 +25,7 @@ namespace Engine.Objects
     /// <summary>
     /// Basic scene object
     /// </summary>
-    public abstract class Object : ITransformative, IRenderable
+    public abstract class Object : ITransformative
     {
         public Vector3 Position { get; set; }
         public Quaternion Rotation { get; set; }
@@ -49,8 +49,6 @@ namespace Engine.Objects
         /// Called every tick if object is in the scene
         /// </summary>
         public virtual void Update() { }
-
-        public abstract void Render(Matrix4 view, Matrix4 world);
         
         public Matrix4 TransformMatrix(Matrix4 matrix)
         {

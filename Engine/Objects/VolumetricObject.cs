@@ -7,7 +7,7 @@ namespace Engine.Objects
     /// <summary>
     /// A basic 3d object
     /// </summary>
-    public class VolumetricObject : Object
+    public class VolumetricObject : Object, IRenderable
     {
         public Mesh Mesh { get; set; } = null;
         public Shader Shader { get; set; } = null;
@@ -33,23 +33,22 @@ namespace Engine.Objects
         {
             if (Shader == null) return;
 
-            Shader.Use();
             Shader.SetVar("uViewM", ref viewM);
             Shader.SetVar("uWorldM", ref worldM);
             Shader.SetVar("uModelM", ref modelM);
         }
 
-        public override void Render(Matrix4 viewM, Matrix4 worldM)
+        public void Render(Matrix4 viewM, Matrix4 worldM)
         {
             var modelM = TransformMatrix(Matrix4.Identity);
             if (Mesh != null && Shader != null) {
-                PrepareShaders(viewM, worldM, modelM);
                 Shader.Use();
+                PrepareShaders(viewM, worldM, modelM);
                 Mesh.Render(Shader);
             }
 
             foreach (var child in Children) {
-                child.Render(viewM, worldM);
+                if(child is IRenderable renderable) renderable.Render(viewM, worldM);
             }
         }
     }

@@ -40,7 +40,7 @@ namespace Engine
         /// </summary>
         /// <param name="objects"></param>
         /// <returns></returns>
-        public IEnumerable<Object> Cull(List<Object> objects)
+        public IEnumerable<ITransformative> Cull(List<ITransformative> objects)
         {
             return objects;
         }

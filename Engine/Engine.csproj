@@ -58,6 +58,7 @@
     <Compile Include="Objects\Terrain.cs" />
     <Compile Include="Objects\VolumetricObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Renderer.cs" />
     <Compile Include="Scene.cs" />
     <Compile Include="TODO\SphereMesh.cs" />
     <Compile Include="TODO\TerrainImage.cs" />

@@ -3,22 +3,22 @@ using Engine;
 using Engine.Objects;
 using OpenTK;
 
-namespace Template
+namespace Engine
 {
     /// <summary>
     /// Scene object contains a hierarchy of objects and a camera
     /// </summary>
     public class Scene : IRenderable
     {
-        public List<Object> Objects { get; protected set; }
+        public List<ITransformative> Objects { get; protected set; }
         public Camera CurrentCamera { get; set; }
 
-        public Scene(Camera camera) : this(camera, new List<Object>()) {}
+        public Scene(Camera camera) : this(camera, new List<ITransformative>()) {}
 
-        public Scene(Camera camera, List<Object> objects)
+        public Scene(Camera camera, List<ITransformative> objects)
         {
             CurrentCamera = camera;
-            this.Objects = objects;
+            Objects = objects;
         }
 
         /// <summary>
@@ -26,9 +26,7 @@ namespace Template
         /// </summary>
         public void Update()
         {
-            foreach (var obj in Objects) {
-                obj.Update();
-            }
+           
         }
 
         public void AddObject(Object obj)
@@ -37,13 +35,13 @@ namespace Template
             obj.Init();
         }
 
-        public void Render(Matrix4 viewM, Matrix4 worldM)
+        public void Render(Matrix4 view, Matrix4 world)
         {
             CurrentCamera.Clear();
-            viewM = CurrentCamera.TransformMatrix(Matrix4.Identity);
+            view = CurrentCamera.TransformMatrix(Matrix4.Identity);
             var candidates = CurrentCamera.Cull(Objects);
             foreach (var candidate in candidates) {
-                candidate.Render(viewM, worldM);
+                if(candidate is IRenderable renderable) renderable.Render(view, world);
             }
         }
     }

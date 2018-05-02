@@ -3,7 +3,6 @@ using Engine.Helpers;
 using Engine.Objects;
 using OpenTK;
 using OpenTK.Input;
-using Template;
 using GameWindow = Engine.GameWindow;
 
 namespace DemoGame
@@ -31,9 +30,10 @@ namespace DemoGame
             _terrain.Rotation = new Quaternion(0, 0, 0);
             _terrain.Scale = new Vector3(1, 1, 1) * 0.5f;
         }
-
+        
         public override void Update()
         {
+            base.Update();
             _t += 0.01f;
             _terrain.Rotation = new Quaternion(-_t, 0, 0);
             
@@ -46,15 +46,6 @@ namespace DemoGame
             if (keyState.IsKeyDown(Key.Down)) CurrentScene.CurrentCamera.Position += new Vector3(0, -delta, 0);
             if (keyState.IsKeyDown(Key.W)) CurrentScene.CurrentCamera.Position += new Vector3(0, 0, delta);
             if (keyState.IsKeyDown(Key.S)) CurrentScene.CurrentCamera.Position += new Vector3(0, 0, -delta);
-        }
-
-        public override void Render()
-        {
-            Matrix4 worldM = Matrix4.Identity;
-            worldM *= Matrix4.CreateFromQuaternion(new Quaternion(0, 0, 0));
-            worldM *= Matrix4.CreateTranslation(0, 0, 0);
-            worldM *= Matrix4.CreateScale(1, 1, 1);
-            CurrentScene.Render(Matrix4.Identity, worldM);
         }
     }
 }

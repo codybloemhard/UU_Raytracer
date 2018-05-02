@@ -1,17 +1,7 @@
 ﻿using Engine;
-using Engine.Helpers;
-using Engine.Objects;
 using Engine.Graphics;
-using Template;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Drawing;
-using OpenTK;
-using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
-using OpenTK.Input;
-using GameWindow = Engine.GameWindow;
 
 namespace DemoGame
 {
