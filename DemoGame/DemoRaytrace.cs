@@ -27,7 +27,7 @@ namespace DemoGame
             s.AddAttributeVar("vPos");
             s.AddAttributeVar("vUv");
 
-            quad = new Mesh("vPos", "vUv");
+            quad = new Mesh();
             
             float[] vertices = new float[] {    -1, +1, +0,
                                                 +1, +1, +0,
@@ -36,12 +36,10 @@ namespace DemoGame
             float[] uvs = new float[] { 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0 };
             uint[] indices = new uint[] { 0, 1, 2, 2, 3, 0 };
 
-            quad.SetIndices(indices);
-            quad.UploadIndices(s);
-            quad.SetBuffer(vertices, BufferType.VERTEX);
-            quad.SetBuffer(uvs, BufferType.NORMAL);
-            quad.UploadBuffer(s, BufferType.VERTEX);
-            quad.UploadBuffer(s, BufferType.NORMAL);
+            quad.IndexBuffer = new IndexBuffer(indices);
+            quad.Buffers.Add(new AttribBuffer<float>(vertices, "vPos",VertexAttribPointerType.Float));
+            quad.Buffers.Add(new AttribBuffer<float>(uvs, "vUv",VertexAttribPointerType.Float));
+            quad.Upload(s);
         }
 
         public override void Update() { }
@@ -57,6 +55,7 @@ namespace DemoGame
             GL.LoadIdentity();
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
+            
             s.Use();
             quad.Render(s);
         }
