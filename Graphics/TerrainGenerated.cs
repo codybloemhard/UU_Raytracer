@@ -16,9 +16,9 @@ namespace Template
             this.heightScale = heightScale;
             this.size = size;
             this.scale = scale;
-            
-            //Shader = new Shader("../../assets/gridTerrainVS.glsl", "../../assets/gridTerrainFS.glsl"); // Its magic :S
-            Shader = new Shader("../../assets/stdVS.glsl", "../../assets/stdFS.glsl");
+
+            //Shader = new Shader("../../shaders/gridTerrainVS.glsl", "../../shaders/gridTerrainFS.glsl"); // Its magic :S
+            Shader = new Shader("../../shaders/stdVS.glsl", "../../shaders/stdFS.glsl");
             Shader.AddAttributeVar("vPos");
             Shader.AddAttributeVar("vNor");
             Shader.AddUniformVar("uViewM");
