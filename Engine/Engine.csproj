@@ -46,19 +46,21 @@
     <Compile Include="Camera.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameWindow.cs" />
+    <Compile Include="Graphics\Buffers.cs" />
     <Compile Include="Graphics\Mesh.cs" />
     <Compile Include="Graphics\Shader.cs" />
+    <Compile Include="Graphics\TerrainMesh.cs" />
+    <Compile Include="Helpers\Generics.cs" />
     <Compile Include="Helpers\RegMath.cs" />
     <Compile Include="Helpers\VectorAlgebra.cs" />
     <Compile Include="Helpers\Perlin.cs" />
     <Compile Include="Objects\Object.cs" />
-    <Compile Include="Objects\TerrainGenerated.cs" />
+    <Compile Include="Objects\Terrain.cs" />
     <Compile Include="Objects\VolumetricObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scene.cs" />
     <Compile Include="TODO\SphereMesh.cs" />
     <Compile Include="TODO\TerrainImage.cs" />
-    <Compile Include="TODO\TerrainMesh.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenTK.dll.config" />

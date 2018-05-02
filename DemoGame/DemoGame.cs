@@ -10,6 +10,10 @@ namespace DemoGame
 {
     public class DemoGame : Game
     {
+        private Terrain _terrain;
+        private float _t = 0;
+
+ 
         public static void Main(string[] args)
         {
             using (var win = new GameWindow(new DemoGame())) { win.Run(30.0, 60.0); }
@@ -19,12 +23,19 @@ namespace DemoGame
         {
             var camera = new Camera(new Vector3(0, 0, -50 * 3.0f), new Quaternion(0, 1 * 0.01f, 120 * Help.Deg2Rad));
             CurrentScene = new Scene(camera);
-            
-            CurrentScene.Objects.Add(new TerrainGenerated(512, 1, 50));
+
+            _terrain = new Terrain(512, 1, 50);
+            CurrentScene.Objects.Add(_terrain);
+            _terrain.Position = new Vector3(0, 0, 0);
+            _terrain.Rotation = new Quaternion(0, 0, 0);
+            _terrain.Scale = new Vector3(1, 1, 1) * 0.5f;
         }
 
         public override void Update()
         {
+            _t += 0.01f;
+            _terrain.Rotation = new Quaternion(-_t, 0, 0);
+            
             CurrentScene.Update();
             var delta = 0.2f;
             var keyState = Keyboard.GetState();
