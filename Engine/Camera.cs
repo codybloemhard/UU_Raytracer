@@ -9,9 +9,11 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Engine
 {
-    struct Plane3D
+    public struct FinitePlane
     {
-        
+        public Vector3 Origin;
+        public Vector3 NHor;
+        public Vector3 NVert;
     }
     
     public class Camera : ITransformative
@@ -99,19 +101,25 @@ namespace Engine
         }
 
         /// <summary>
-        /// Returns the two opposite points on the near clipping plane
+        /// Returns the two opposite points on the near clipping plane. *Relative to the camera*
         /// </summary>
         /// <returns></returns>
-        public Tuple<Vector3, Vector3> GetNearClippingPlane()
+        public FinitePlane GetNearClippingPlane()
         {
             var rotationMatrix = Matrix3.CreateFromQuaternion(Rotation);
 
             float halfHeight = (float) (Math.Atan(Fovy) * ZNear * 2);
             float halfWidth = (float) (Math.Atan(Fovy * Aspect) * ZNear * 2); // Fovy * Aspect = Fovx
             
-            var leftTop = new Vector3(-halfWidth, halfHeight, ZNear) * rotationMatrix + Position;
-            var rightBottom = new Vector3(halfWidth, -halfHeight, ZNear) * rotationMatrix + Position;
-            return new Tuple<Vector3, Vector3>(leftTop, rightBottom);
+            var leftTop = new Vector3(-halfWidth, halfHeight, ZNear) * rotationMatrix;
+            var rightTop = new Vector3(halfWidth, halfHeight, ZNear) * rotationMatrix;
+            var leftBottom = new Vector3(-halfWidth, -halfHeight, ZNear) * rotationMatrix ;
+
+            var ret = new FinitePlane();
+            ret.Origin = leftTop ;
+            ret.NHor = rightTop - leftTop;
+            ret.NVert = leftBottom - leftTop;
+            return ret;
         }
     }
 }

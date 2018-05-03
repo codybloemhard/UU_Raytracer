@@ -12,17 +12,21 @@ namespace DemoRaytraceGame
     {
         protected DebugRenderer DebugRenderer;
 
+        public const int Width = 1024;
+        public const int Height = 512;
+
         public static void Main(string[] args)
         {
-            using (var win = new GameWindow(new Size(1024, 512), new DemoRaytraceGame())) { win.Run(30.0, 60.0); }
+            using (var win = new GameWindow(new Size(Width, Height), new DemoRaytraceGame())) { win.Run(30.0, 60.0); }
         }
 
         public override void Init()
         {
             base.Init();
-            DebugRenderer = new DebugRenderer();
+            Renderer =  Renderer = new Raytracer(Width/2-1, Height-1);
+            DebugRenderer = new DebugRenderer(Width/2-1, Height-1, Width/2);
 
-            var camera = new Camera(new Vector3(0, 3, 0), new Quaternion(0, 0 , 0));
+            var camera = new Camera(new Vector3(0, 1, 0), new Quaternion(0, 0 , 0));
             camera.Aspect = 1;
             Scene = new RayScene(camera);
 

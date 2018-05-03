@@ -8,7 +8,7 @@ namespace RaytraceEngine
         
         protected RaytraceGame()
         {
-            Renderer = new Raytracer();
+           
         }
 
         public override void Render2D()

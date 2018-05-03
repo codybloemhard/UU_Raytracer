@@ -1,5 +1,6 @@
-﻿using Engine.Objects;
+﻿using System;
 using OpenTK;
+using Object = Engine.Objects.Object;
 
 namespace RaytraceEngine.Objects
 {
@@ -20,15 +21,15 @@ namespace RaytraceEngine.Objects
         public override bool CheckHit(Ray ray, out RayHit hit)
         {
             hit = new RayHit();
-            Vector3 c = pos - ray.origin;
-            float t = RMath.dot(c, ray.dir);
-            Vector3 q = c - t * ray.dir;
+            Vector3 c = Position - ray.Origin;
+            float t = RMath.dot(c, ray.Direction);
+            Vector3 q = c - t * ray.Direction;
             float p2 = RMath.dot(q, q);
-            if (p2 > r * r) return false;
-            t -= (float)Math.Sqrt(r*r - p2);
+            if (p2 > Radius * Radius) return false;
+            t -= (float)Math.Sqrt(Radius*Radius - p2);
             if (t < 0) return false;
-            hit.pos = ray.origin + ray.dir * t;
-            hit.dist = t;
+            hit.Position = ray.Origin + ray.Direction * t;
+            hit.Distance = t;
             return true;
         }
     }
