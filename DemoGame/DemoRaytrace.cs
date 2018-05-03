@@ -5,7 +5,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace DemoGame
 {
-    public class DemoRaytrace : Game
+    public class DemoRaytrace : Game3D
     {
         private Mesh quad;
         private Shader s;

@@ -3,12 +3,11 @@ using Engine.TemplateCode;
 
 namespace RaytraceEngine
 {
-    public class Raytracer : IRenderer
+    public class Raytracer
     {
-
-        public void Render(Surface surface, Scene scene)
+        public void Render(Surface surface, RayScene scene)
         {
-            surface.Box(50, 50, 200, 200, 255);
+            surface.Box(50, 50, 100, 100, 255);
         }
     }
 }

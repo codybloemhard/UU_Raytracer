@@ -21,6 +21,7 @@ namespace DemoRaytraceGame
 
         public override void Init()
         {
+            CurrentScene = new Scene(new Camera());
             base.Init();
             DebugRenderer = new DebugRenderer();
 

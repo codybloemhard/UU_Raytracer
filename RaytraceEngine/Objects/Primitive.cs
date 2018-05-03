@@ -8,7 +8,7 @@ namespace RaytraceEngine.Objects
         bool CheckHit(Ray ray, out RayHit hit);
     }
     
-    public abstract class Primitive : Object, ITraceable
+    public abstract class Primitive : ITraceable
     {
         public abstract bool CheckHit(Ray ray, out RayHit hit);
     }
