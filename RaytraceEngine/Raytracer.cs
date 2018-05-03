@@ -10,7 +10,7 @@ namespace RaytraceEngine
         public void Render(Surface surface, RayScene scene)
         {
             Sphere s = new Sphere();
-            s.pos = new Vector3(0, 1, 4);
+            s.pos = new Vector3(1, 1, 5);
             s.r = 1f;
             for(int x = 0; x < surface.width; x++)
             for(int y = 0; y < surface.height; y++)

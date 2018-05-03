@@ -18,7 +18,7 @@ namespace RaytraceEngine
             pos = Vector3.Zero;
             width = w;
             height = h;
-            aspect = (float)w / h;
+            aspect = (float)h / w;
             n0 = new Vector3(-1, +aspect, near);
             n1 = new Vector3(+1, +aspect, near);
             n2 = new Vector3(+1, -aspect, near);
