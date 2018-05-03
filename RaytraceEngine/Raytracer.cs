@@ -29,15 +29,16 @@ namespace RaytraceEngine
             for (int y = 0; y < winHeight; y++) {
                 Ray ray = RayFromPixel(projectionPlane, scene.CurrentCamera, x, y);
                 RayHit hit;
+
+                bool shouldDebug = y == winHeight >> 1;
                 foreach (var primitive in scene.Primitives) {
                     bool isHit = primitive.CheckHit(ray, out hit);
                     if (isHit) {
                         surface.Plot(x, y, 255);
-                        
-                        if (y == winHeight >> 1) {
-                            if(ri % 8 == 0)Rays.Add(new Tuple<Ray, RayHit>(ray, hit));
-                            ++ri;
-                        }
+
+                        if (!shouldDebug) continue;
+                        if(ri % 8 == 0) Rays.Add(new Tuple<Ray, RayHit>(ray, hit));
+                        ++ri;
                     }
                 }
             }
@@ -45,13 +46,15 @@ namespace RaytraceEngine
 
         Ray RayFromPixel(FinitePlane projectionPlane, Camera camera, int x, int y)
         {
-            Vector3 onPlane = ((float)x / winWidth) * projectionPlane.NHor + ((float) y / winHeight) * projectionPlane.NVert + projectionPlane.Origin;
+            float wt = (float)x / winWidth;
+            float ht = (float)y / winHeight;
+            Vector3 onPlane = wt * projectionPlane.NHor + ht * projectionPlane.NVert + projectionPlane.Origin;
             onPlane.Normalize();
-            
-            Ray ret = new Ray();
-            ret.Direction = onPlane;
-            ret.Origin = camera.Position;
-            return ret;
+
+            return new Ray {
+                Direction = onPlane,
+                Origin = camera.Position
+            };
         }
     }
 }

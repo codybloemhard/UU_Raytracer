@@ -22,11 +22,12 @@ namespace RaytraceEngine.Objects
         {
             hit = new RayHit();
             Vector3 c = Position - ray.Origin;
-            float t = RMath.dot(c, ray.Direction);
+            float t = Vector3.Dot(c, ray.Direction);
             Vector3 q = c - t * ray.Direction;
-            float p2 = RMath.dot(q, q);
-            if (p2 > Radius * Radius) return false;
-            t -= (float)Math.Sqrt(Radius*Radius - p2);
+            float p2 = Vector3.Dot(q, q);
+            float rsq = Radius * Radius;
+            if (p2 > rsq) return false;
+            t -= (float)Math.Sqrt(rsq - p2);
             if (t < 0) return false;
             hit.Position = ray.Origin + ray.Direction * t;
             hit.Distance = t;

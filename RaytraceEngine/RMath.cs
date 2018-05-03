@@ -15,10 +15,5 @@ namespace RaytraceEngine
         {
             return "" + v.X + " , " + v.Y + " , " + v.Z;
         }
-
-        public static float dot(Vector3 a, Vector3 b)
-        {
-            return a.X * b.X + a.Y * b.Y + a.Z * b.Z;
-        }
     }
 }
