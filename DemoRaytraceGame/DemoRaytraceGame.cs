@@ -19,7 +19,7 @@ namespace DemoRaytraceGame
 
         public override void Init()
         {
-            s = new Shader("../../../Engine/assets/shaders/traceVS.glsl", "../../../Engine/assets/shaders/traceFS.glsl");
+            s = new Shader("assets/shaders/traceVS.glsl", "assets/shaders/traceFS.glsl");
             s.Use();
             s.AddAttributeVar("vPos");
             s.AddAttributeVar("vUv");
