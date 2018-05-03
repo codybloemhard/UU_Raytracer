@@ -1,4 +1,5 @@
-﻿using Engine;
+﻿using System.Diagnostics;
+using Engine;
 using Engine.Helpers;
 using Engine.Objects;
 using OpenTK;
@@ -21,7 +22,7 @@ namespace DemoGame
 
         public override void Init()
         {
-            var camera = new Camera(new Vector3(0, 0, -50 * 3.0f), new Quaternion(0, 1 * 0.01f, 120 * Help.Deg2Rad));
+            var camera = new Camera(new Vector3(0, 0, -50 * 3.0f), new Quaternion(0, 1 * 0.01f,  MathHelper.DegreesToRadians(120)));
             CurrentScene = new Scene(camera);
 
             _terrain = new Terrain(512, 1, 50);

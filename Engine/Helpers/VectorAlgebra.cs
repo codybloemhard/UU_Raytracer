@@ -4,9 +4,7 @@ using OpenTK;
 namespace Engine.Helpers
 { 
     public static class Help
-    {
-        public static float Deg2Rad = 0.0174532925f;
-        
+    {        
         public static Vector3 ArrayToVec(float[] arr, int start)
         {
             return new Vector3(arr[start + 0], arr[start + 1], arr[start + 2]);

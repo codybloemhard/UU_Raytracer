@@ -2,6 +2,8 @@ namespace Engine.Helpers
 {
     public class RegMath
     {
+        public static float Deg2Rad = 0.0174532925f;
+        
         public static double Smooth(double t)
         {
             return t * t * t * (t * (t * 6 - 15) + 10);
