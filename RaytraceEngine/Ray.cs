@@ -7,7 +7,6 @@ namespace RaytraceEngine
     {
         public Vector3 origin;
         public Vector3 dir;
-        public float t;
     }
 
     public struct RayHit

@@ -1,4 +1,4 @@
-﻿using Engine;
+using Engine;
 using System.Drawing;
 using RaytraceEngine;
 using OpenTK;

@@ -46,9 +46,11 @@
     <Compile Include="Objects\Primitive.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ray.cs" />
+    <Compile Include="RayCamera.cs" />
     <Compile Include="RayScene.cs" />
     <Compile Include="RaytraceGame.cs" />
     <Compile Include="Raytracer.cs" />
+    <Compile Include="RMath.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.csproj">
