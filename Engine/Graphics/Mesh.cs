@@ -30,7 +30,7 @@ namespace Engine.Graphics
         {
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, IndexBuffer.Pointer);
             foreach (var buffer in Buffers) {
-                if(buffer is IRenderableBuffer renderableBuffer) renderableBuffer.Render(s);
+                if(buffer is IRenderableBuffer) (buffer as IRenderableBuffer).Render(s);
             }
             GL.DrawElements(PrimitiveType.Triangles, IndexBuffer.Data.Length, DrawElementsType.UnsignedInt, 0);
         }
