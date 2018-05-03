@@ -9,19 +9,22 @@ namespace Engine
     {
         protected Game Game;
 
-        protected virtual Size GetSize()
-        {
-            return new Size(1600, 900);
-        }
+        protected Size Size { get; set; } = new Size(1600, 900);
 
         public GameWindow(Game game)
         {
             Game = game;
         }
 
+        public GameWindow(Size size, Game game)
+        {
+            Size = size;
+            Game = game;
+        }
+
         protected override void OnLoad(EventArgs e)
         {
-            ClientSize = GetSize();
+            ClientSize = Size;
             Game.Resize(ClientSize.Width, ClientSize.Height);
             Game.Init();
             GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);
