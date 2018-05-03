@@ -19,6 +19,12 @@ namespace RaytraceEngine.Objects
         public Vector3 pos;
         public float r;
 
+        public Sphere(Vector3 pos, float r)
+        {
+            this.pos = pos;
+            this.r = r;
+        }
+
         public override bool CheckHit(Ray ray, out RayHit hit)
         {
             hit = new RayHit();
@@ -30,6 +36,7 @@ namespace RaytraceEngine.Objects
             t -= (float)Math.Sqrt(r*r - p2);
             if (t < 0) return false;
             hit.pos = ray.origin + ray.dir * t;
+            hit.dist = t;
             return true;
         }
     }
