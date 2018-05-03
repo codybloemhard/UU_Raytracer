@@ -46,6 +46,7 @@
     <Compile Include="Camera.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Game2D.cs" />
+    <Compile Include="Game3D.cs" />
     <Compile Include="GameWindow.cs" />
     <Compile Include="Graphics\Buffers.cs" />
     <Compile Include="Graphics\Mesh.cs" />

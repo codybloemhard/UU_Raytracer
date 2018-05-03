@@ -5,12 +5,19 @@ namespace RaytraceEngine.Objects
 {
     public interface ILightSource
     {
-        Vector3 intensity { get; set; }
+        Vector3 Intensity { get; set; }
     }
     
-    public class PointLight : ILightSource
+    public class PointLight : ILightSource, ITransformative
     {
-        public Vector3 pos;
-        public Vector3 intensity { get; set; }
+        public Vector3 Intensity { get; set; }
+        public Vector3 Position { get; set; }
+        public Quaternion Rotation { get; set; }
+        
+        public Matrix4 TransformMatrix(Matrix4 matrix)
+        {
+            throw new System.NotImplementedException();
+        }
+
     }
 }

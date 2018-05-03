@@ -7,16 +7,16 @@ namespace Engine
 {
     public class GameWindow : OpenTK.GameWindow
     {
-        protected Game Game;
+        protected IGame Game;
 
         protected Size Size { get; set; } = new Size(1600, 900);
 
-        public GameWindow(Game game)
+        public GameWindow(IGame game)
         {
             Game = game;
         }
 
-        public GameWindow(Size size, Game3D game)
+        public GameWindow(Size size, IGame game)
         {
             Size = size;
             Game = game;

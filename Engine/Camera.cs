@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using Engine.Helpers;
@@ -51,7 +52,7 @@ namespace Engine
         /// </summary>
         /// <param name="objects"></param>
         /// <returns></returns>
-        public IEnumerable<ITransformative> Cull(List<ITransformative> objects)
+        public IEnumerable<ITransformative> Cull(IEnumerable<ITransformative> objects)
         {
             return objects;
         }

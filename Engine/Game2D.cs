@@ -6,7 +6,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Engine
 {
-    public abstract class Game2D : Game
+    public abstract class Game2D<T> : Game<T> where T : Scene
     {
         protected int ScreenID;
         protected Surface Screen;

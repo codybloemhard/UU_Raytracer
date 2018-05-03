@@ -8,31 +8,47 @@ namespace Engine
     /// <summary>
     /// Scene object contains a hierarchy of objects and a camera
     /// </summary>
-    public class Scene : IRenderable
+    public abstract class Scene
     {
-        public List<ITransformative> Objects { get; protected set; }
         public Camera CurrentCamera { get; set; }
 
-        public Scene(Camera camera) : this(camera, new List<ITransformative>()) {}
-
-        public Scene(Camera camera, List<ITransformative> objects)
+        public Scene(Camera camera)
         {
             CurrentCamera = camera;
-            Objects = objects;
         }
 
         /// <summary>
         /// Called every tick
         /// </summary>
-        public void Update()
+        public virtual void Update() { }
+
+        public virtual void AddObject(ITransformative obj)
         {
-           
+            if(obj is Object) (obj as Object).Init();
+        }
+    }
+
+    public class RenderableScene : Scene, IRenderable
+    {
+        public List<ITransformative> Objects;
+
+        public RenderableScene(Camera camera) : base(camera)
+        {
+            Objects = new List<ITransformative>();   
         }
 
-        public void AddObject(ITransformative obj)
+        public override void Update()
+        {
+            base.Update();
+            foreach (var o in Objects) {
+                if(o is Object) (o as Object).Update();
+            }
+        }
+
+        public override void AddObject(ITransformative obj)
         {
             Objects.Add(obj);
-            if(obj is Object) ((Object)obj).Init();
+            base.AddObject(obj);
         }
 
         public void Render(Matrix4 view, Matrix4 world)

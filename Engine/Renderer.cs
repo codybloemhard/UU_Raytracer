@@ -2,8 +2,8 @@
 
 namespace Engine
 {
-   public interface IRenderer
+   public interface IRenderer<T>
    {
-      void Render(Surface surface, Scene scene);
+      void Render(Surface surface, T scene);
    }
 }

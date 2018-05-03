@@ -1,13 +1,15 @@
 ﻿using Engine;
 using Engine.TemplateCode;
+using RaytraceEngine.Objects;
 
 namespace RaytraceEngine
 {
-    public class Raytracer
+    public class Raytracer : IRenderer<RayScene>
     {
+        
         public void Render(Surface surface, RayScene scene)
         {
-            surface.Box(50, 50, 100, 100, 255);
+            //throw new System.NotImplementedException();
         }
     }
 }

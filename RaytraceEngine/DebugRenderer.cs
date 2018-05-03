@@ -6,7 +6,7 @@ using RaytraceEngine.Objects;
 
 namespace RaytraceEngine
 {
-    public class DebugRenderer : IRenderer
+    public class DebugRenderer : IRenderer<RayScene>
     {
         // TODO: dont hardcode. Instead calc LeftTop&Extent and request window size
         private const int WinWidth = 511;
@@ -18,10 +18,10 @@ namespace RaytraceEngine
         
         // TODO: specify z to debug render and slice objects accordingly
         // TODO Rays
-        public void Render(Surface surface, Scene scene)
+        public void Render(Surface surface, RayScene scene)
         {
             // Draw spheres
-            foreach (var o in scene.Objects) {
+            foreach (var o in scene.Primitives) {
                 // TODO: more shapes. Mb move this into the shape itself? like IDebuggeble
                 if (o is Sphere) {
                     var pos = TranslatePos(o.Position);
