@@ -4,6 +4,9 @@ namespace Engine.Objects
 {
     public interface ITransformative
     {
+        Vector3 Position { get; set; }
+        Quaternion Rotation { get; set; }
+        
         /// <summary>
         /// Transform a matrix to space relative to object
         /// </summary>

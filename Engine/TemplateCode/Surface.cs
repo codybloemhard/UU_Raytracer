@@ -309,5 +309,11 @@ namespace Engine.TemplateCode
                 }
             }
         }
+        
+        public int CreateColor( int red, int green, int blue )
+        {
+            return (red << 16) + (green << 8) + blue;
+        }
+
     }
 }

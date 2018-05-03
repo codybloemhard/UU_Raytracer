@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using Engine;
-using Engine.Helpers;
+﻿using Engine;
 using Engine.Objects;
 using OpenTK;
 using OpenTK.Input;

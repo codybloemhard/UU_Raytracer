@@ -13,11 +13,11 @@ namespace Engine
 
         public override void Init()
         {
-            Screen = new Surface( Width, Height );
             GL.ClearColor( Color.Black );
             GL.Enable( EnableCap.Texture2D );
             GL.Disable( EnableCap.DepthTest );
             GL.Hint( HintTarget.PerspectiveCorrectionHint, HintMode.Nicest );
+            Screen = new Surface( Width, Height );
             Sprite.target = Screen;
             ScreenID = Screen.GenTexture();
            
@@ -30,12 +30,12 @@ namespace Engine
 
         public override void Render()
         {
+            Screen.Clear(0);
             Render2D();
             
             GL.BindTexture( TextureTarget.Texture2D, ScreenID );
             GL.TexImage2D( TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 
-                Screen.width, Screen.height, 0, 
-                OpenTK.Graphics.OpenGL.PixelFormat.Bgra, 
+                Screen.width, Screen.height, 0, PixelFormat.Bgra, 
                 PixelType.UnsignedByte, Screen.pixels 
             );
             

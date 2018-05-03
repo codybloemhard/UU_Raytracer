@@ -29,10 +29,10 @@ namespace Engine
            
         }
 
-        public void AddObject(Object obj)
+        public void AddObject(ITransformative obj)
         {
             Objects.Add(obj);
-            obj.Init();
+            if(obj is Object) ((Object)obj).Init();
         }
 
         public void Render(Matrix4 view, Matrix4 world)

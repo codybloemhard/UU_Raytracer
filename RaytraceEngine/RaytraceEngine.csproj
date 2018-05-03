@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DebugRenderer.cs" />
     <Compile Include="Objects\Light.cs" />
     <Compile Include="Objects\Primitive.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

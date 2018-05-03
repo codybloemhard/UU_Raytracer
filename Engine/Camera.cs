@@ -108,8 +108,8 @@ namespace Engine
             float halfHeight = (float) (Math.Atan(Fovy) * ZNear * 2);
             float halfWidth = (float) (Math.Atan(Fovy * Aspect) * ZNear * 2); // Fovy * Aspect = Fovx
             
-            var leftTop = (new Vector3(-halfWidth, halfHeight, ZNear) + Position) * rotationMatrix;
-            var rightBottom = (new Vector3(halfWidth, -halfHeight, ZNear) + Position) * rotationMatrix;
+            var leftTop = new Vector3(-halfWidth, halfHeight, ZNear) * rotationMatrix + Position;
+            var rightBottom = new Vector3(halfWidth, -halfHeight, ZNear) * rotationMatrix + Position;
             return new Tuple<Vector3, Vector3>(leftTop, rightBottom);
         }
     }

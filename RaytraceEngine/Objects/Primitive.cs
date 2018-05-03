@@ -15,6 +15,8 @@ namespace RaytraceEngine.Objects
 
     public class Sphere : Primitive
     {
+        public float Radius { get; set; }
+        
         public override bool CheckHit(Ray ray, out RayHit hit)
         {
             throw new System.NotImplementedException();

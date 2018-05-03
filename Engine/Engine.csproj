@@ -51,6 +51,7 @@
     <Compile Include="Graphics\Mesh.cs" />
     <Compile Include="Graphics\Shader.cs" />
     <Compile Include="Graphics\TerrainMesh.cs" />
+    <Compile Include="Helpers\Draw2D.cs" />
     <Compile Include="Helpers\Generics.cs" />
     <Compile Include="Helpers\RegMath.cs" />
     <Compile Include="Helpers\VectorAlgebra.cs" />
