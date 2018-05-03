@@ -10,7 +10,8 @@ namespace Engine.Helpers
 
         public static int SizeOf(Type type)
         {
-            if (_sizes.TryGetValue(type, out var size))
+            int size;
+            if (_sizes.TryGetValue(type, out size))
             {
                 return size;
             }

@@ -41,7 +41,7 @@ namespace Engine
             view = CurrentCamera.TransformMatrix(Matrix4.Identity);
             var candidates = CurrentCamera.Cull(Objects);
             foreach (var candidate in candidates) {
-                if(candidate is IRenderable renderable) renderable.Render(view, world);
+                if(candidate is IRenderable) (candidate as IRenderable).Render(view, world);
             }
         }
     }

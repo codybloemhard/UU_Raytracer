@@ -15,7 +15,7 @@ namespace Engine
         public virtual void Update()
         {
             foreach (var obj in CurrentScene.Objects) {
-                if(obj is Object o) o.Update();
+                if(obj is Object) (obj as Object).Update();
             }
         }
 

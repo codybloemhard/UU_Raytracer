@@ -48,7 +48,7 @@ namespace Engine.Objects
             }
 
             foreach (var child in Children) {
-                if(child is IRenderable renderable) renderable.Render(viewM, worldM);
+                if(child is IRenderable) (child as IRenderable).Render(viewM, worldM);
             }
         }
     }
