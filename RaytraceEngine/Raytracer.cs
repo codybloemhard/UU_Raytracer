@@ -1,5 +1,7 @@
 ﻿using Engine;
 using Engine.TemplateCode;
+using RaytraceEngine.Objects;
+using OpenTK;
 
 namespace RaytraceEngine
 {
@@ -7,7 +9,17 @@ namespace RaytraceEngine
     {
         public void Render(Surface surface, RayScene scene)
         {
-            surface.Box(50, 50, 100, 100, 255);
+            Sphere s = new Sphere();
+            s.pos = new Vector3(0, 1, 4);
+            s.r = 1f;
+            for(int x = 0; x < surface.width; x++)
+            for(int y = 0; y < surface.height; y++)
+                {
+                    Ray r = scene.cam.FromPixel(x, y);
+                    RayHit h;
+                    bool ok = s.CheckHit(r, out h);
+                    if (ok) surface.Plot(x, y, 255);
+                }
         }
     }
 }

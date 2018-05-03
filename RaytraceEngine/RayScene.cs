@@ -9,6 +9,7 @@ namespace RaytraceEngine
     {
         public List<ITraceable> primitives;
         public List<ILightSource> sources;
+        public RayCamera cam;
 
         public RayScene()
         {
