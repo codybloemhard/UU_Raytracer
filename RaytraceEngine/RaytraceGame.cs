@@ -4,16 +4,18 @@ namespace RaytraceEngine
 {
     public abstract class RaytraceGame : Game2D
     {
-        protected IRenderer Renderer;
+        protected Raytracer renderer;
+        protected RayScene scene;
         
         protected RaytraceGame()
         {
-            Renderer = new Raytracer();
+            renderer = new Raytracer();
+            scene = new RayScene();
         }
 
         public override void Render2D()
         {
-            Renderer.Render(Screen, CurrentScene);
+            renderer.Render(Screen, scene);
         }
     }
 }

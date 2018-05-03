@@ -8,7 +8,7 @@ using GameWindow = Engine.GameWindow;
 
 namespace DemoGame
 {
-    public class DemoGame : Game
+    public class DemoGame : Game3D
     {
         private Terrain _terrain;
         private float _t = 0;

@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using Engine.TemplateCode;
 using OpenTK.Graphics.OpenGL;
 
@@ -9,7 +10,6 @@ namespace Engine
     {
         protected int ScreenID;
         protected Surface Screen;
-
 
         public override void Init()
         {
@@ -26,6 +26,11 @@ namespace Engine
         public override void Destroy()
         {
             GL.DeleteTextures( 1, ref ScreenID );
+        }
+
+        public override void Update()
+        {
+            
         }
 
         public override void Render()

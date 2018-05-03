@@ -16,7 +16,7 @@ namespace Engine
             Game = game;
         }
 
-        public GameWindow(Size size, Game game)
+        public GameWindow(Size size, Game3D game)
         {
             Size = size;
             Game = game;

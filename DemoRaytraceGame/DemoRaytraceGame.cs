@@ -3,7 +3,6 @@ using Engine.Graphics;
 using System.Drawing;
 using OpenTK.Graphics.OpenGL;
 using RaytraceEngine;
-using System.Drawing;
 
 namespace DemoRaytraceGame
 {
@@ -17,7 +16,6 @@ namespace DemoRaytraceGame
 
         public override void Init()
         {
-            CurrentScene = new Scene(new Camera());
             base.Init();
         }
     }

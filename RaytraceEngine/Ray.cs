@@ -5,15 +5,16 @@ namespace RaytraceEngine
 {
     public struct Ray
     {
-        public Vector3 Origin;
-        public Vector3 Direction;
+        public Vector3 origin;
+        public Vector3 dir;
         public float t;
     }
 
     public struct RayHit
     {
-        public Vector3 Point;
-        public Vector3 Normal;
-        public ITraceable Object;
+        public Vector3 pos;
+        public Vector3 normal;
+        public float dist;
+        public ITraceable obj;
     }
 }

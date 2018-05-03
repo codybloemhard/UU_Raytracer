@@ -3,13 +3,14 @@ using OpenTK;
 
 namespace RaytraceEngine.Objects
 {
-    public interface ILightEmitter
+    public interface ILightSource
     {
-        Vector3 Intensity { get; set; }
+        Vector3 intensity { get; set; }
     }
     
-    public class PointLight : Object, ILightEmitter
+    public class PointLight : ILightSource
     {
-        public Vector3 Intensity { get; set; }
+        public Vector3 pos;
+        public Vector3 intensity { get; set; }
     }
 }
