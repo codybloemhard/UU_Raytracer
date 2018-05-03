@@ -11,12 +11,11 @@ namespace DemoGame
     {
         private Terrain _terrain;
         private float _t = 0;
-
  
         public static void Main(string[] args)
         {
-            //using (var win = new GameWindow(new DemoGame())) { win.Run(30.0, 60.0); }
-            using (var win = new GameWindow(new DemoRaytrace())) { win.Run(30.0, 60.0); }
+            using (var win = new GameWindow(new DemoGame())) { win.Run(30.0, 60.0); }
+            //using (var win = new GameWindow(new DemoRaytrace())) { win.Run(30.0, 60.0); }
         }
 
         public override void Init()
