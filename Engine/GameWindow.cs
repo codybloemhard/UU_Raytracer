@@ -21,13 +21,15 @@ namespace Engine
 
         protected override void OnLoad(EventArgs e)
         {
-            ClientSize = new Size(1600, 900);
+            ClientSize = GetSize();
+            Game.Resize(ClientSize.Width, ClientSize.Height);
             Game.Init();
             GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);
         }
 
         protected override void OnUnload(EventArgs e)
         {
+            Game.Destroy();
             Environment.Exit(0); // bypass wait for key on CTRL-F5
         }
 

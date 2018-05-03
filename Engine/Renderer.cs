@@ -1,7 +1,9 @@
-﻿namespace Engine
+﻿using Engine.TemplateCode;
+
+namespace Engine
 {
    public interface IRenderer
    {
-      void Render(Scene scene);
+      void Render(Surface surface, Scene scene);
    }
 }

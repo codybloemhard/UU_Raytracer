@@ -5,6 +5,9 @@ namespace Engine
 {
     public abstract class Game
     {
+        protected int Width { get; set; }
+        protected int Height { get; set; }
+
         protected Scene CurrentScene { get; set; }
 
         public abstract void Init();
@@ -27,5 +30,13 @@ namespace Engine
             worldM *= Matrix4.CreateScale(1, 1, 1);
             CurrentScene.Render(Matrix4.Identity, worldM);
         }
+
+        public virtual void Resize(int width, int height)
+        {
+            Width = width;
+            Height = height;
+        }
+        
+        public virtual void Destroy() {}
     }
 }

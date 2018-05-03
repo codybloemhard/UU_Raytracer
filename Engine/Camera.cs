@@ -22,6 +22,10 @@ namespace Engine
         public float ZNear { get; set; }
         public float ZFar { get; set; }
 
+        public Camera() : this(Vector3.Zero, Quaternion.Identity)
+        {
+        }
+
         public Camera(Vector3 position, Quaternion rotation, float fovy = 1.6f, float aspect = 16f/9f, float zNear = .1f, float zFar = 100000000)
         {
             Position = position;
