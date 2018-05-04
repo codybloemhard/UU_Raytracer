@@ -71,7 +71,7 @@ namespace DemoRaytraceGame
             var light2 = new PointLight();
             light2.Intensity = Vector3.One * 100;
             light2.Position = new Vector3(2f, 4f, 2f);
-            Scene.AddObject(light2);
+            //Scene.AddObject(light2);
         }
 
         // This is for debugging and should be removed later

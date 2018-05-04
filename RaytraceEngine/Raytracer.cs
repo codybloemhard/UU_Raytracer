@@ -107,20 +107,25 @@ namespace RaytraceEngine
             {
                 Vector3 lightPos = light.GetPos();
                 Vector3 toLight = lightPos - hit.Position;
+                float dist = toLight.Length;
                 toLight.Normalize();
                 Ray lRay = new Ray();
                 lRay.Origin = hit.Position + toLight * 0.001f;
                 lRay.Direction = toLight;
+                //Solve light.Intensity * power * (1f / (dist * dist * 4 * RMath.PI));
+                //for dist(now range), and only check for shadow if dist < distance_to_light (dist here)
+                float range = light.Intensity.Length * RMath.roll0;
+                bool inRange = dist < range;
                 bool blocked = false;
-                foreach (var prim in scene.Primitives)
-                {
-                    if (prim == primitive) continue;
-                    blocked = prim.CheckHit(lRay, out lHit);
-                    if (blocked) break;
-                }
+                if(inRange)
+                    foreach (var prim in scene.Primitives)
+                    {
+                        if (prim == primitive) continue;
+                        blocked = prim.CheckHit(lRay, out lHit);
+                        if (blocked) break;
+                    }
                 if (blocked) continue;
                 float power = RMath.Dot(hit.Normal, toLight);
-                float dist = (lightPos - hit.Position).Length;
                 if (power < 0) power = 0;
                 lEnergy += light.Intensity * power * (1f / (dist * dist * 4 * RMath.PI));
             }

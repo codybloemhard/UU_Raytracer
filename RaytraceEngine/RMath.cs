@@ -7,6 +7,7 @@ namespace RaytraceEngine
     {
         //source: my friend google
         public static float PI = 3.14159265359f;
+        public static float roll0 = 0.9f;
 
         //source: the allmighty wikipedia
         public static Vector3 Lerp(Vector3 a, Vector3 b, float t)
