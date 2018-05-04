@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Engine;
@@ -81,7 +82,7 @@ namespace RaytraceEngine
             Primitive primitive = null;
             hit = new RayHit();
             hit.Distance = 10000000f;
-            bool addRays = false, isHit = false;;
+            bool addRays = false, isHit = false;
             foreach (var p in scene.Primitives)
             {
                 isHit = p.CheckHit(ray, out tempHit);
@@ -92,6 +93,7 @@ namespace RaytraceEngine
                     primitive = p;
                 }
             }
+            
             if(primitive == null) return Vector3.Zero;
             if (shouldDebug)
             {
@@ -105,31 +107,35 @@ namespace RaytraceEngine
             Vector3 lEnergy = Vector3.Zero;
             foreach (var light in scene.Lights)
             {
-                Vector3 lightPos = light.GetPos();
-                Vector3 toLight = lightPos - hit.Position;
-                float dist = toLight.Length;
-                toLight.Normalize();
-                Ray lRay = new Ray();
-                lRay.Origin = hit.Position + toLight * 0.001f;
-                lRay.Direction = toLight;
-                //Solve light.Intensity * power * (1f / (dist * dist * 4 * RMath.PI));
-                //for dist(now range), and only check for shadow if dist < distance_to_light (dist here)
-                float range = light.Intensity.Length * RMath.roll0;
-                bool inRange = dist < range;
-                bool blocked = false;
-                if(inRange)
-                    foreach (var prim in scene.Primitives)
-                    {
-                        if (prim == primitive) continue;
-                        blocked = prim.CheckHit(lRay, out lHit);
-                        if (blocked) break;
-                    }
-                if (blocked) continue;
-                float power = RMath.Dot(hit.Normal, toLight);
-                if (power < 0) power = 0;
-                lEnergy += light.Intensity * power * (1f / (dist * dist * 4 * RMath.PI));
+                ProbeLight(hit, light, scene, ref lEnergy);
             }
             return hit.Material.Colour * lEnergy + hit.Material.Colour * scene.ambientLight;
         }
+
+        private bool ProbeLight(RayHit hit, ILightSource light, RayScene scene, ref Vector3 lightEnergy)
+        {
+            Vector3 lPos = light.NearestPointTo(hit.Position);
+            Vector3 sRayVec = lPos - hit.Position;
+            float distsq = Vector3.Dot(sRayVec, sRayVec);
+            sRayVec.Normalize();
+            
+            //Solve light.Intensity * power * (1f / (dist * dist * 4 * RMath.PI));
+            //for dist(now range), and only check for shadow if dist < distance_to_light (dist here)
+            float range = Vector3.Dot(light.Intensity, light.Intensity) * RMath.roll0_sq;
+            if (distsq > range) return false;
+            
+            // Chekc if something is in rays way
+            var sRay = new Ray {
+                Origin = hit.Position + sRayVec * 0.001f,
+                Direction = sRayVec
+            };
+            foreach (var prim in scene.Primitives) if (prim.CheckHit(sRay, out _)) return false;
+            
+            float power = Math.Max(0, Vector3.Dot(hit.Normal, sRayVec));
+            lightEnergy += light.Intensity * power / (distsq * 4 * RMath.PI);
+            return true;
+        }
+        
+        
     }
 }
