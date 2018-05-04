@@ -11,6 +11,7 @@ namespace RaytraceEngine.Objects
     
     public abstract class Primitive : Object, ITraceable
     {
+        public Material Material { get; set; }
         public abstract bool CheckHit(Ray ray, out RayHit hit);
     }
 
@@ -31,6 +32,8 @@ namespace RaytraceEngine.Objects
             if (t < 0) return false;
             hit.Position = ray.Origin + ray.Direction * t;
             hit.Distance = t;
+            hit.Material = Material;
+            hit.Normal = (Position - hit.Position).Normalized();
             return true;
         }
     }

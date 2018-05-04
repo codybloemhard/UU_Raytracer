@@ -11,6 +11,21 @@ namespace RaytraceEngine
             return (1 - t) * a + t * b;
         }
 
+        public static float Dot(Vector3 a, Vector3 b)
+        {
+            return a.X * b.X + a.Y * b.Y + a.Z * b.Z;
+        }
+        
+        public static int ToIntColour(Vector3 c)
+        {
+            //c.Normalize();
+            int i = 0;
+            i = (int)(Math.Min(255, c.X * 255)) << 16;
+            i += (int)(Math.Min(255, c.Y * 255)) << 8;
+            i += (int)(Math.Min(255, c.Z * 255));
+            return i;
+        }
+
         public static string ToStr(Vector3 v)
         {
             return "" + v.X + " , " + v.Y + " , " + v.Z;

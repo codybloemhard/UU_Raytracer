@@ -14,6 +14,6 @@ namespace RaytraceEngine
         public Vector3 Position;
         public Vector3 Normal;
         public float Distance;
-        public ITraceable Object;
+        public Material Material;
     }
 }

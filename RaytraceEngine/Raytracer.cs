@@ -18,33 +18,24 @@ namespace RaytraceEngine
         }
 
         public static List<Tuple<Ray, RayHit>> Rays = new List<Tuple<Ray, RayHit>>();
-        
+        private int ri = 0;
+
         public void Render(Surface surface, RayScene scene)
         {
             Rays.Clear();
             var projectionPlane = scene.CurrentCamera.GetNearClippingPlane();
 
-            int ri = 0;
+            ri = 0;
             for (int x = 0; x < winWidth; ++x)
             for (int y = 0; y < winHeight; y++) {
                 Ray ray = RayFromPixel(projectionPlane, scene.CurrentCamera, x, y);
-                RayHit hit;
-
                 bool shouldDebug = y == winHeight >> 1;
-                foreach (var primitive in scene.Primitives) {
-                    bool isHit = primitive.CheckHit(ray, out hit);
-                    if (isHit) {
-                        surface.Plot(x, y, 255);
-
-                        if (!shouldDebug) continue;
-                        if(ri % 8 == 0) Rays.Add(new Tuple<Ray, RayHit>(ray, hit));
-                        ++ri;
-                    }
-                }
+                Vector3 colour = TraceColour(ray, scene, shouldDebug);
+                surface.Plot(x, y, RMath.ToIntColour(colour));
             }
         }
 
-        Ray RayFromPixel(FinitePlane projectionPlane, Camera camera, int x, int y)
+        private Ray RayFromPixel(FinitePlane projectionPlane, Camera camera, int x, int y)
         {
             float wt = (float)x / winWidth;
             float ht = (float)y / winHeight;
@@ -55,6 +46,41 @@ namespace RaytraceEngine
                 Direction = onPlane,
                 Origin = camera.Position
             };
+        }
+
+        private Vector3 TraceColour(Ray ray, RayScene scene, bool shouldDebug = false)
+        {
+            RayHit hit, lHit;
+            foreach (var primitive in scene.Primitives)
+            {
+                bool isHit = primitive.CheckHit(ray, out hit);
+                if (!isHit) continue;
+                if (shouldDebug)
+                {
+                    if (ri % 8 == 0) Rays.Add(new Tuple<Ray, RayHit>(ray, hit));
+                    ++ri;
+                }
+                Vector3 lEnergy = Vector3.Zero;
+                foreach (var light in scene.Lights)
+                {
+                    Vector3 toLight = hit.Position - light.GetPos();
+                    toLight.Normalize();
+                    Ray lRay = new Ray();
+                    lRay.Origin = hit.Position + toLight * 0.001f;
+                    lRay.Direction = toLight;
+                    
+                    foreach (var prim in scene.Primitives)
+                    {
+                        isHit = primitive.CheckHit(lRay, out lHit);
+                        if (isHit) continue;
+                        float power = RMath.Dot(hit.Normal, toLight);
+                        if (power < 0) power = 0;
+                        lEnergy += light.Intensity * power;
+                    }
+                }
+                return hit.Material.Colour * lEnergy + hit.Material.Colour * scene.ambientLight;
+            }
+            return Vector3.Zero;
         }
     }
 }

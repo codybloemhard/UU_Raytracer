@@ -31,30 +31,41 @@ namespace DemoRaytraceGame
             Scene = new RayScene(camera);
 
             var sphere1 = new Sphere();
-            sphere1.Position = new Vector3(0, 1, 6);
+            sphere1.Position = new Vector3(-3, 1, 4);
             sphere1.Radius = 1;
+            sphere1.Material = new Material(new Vector3(1, 0, 0), 0f, 0f, 0f);
             Scene.AddObject(sphere1);
-            
+
             var sphere2 = new Sphere();
-            sphere2.Position = new Vector3(-3, 1, 6);
+            sphere2.Position = new Vector3(0, 1, 4);
             sphere2.Radius = 1;
+            sphere2.Material = new Material(new Vector3(0, 1, 0), 0f, 0f, 0f);
             Scene.AddObject(sphere2);
             
             var sphere3 = new Sphere();
-            sphere3.Position = new Vector3(3, 1, 6);
+            sphere3.Position = new Vector3(3, 1, 4);
             sphere3.Radius = 1;
+            sphere3.Material = new Material(new Vector3(0.2f, 0.2f, 1), 0f, 0f, 0f);
             Scene.AddObject(sphere3);
-            
-            var light = new PointLight();
-            light.Intensity = Vector3.One;
-            Scene.AddObject(light);
+
+            Scene.ambientLight = new Vector3(1f) * 0.1f;
+
+            var light1 = new PointLight();
+            light1.Intensity = Vector3.One;
+            light1.Position = new Vector3(0, 3, 2);
+            Scene.AddObject(light1);
+
+            var light2 = new PointLight();
+            light2.Intensity = new Vector3(1f, 2f, 0.2f);
+            light2.Position = new Vector3(6, 3, 2);
+            Scene.AddObject(light2);
         }
 
         private int anglx, angly, anglz = 0;
         public override void Update()
         {
             base.Update();
-            var delta = 10;
+            var delta = 1;
             var keyState = Keyboard.GetState();
             if (keyState.IsKeyDown(Key.Left)) angly += delta;
             if (keyState.IsKeyDown(Key.Right)) angly -= delta;

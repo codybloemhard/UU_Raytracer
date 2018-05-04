@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Engine;
 using Engine.Objects;
 using RaytraceEngine.Objects;
+using OpenTK;
 
 namespace RaytraceEngine
 {
@@ -10,6 +11,7 @@ namespace RaytraceEngine
     {
         public List<Primitive> Primitives;
         public List<ILightSource> Lights;
+        public Vector3 ambientLight;
 
         public RayScene(Camera camera) : base(camera)
         {
