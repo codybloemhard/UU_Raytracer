@@ -87,7 +87,7 @@ namespace RaytraceEngine
             Primitive primitive = null;
             hit = new RayHit();
             hit.Distance = 10000000f;
-            bool addRays = false, isHit = false;
+            bool isHit = false;
             foreach (var p in scene.Primitives)
             {
                 isHit = p.CheckHit(ray, out tempHit);
@@ -117,8 +117,8 @@ namespace RaytraceEngine
 
         private void ProbeLight(RayHit hit, ILightSource light, RayScene scene, ref Vector3 lightEnergy, bool debug = false)
         {
-            Vector3 lPos = light.NearestPointTo(hit.Position);
-            Vector3 sRayVec = lPos - hit.Position;
+            var lPos = light.NearestPointTo(hit.Position);
+            var sRayVec = lPos - hit.Position;
             float distsq = Vector3.Dot(sRayVec, sRayVec);
             sRayVec.Normalize();
             
@@ -127,27 +127,23 @@ namespace RaytraceEngine
             float rangeSq = Vector3.Dot(light.Intensity, light.Intensity) * RMath.roll0_sq;
             if (distsq > rangeSq) return;
             
-            // Chekc if something is in rays way
+            // Check if something is in rays way
             var sRay = new Ray {
                 Origin = hit.Position + sRayVec * 0.001f,
                 Direction = sRayVec
             };
-            
-            // TODO: fix ray seem to do something weird with planes. http://prntscr.com/jdw1nz
-            var het = new RayHit();
             foreach (var prim in scene.Primitives) {
-                if (prim.CheckHit(sRay, out het)) {
-                    if (debug) ShadowRays.Add(new Tuple<Ray, RayHit>(sRay, het));
+                if (prim.CheckHit(sRay, out var tmp) && tmp.Distance * tmp.Distance < distsq) {
+                    if (debug) ShadowRays.Add(new Tuple<Ray, RayHit>(sRay, tmp));
                     return;
                 }
             }
             
+            // Calculate the power of the light
             float power = Math.Max(0, Vector3.Dot(hit.Normal, sRayVec));
             lightEnergy += light.Intensity * power / (distsq * 4 * RMath.PI);
            
             if (debug) LightRays.Add(new Tuple<Ray, RayHit>(sRay, new RayHit(lPos, Vector3.One, 1, null)));
         }
-        
-        
     }
 }
