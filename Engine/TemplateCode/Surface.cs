@@ -135,18 +135,21 @@ namespace Engine.TemplateCode
         public void Box(int x1, int y1, int x2, int y2, int c)
         {
             int dest = y1 * width;
-            for (int y = y1; y <= y2; y++, dest += width)
-            {
-                pixels[dest + x1] = c;
-                pixels[dest + x2] = c;
+            for (int y = y1; y <= y2; y++, dest += width) {
+                var p1 = dest + x1;
+                var p2 = dest + x2;
+                if(p1 < pixels.Length && p1 >= 0) pixels[p1] = c;
+                if(p2 < pixels.Length && p2 >= 0) pixels[p2] = c;
             }
 
             int dest1 = y1 * width;
             int dest2 = y2 * width;
             for (int x = x1; x <= x2; x++)
             {
-                pixels[dest1 + x] = c;
-                pixels[dest2 + x] = c;
+                var p1 = dest1 + x;
+                var p2 = dest2 + x;
+                if(p1 < pixels.Length && p1 >= 0) pixels[p1] = c;
+                if(p2 < pixels.Length && p2 >= 0) pixels[p2] = c;
             }
         }
 

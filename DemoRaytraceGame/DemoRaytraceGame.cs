@@ -5,6 +5,8 @@ using OpenTK;
 using OpenTK.Input;
 using RaytraceEngine.Objects;
 using GameWindow = Engine.GameWindow;
+using OpenTK.Graphics.OpenGL;
+
 
 namespace DemoRaytraceGame
 {
@@ -32,9 +34,14 @@ namespace DemoRaytraceGame
 
             var floor = new Plane();
             floor.Position = new Vector3(0, 0, 0);
-            floor.Normal = new Vector3(0, 1, 0);
             floor.Material = new Material(Vector3.One, 0f, 0f, 0f);
             Scene.AddObject(floor);
+            
+            /*Plane wall = new Plane();
+            wall.Position = new Vector3(0, 0, 5);
+            wall.Rotation = new Quaternion(MathHelper.DegreesToRadians(-90), 0, 0);
+            wall.Material = new Material(Vector3.One, 0f, 0f, 0f);
+            Scene.AddObject(wall);*/
 
             var sphere1 = new Sphere();
             sphere1.Position = new Vector3(-3, 1, 4);
@@ -67,25 +74,79 @@ namespace DemoRaytraceGame
             Scene.AddObject(light2);
         }
 
+        // This is for debugging and should be removed later
         private int anglx, angly, anglz = 0;
+        private int anglW = -90;
+        private bool shouldRender = true;
+        private Key[] InvallidateKeys = new Key[] {
+            Key.Left,
+            Key.Right,
+            Key.Up,
+            Key.Down,
+            Key.W,
+            Key.S,
+            Key.J,
+            Key.K
+        };
+        
         public override void Update()
         {
             base.Update();
             var delta = 1;
+
             var keyState = Keyboard.GetState();
+            foreach (var key in InvallidateKeys) {
+                if (keyState.IsKeyDown(key)) shouldRender = true;
+            }
+            
             if (keyState.IsKeyDown(Key.Left)) angly += delta;
             if (keyState.IsKeyDown(Key.Right)) angly -= delta;
             if (keyState.IsKeyDown(Key.Up)) anglx += delta;
             if (keyState.IsKeyDown(Key.Down)) anglx -= delta;
             if (keyState.IsKeyDown(Key.W)) anglz += delta;
             if (keyState.IsKeyDown(Key.S)) anglz -= delta;
+            if (keyState.IsKeyDown(Key.J)) anglW -= delta;
+            if (keyState.IsKeyDown(Key.K)) anglW += delta;
             Scene.CurrentCamera.Rotation = new Quaternion(MathHelper.DegreesToRadians(anglx), MathHelper.DegreesToRadians(angly), MathHelper.DegreesToRadians(anglz));
         }
+        
+        
 
         public override void Render2D()
         {
-            base.Render2D();
+            if(!shouldRender) return; 
             DebugRenderer.Render(Screen, Scene);
+            base.Render2D();
+            shouldRender = false;
+        }
+
+        
+        // TODO: remove this when we dont need to render on impulse instead of continious
+        public override void Render()
+        {
+            if(shouldRender) Screen.Clear(0);
+            Render2D();
+            
+            GL.BindTexture( TextureTarget.Texture2D, ScreenID );
+            GL.TexImage2D( TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 
+                Screen.width, Screen.height, 0, PixelFormat.Bgra, 
+                PixelType.UnsignedByte, Screen.pixels 
+            );
+            
+            // clear window contents
+            GL.Clear( ClearBufferMask.ColorBufferBit );
+            // setup camera
+            GL.MatrixMode( MatrixMode.Modelview );
+            GL.LoadIdentity();
+            GL.MatrixMode( MatrixMode.Projection );
+            GL.LoadIdentity();
+            // draw screen filling quad
+            GL.Begin( PrimitiveType.Quads );
+            GL.TexCoord2( 0.0f, 1.0f ); GL.Vertex2( -1.0f, -1.0f );
+            GL.TexCoord2( 1.0f, 1.0f ); GL.Vertex2(  1.0f, -1.0f );
+            GL.TexCoord2( 1.0f, 0.0f ); GL.Vertex2(  1.0f,  1.0f );
+            GL.TexCoord2( 0.0f, 0.0f ); GL.Vertex2( -1.0f,  1.0f );
+            GL.End();
         }
     }
 }

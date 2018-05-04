@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Engine;
 using Engine.TemplateCode;
 using OpenTK;
@@ -7,6 +9,19 @@ using RaytraceEngine.Objects;
 
 namespace RaytraceEngine
 {
+    public struct Area
+    {
+        public int X1, X2, Y1, Y2;
+        
+        public Area(int x1, int x2, int y1, int y2)
+        {
+            this.X1 = x1;
+            this.X2 = x2;
+            this.Y1 = y1;
+            this.Y2 = y2;
+        }
+    }
+    
     public class Raytracer
     {
         private int winWidth;
@@ -25,10 +40,21 @@ namespace RaytraceEngine
         {
             Rays.Clear();
             var projectionPlane = scene.CurrentCamera.GetNearClippingPlane();
+            
+            var parallelOptions = new ParallelOptions
+            {
+                MaxDegreeOfParallelism = Environment.ProcessorCount
+            };
+            Parallel.For(0, winHeight - 1, parallelOptions, i => {
+                RenderArea(new Area(0, winWidth, i, i+1), projectionPlane, surface,
+                    scene);
+            });
+        }
 
-            ri = 0;
-            for (int x = 0; x < winWidth; ++x)
-            for (int y = 0; y < winHeight; y++) {
+        public void RenderArea(Area area, FinitePlane projectionPlane, Surface surface, RayScene scene)
+        {
+            for (int x = area.X1; x < area.X2; ++x)
+            for (int y = area.Y1; y < area.Y2; y++) {
                 Ray ray = RayFromPixel(projectionPlane, scene.CurrentCamera, x, y);
                 bool shouldDebug = y == winHeight >> 1;
                 Vector3 colour = TraceColour(ray, scene, shouldDebug);

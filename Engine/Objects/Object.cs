@@ -30,9 +30,9 @@ namespace Engine.Objects
     /// </summary>
     public abstract class Object : ITransformative
     {
-        public Vector3 Position { get; set; }
-        public Quaternion Rotation { get; set; }
-        public Vector3 Scale { get; set; }
+        public virtual Vector3 Position { get; set; }
+        public virtual Quaternion Rotation { get; set; }
+        public virtual Vector3 Scale { get; set; }
 
         protected Object() : this(Vector3.Zero, Quaternion.Identity, Vector3.One) { }
 

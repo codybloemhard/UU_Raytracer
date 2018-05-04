@@ -40,7 +40,35 @@ namespace RaytraceEngine.Objects
 
     public class Plane : Primitive
     {
-        public Vector3 Normal { get; set; }
+        private Vector3 position;
+        private Quaternion rotation;
+
+        public override Vector3 Position
+        {
+            get => position;
+            set
+            {
+                position = value;
+                UpdateNormal();
+            }
+        }
+
+        public override Quaternion Rotation
+        {
+            get => rotation;
+            set
+            {
+                rotation = value;
+                UpdateNormal();
+            } 
+        }
+
+        public Vector3 Normal { get;  private set; }
+
+        public void UpdateNormal()
+        {
+            Normal = Vector3.UnitY * Matrix3.CreateFromQuaternion(Rotation) + position;
+        }
 
         public override bool CheckHit(Ray ray, out RayHit hit)
         {
