@@ -15,7 +15,7 @@ namespace RaytraceEngine.Objects
         public Vector3 Position { get; set; }
         public Quaternion Rotation { get; set; }
         
-        public Vector3 GetPos()
+        public Vector3 GetPos()//area lights can return random point on surface
         {
             return Position;
         }
@@ -24,6 +24,5 @@ namespace RaytraceEngine.Objects
         {
             throw new System.NotImplementedException();
         }
-
     }
 }

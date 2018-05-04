@@ -51,31 +51,38 @@ namespace RaytraceEngine
         private Vector3 TraceColour(Ray ray, RayScene scene, bool shouldDebug = false)
         {
             RayHit hit, lHit;
+            bool addRays = false;
             foreach (var primitive in scene.Primitives)
             {
                 bool isHit = primitive.CheckHit(ray, out hit);
                 if (!isHit) continue;
                 if (shouldDebug)
                 {
-                    if (ri % 8 == 0) Rays.Add(new Tuple<Ray, RayHit>(ray, hit));
+                    if (ri % 8 == 0)
+                    {
+                        Rays.Add(new Tuple<Ray, RayHit>(ray, hit));
+                        addRays = true;
+                    }
                     ++ri;
                 }
                 Vector3 lEnergy = Vector3.Zero;
                 foreach (var light in scene.Lights)
                 {
-                    Vector3 toLight = hit.Position - light.GetPos();
+                    Vector3 lightPos = light.GetPos();
+                    Vector3 toLight = hit.Position - lightPos;
                     toLight.Normalize();
                     Ray lRay = new Ray();
                     lRay.Origin = hit.Position + toLight * 0.001f;
                     lRay.Direction = toLight;
-                    
                     foreach (var prim in scene.Primitives)
                     {
                         isHit = primitive.CheckHit(lRay, out lHit);
                         if (isHit) continue;
+                        //Werkt niet ??? if (addRays) Rays.Add(new Tuple<Ray, RayHit>(lRay, lHit));
                         float power = RMath.Dot(hit.Normal, toLight);
+                        float dist = (hit.Position - lightPos).Length;
                         if (power < 0) power = 0;
-                        lEnergy += light.Intensity * power;
+                        lEnergy += light.Intensity * power * (1f / (dist * dist * 4 * RMath.PI));
                     }
                 }
                 return hit.Material.Colour * lEnergy + hit.Material.Colour * scene.ambientLight;

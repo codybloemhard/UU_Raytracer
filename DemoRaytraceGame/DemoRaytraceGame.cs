@@ -23,10 +23,10 @@ namespace DemoRaytraceGame
         public override void Init()
         {
             base.Init();
-            Renderer =  Renderer = new Raytracer(Width/2-1, Height-1);
+            Renderer = new Raytracer(Width/2-1, Height-1);
             DebugRenderer = new DebugRenderer(Width/2-1, Height-1, Width/2);
 
-            var camera = new Camera(new Vector3(0, 1, 0), new Quaternion(0, 0 , 0));
+            var camera = new Camera(new Vector3(0, 1, 0), new Quaternion(0, 0, 0), 1, 1);
             camera.Aspect = 1;
             Scene = new RayScene(camera);
 
@@ -51,13 +51,13 @@ namespace DemoRaytraceGame
             Scene.ambientLight = new Vector3(1f) * 0.1f;
 
             var light1 = new PointLight();
-            light1.Intensity = Vector3.One;
-            light1.Position = new Vector3(0, 3, 2);
+            light1.Intensity = Vector3.One * 100;
+            light1.Position = new Vector3(0, 5, 2);
             Scene.AddObject(light1);
 
             var light2 = new PointLight();
-            light2.Intensity = new Vector3(1f, 2f, 0.2f);
-            light2.Position = new Vector3(6, 3, 2);
+            light2.Intensity = new Vector3(0.2f, 1f, 0.1f) * 200;
+            light2.Position = new Vector3(5, 3, 0);
             Scene.AddObject(light2);
         }
 
