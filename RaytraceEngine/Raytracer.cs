@@ -35,11 +35,16 @@ namespace RaytraceEngine
         }
 
         public static List<Tuple<Ray, RayHit>> Rays = new List<Tuple<Ray, RayHit>>();
+        public static List<Tuple<Ray, RayHit>> LightRays = new List<Tuple<Ray, RayHit>>();
+        public static List<Tuple<Ray, RayHit>> ShadowRays = new List<Tuple<Ray, RayHit>>();
         private int ri = 0;
+        private int debug_freq = 16;
 
         public void Render(Surface surface, RayScene scene)
         {
             Rays.Clear();
+            LightRays.Clear();
+            ShadowRays.Clear();
             var projectionPlane = scene.CurrentCamera.GetNearClippingPlane();
             
             var parallelOptions = new ParallelOptions
@@ -95,24 +100,22 @@ namespace RaytraceEngine
             }
             
             if(primitive == null) return Vector3.Zero;
+            
             if (shouldDebug)
             {
-                if (ri % 8 == 0)
-                {
-                    Rays.Add(new Tuple<Ray, RayHit>(ray, hit));
-                    addRays = true;
-                }
+                if (ri % debug_freq == 0)  Rays.Add(new Tuple<Ray, RayHit>(ray, hit));
                 ++ri;
             }
+            
             Vector3 lEnergy = Vector3.Zero;
             foreach (var light in scene.Lights)
             {
-                ProbeLight(hit, light, scene, ref lEnergy);
+                ProbeLight(hit, light, scene, ref lEnergy, shouldDebug && ri % debug_freq == 0);
             }
             return hit.Material.Colour * lEnergy + hit.Material.Colour * scene.ambientLight;
         }
 
-        private bool ProbeLight(RayHit hit, ILightSource light, RayScene scene, ref Vector3 lightEnergy)
+        private void ProbeLight(RayHit hit, ILightSource light, RayScene scene, ref Vector3 lightEnergy, bool debug = false)
         {
             Vector3 lPos = light.NearestPointTo(hit.Position);
             Vector3 sRayVec = lPos - hit.Position;
@@ -121,19 +124,28 @@ namespace RaytraceEngine
             
             //Solve light.Intensity * power * (1f / (dist * dist * 4 * RMath.PI));
             //for dist(now range), and only check for shadow if dist < distance_to_light (dist here)
-            float range = Vector3.Dot(light.Intensity, light.Intensity) * RMath.roll0_sq;
-            if (distsq > range) return false;
+            float rangeSq = Vector3.Dot(light.Intensity, light.Intensity) * RMath.roll0_sq;
+            if (distsq > rangeSq) return;
             
             // Chekc if something is in rays way
             var sRay = new Ray {
                 Origin = hit.Position + sRayVec * 0.001f,
                 Direction = sRayVec
             };
-            foreach (var prim in scene.Primitives) if (prim.CheckHit(sRay, out _)) return false;
+            
+            // TODO: fix ray seem to do something weird with planes. http://prntscr.com/jdw1nz
+            var het = new RayHit();
+            foreach (var prim in scene.Primitives) {
+                if (prim.CheckHit(sRay, out het)) {
+                    if (debug) ShadowRays.Add(new Tuple<Ray, RayHit>(sRay, het));
+                    return;
+                }
+            }
             
             float power = Math.Max(0, Vector3.Dot(hit.Normal, sRayVec));
             lightEnergy += light.Intensity * power / (distsq * 4 * RMath.PI);
-            return true;
+           
+            if (debug) LightRays.Add(new Tuple<Ray, RayHit>(sRay, new RayHit(lPos, Vector3.One, 1, null)));
         }
         
         

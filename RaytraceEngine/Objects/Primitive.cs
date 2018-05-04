@@ -67,25 +67,23 @@ namespace RaytraceEngine.Objects
 
         public void UpdateNormal()
         {
-            Normal = Vector3.UnitY * Matrix3.CreateFromQuaternion(Rotation) + position;
+            Normal = Vector3.UnitY * Matrix3.CreateFromQuaternion(Rotation);
         }
 
         public override bool CheckHit(Ray ray, out RayHit hit)
         {
             hit = new RayHit();
-            float deler = RMath.Dot(ray.Direction, Normal);
-            if (Math.Abs(deler) > 0.0001f)
-            {
-                Vector3 diff = Position - ray.Origin;
-                float t = RMath.Dot(diff, Normal) / deler;
-                if (t < 0.0001f) return false;
-                hit.Normal = Normal;
-                hit.Position = ray.Origin + ray.Direction * t;
-                hit.Material = Material;
-                hit.Distance = t;
-                return true;
-            }
-            return false;
+            float deler = Vector3.Dot(ray.Direction, Normal);
+            if (!(Math.Abs(deler) > 0.0001f)) return false;
+            
+            Vector3 diff = Position - ray.Origin;
+            float t = Vector3.Dot(diff, Normal) / deler;
+            if (t < 0.0001f) return false;
+            hit.Normal = Normal;
+            hit.Position = ray.Origin + ray.Direction * t;
+            hit.Material = Material;
+            hit.Distance = t;
+            return true;
         }
     }
 }

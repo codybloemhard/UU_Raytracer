@@ -1,5 +1,6 @@
 ﻿using Engine;
 using Engine.Helpers;
+using Engine.Objects;
 using Engine.TemplateCode;
 using OpenTK;
 using RaytraceEngine.Objects;
@@ -36,6 +37,13 @@ namespace RaytraceEngine
                     Draw2D.DrawCircle(surface, (int)pos.X, (int)pos.Y, (int)r, surface.CreateColor(255, 255, 255));
                 }
             }
+
+
+            foreach (var lightSource in scene.Lights) {
+                if(!(lightSource is ITransformative)) continue;
+                var pos = TranslatePos((lightSource as ITransformative).Position);
+                Draw2D.DrawCircle(surface, (int)pos.X, (int)pos.Y, 5, RMath.ToIntColour(lightSource.Intensity));
+            }
             
             // Draw box around debug window
             surface.Box(WinOffsetX, 0, WinOffsetX + WinWidth, WinHeight, surface.CreateColor(255, 255, 255));
@@ -58,8 +66,18 @@ namespace RaytraceEngine
             // Draw Rays
             foreach (var ray in Raytracer.Rays) {
                 var p1 = TranslatePos(ray.Item1.Origin);
-                var p2 = TranslatePos(ray.Item1.Origin + ray.Item1.Direction * ray.Item2.Distance);
+                var p2 = TranslatePos(ray.Item2.Position);
                 surface.Line((int)p1.X, (int)p1.Y, (int)p2.X, (int)p2.Y, surface.CreateColor(0, 255, 255));
+            }
+            foreach (var ray in Raytracer.LightRays) {
+                var p1 = TranslatePos(ray.Item1.Origin);
+                var p2 = TranslatePos(ray.Item2.Position);
+                surface.Line((int)p1.X, (int)p1.Y, (int)p2.X, (int)p2.Y, 0xF5F749);
+            }
+            foreach (var ray in Raytracer.ShadowRays) {
+                var p1 = TranslatePos(ray.Item1.Origin);
+                var p2 = TranslatePos(ray.Item2.Position);
+                surface.Line((int)p1.X, (int)p1.Y, (int)p2.X, (int)p2.Y, 0x6200B3);
             }
         }
 

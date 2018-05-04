@@ -37,11 +37,11 @@ namespace DemoRaytraceGame
             floor.Material = new Material(Vector3.One, 0f, 0f, 0f);
             Scene.AddObject(floor);
             
-            /*Plane wall = new Plane();
+            Plane wall = new Plane();
             wall.Position = new Vector3(0, 0, 5);
             wall.Rotation = new Quaternion(MathHelper.DegreesToRadians(-90), 0, 0);
             wall.Material = new Material(Vector3.One, 0f, 0f, 0f);
-            Scene.AddObject(wall);*/
+            Scene.AddObject(wall);
 
             var sphere1 = new Sphere();
             sphere1.Position = new Vector3(-3, 1, 4);
@@ -65,7 +65,7 @@ namespace DemoRaytraceGame
 
             var light1 = new PointLight();
             light1.Intensity = Vector3.One * 100;
-            light1.Position = new Vector3(0, 4, 5);
+            light1.Position = new Vector3(0, 4, 2);
             Scene.AddObject(light1);
 
             var light2 = new PointLight();
