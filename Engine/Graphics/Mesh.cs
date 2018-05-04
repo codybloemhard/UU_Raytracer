@@ -1,96 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Drawing;
-using OpenTK;
-using OpenTK.Graphics;
+﻿using System.Collections.Generic;
 using OpenTK.Graphics.OpenGL;
-using OpenTK.Input;
 
 namespace Engine.Graphics
 {
-    public enum BufferType : int
-    {
-        VERTEX = 0, NORMAL = 1
-    }
-    
     public class Mesh
     {
-        private float[][] data;
-        private int vbo;
-        private int[] buffers;
-        private string[] bVars;
-        private int size;
-        private int indexB;
-        private uint[] indices;
+        public List<IUploadableBuffer> Buffers;
+        public IndexBuffer IndexBuffer;
+        public int VBO;
 
-        public Mesh(string sPos, string sNor)
+        public Mesh() : this(new List<IUploadableBuffer>(), null) { }
+
+        public Mesh(List<IUploadableBuffer> buffers, IndexBuffer indexBuffer)
         {
-            data = new float[2][];
-            buffers = new int[2];
-            bVars = new string[] { sPos, sNor };
+            Buffers = buffers;
+            IndexBuffer = indexBuffer;
             
-            vbo = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
-
-            for(int i = 0; i < 2; i++)
-                buffers[i] = GL.GenBuffer();
-            indexB = GL.GenBuffer();    
-        }
-        
-        public void SetBuffer(float[] b, BufferType type)
-        {
-            if(type == BufferType.VERTEX)
-                this.size = b.Length;
-            data[(int)type] = b;
+            VBO = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
         }
 
-        public void SetIndices(uint[] i)
+        public virtual void Upload(Shader s)
         {
-            indices = i;
+            IndexBuffer.Upload(s);
+            foreach (var buffer in Buffers) buffer.Upload(s);
         }
 
-        public float[] Buffer(BufferType type)
+        public virtual void Render(Shader s)
         {
-            return data[(int)type];
-        }
-
-        public uint[] Indices()
-        {
-            return indices;
-        }
-
-        public void UploadBuffer(Shader s, BufferType type)
-        {
-            int index = (int)type;
-            GL.BindBuffer(BufferTarget.ArrayBuffer, buffers[index]);
-            GL.BufferData<float>(
-                BufferTarget.ArrayBuffer,
-                (IntPtr)(data[index].Length * sizeof(float)),
-                data[index],
-                BufferUsageHint.StaticDraw
-                );
-            GL.VertexAttribPointer(s.GetVar(bVars[index]), 3,
-                VertexAttribPointerType.Float, false, 0, 0);
-        }
-
-        public void UploadIndices(Shader s)
-        {
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, indexB);
-            GL.BufferData<uint>(
-                BufferTarget.ElementArrayBuffer,
-                (IntPtr)(indices.Length * sizeof(uint)),
-                indices,
-                BufferUsageHint.StaticDraw
-                );
-        }
-
-        public void Render(Shader s)
-        {
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, indexB);
-            for (int i = 0; i < bVars.Length; i++)
-                GL.EnableVertexAttribArray(s.GetVar(bVars[i]));
-            GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, IndexBuffer.Pointer);
+            foreach (var buffer in Buffers) {
+                if(buffer is IRenderableBuffer) (buffer as IRenderableBuffer).Render(s);
+            }
+            GL.DrawElements(PrimitiveType.Triangles, IndexBuffer.Data.Length, DrawElementsType.UnsignedInt, 0);
         }
     }
 }

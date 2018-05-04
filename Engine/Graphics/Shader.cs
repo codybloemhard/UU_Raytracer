@@ -86,7 +86,6 @@ namespace Engine.Graphics
                 GL.ShaderSource(id, sr.ReadToEnd());
             GL.CompileShader(id);
             GL.AttachShader(program, id);
-            Console.WriteLine(GL.GetShaderInfoLog(id));
         }
     }
 }

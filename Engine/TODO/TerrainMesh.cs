@@ -96,15 +96,15 @@ namespace Engine.TODO
             Vector3 a = Vector3.Zero, b = Vector3.Zero, c = Vector3.Zero;
             for (int x = 0; x < w - 1; x++)
             for (int y = 0; y < h - 1; y++) {
-                a = Help.Read(vertexData, ((x + 0) * w + (y + 0)) * 3);
-                b = Help.Read(vertexData, ((x + 1) * w + (y + 0)) * 3);
-                c = Help.Read(vertexData, ((x + 1) * w + (y + 1)) * 3);
+                a = Help.ArrayToVec(vertexData, ((x + 0) * w + (y + 0)) * 3);
+                b = Help.ArrayToVec(vertexData, ((x + 1) * w + (y + 0)) * 3);
+                c = Help.ArrayToVec(vertexData, ((x + 1) * w + (y + 1)) * 3);
                 normals[x + 0, y + 0] += Help.Normal(a, b, c);
                 normals[x + 1, y + 0] += Help.Normal(a, b, c);
                 normals[x + 1, y + 1] += Help.Normal(a, b, c);
-                a = Help.Read(vertexData, ((x + 1) * w + (y + 1)) * 3);
-                b = Help.Read(vertexData, ((x + 0) * w + (y + 1)) * 3);
-                c = Help.Read(vertexData, ((x + 0) * w + (y + 0)) * 3);
+                a = Help.ArrayToVec(vertexData, ((x + 1) * w + (y + 1)) * 3);
+                b = Help.ArrayToVec(vertexData, ((x + 0) * w + (y + 1)) * 3);
+                c = Help.ArrayToVec(vertexData, ((x + 0) * w + (y + 0)) * 3);
                 normals[x + 1, y + 1] += Help.Normal(a, b, c);
                 normals[x + 0, y + 1] += Help.Normal(a, b, c);
                 normals[x + 0, y + 0] += Help.Normal(a, b, c);

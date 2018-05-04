@@ -3,47 +3,61 @@ using Engine;
 using Engine.Objects;
 using OpenTK;
 
-namespace Template
+namespace Engine
 {
     /// <summary>
     /// Scene object contains a hierarchy of objects and a camera
     /// </summary>
-    public class Scene : IRenderable
+    public abstract class Scene
     {
-        public List<Object> Objects { get; protected set; }
         public Camera CurrentCamera { get; set; }
 
-        public Scene(Camera camera) : this(camera, new List<Object>()) {}
-
-        public Scene(Camera camera, List<Object> objects)
+        public Scene(Camera camera)
         {
             CurrentCamera = camera;
-            this.Objects = objects;
         }
 
         /// <summary>
         /// Called every tick
         /// </summary>
-        public void Update()
+        public virtual void Update() { }
+
+        public virtual void AddObject(ITransformative obj)
         {
-            foreach (var obj in Objects) {
-                obj.Update();
+            if(obj is Object) (obj as Object).Init();
+        }
+    }
+
+    public class RenderableScene : Scene, IRenderable
+    {
+        public List<ITransformative> Objects;
+
+        public RenderableScene(Camera camera) : base(camera)
+        {
+            Objects = new List<ITransformative>();   
+        }
+
+        public override void Update()
+        {
+            base.Update();
+            foreach (var o in Objects) {
+                if(o is Object) (o as Object).Update();
             }
         }
 
-        public void AddObject(Object obj)
+        public override void AddObject(ITransformative obj)
         {
             Objects.Add(obj);
-            obj.Init();
+            base.AddObject(obj);
         }
 
-        public void Render(Matrix4 viewM, Matrix4 worldM)
+        public void Render(Matrix4 view, Matrix4 world)
         {
             CurrentCamera.Clear();
-            viewM = CurrentCamera.TransformMatrix(Matrix4.Identity);
+            view = CurrentCamera.TransformMatrix(Matrix4.Identity);
             var candidates = CurrentCamera.Cull(Objects);
             foreach (var candidate in candidates) {
-                candidate.Render(viewM, worldM);
+                if(candidate is IRenderable) (candidate as IRenderable).Render(view, world);
             }
         }
     }

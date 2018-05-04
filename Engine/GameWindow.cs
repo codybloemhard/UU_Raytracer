@@ -7,27 +7,32 @@ namespace Engine
 {
     public class GameWindow : OpenTK.GameWindow
     {
-        protected Game Game;
+        protected IGame Game;
 
-        protected virtual Size GetSize()
+        protected Size Size { get; set; } = new Size(1600, 900);
+
+        public GameWindow(IGame game)
         {
-            return new Size(1600, 900);
+            Game = game;
         }
 
-        public GameWindow(Game game)
+        public GameWindow(Size size, IGame game)
         {
+            Size = size;
             Game = game;
         }
 
         protected override void OnLoad(EventArgs e)
         {
-            ClientSize = new Size(1600, 900);
+            ClientSize = Size;
+            Game.Resize(ClientSize.Width, ClientSize.Height);
             Game.Init();
             GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);
         }
 
         protected override void OnUnload(EventArgs e)
         {
+            Game.Destroy();
             Environment.Exit(0); // bypass wait for key on CTRL-F5
         }
 
