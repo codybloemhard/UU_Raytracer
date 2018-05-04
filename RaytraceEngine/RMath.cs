@@ -21,9 +21,7 @@ namespace RaytraceEngine
         
         public static int ToIntColour(Vector3 c)
         {
-            //c.Normalize();
-            int i = 0;
-            i = (int)(Math.Min(255, c.X * 255)) << 16;
+            int i = (int)(Math.Min(255, c.X * 255)) << 16;
             i += (int)(Math.Min(255, c.Y * 255)) << 8;
             i += (int)(Math.Min(255, c.Z * 255));
             return i;

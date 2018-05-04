@@ -33,16 +33,31 @@ namespace RaytraceEngine.Objects
             hit.Position = ray.Origin + ray.Direction * t;
             hit.Distance = t;
             hit.Material = Material;
-            hit.Normal = (Position - hit.Position).Normalized();
+            hit.Normal = (hit.Position - Position).Normalized();
             return true;
         }
     }
 
     public class Plane : Primitive
     {
+        public Vector3 Normal { get; set; }
+
         public override bool CheckHit(Ray ray, out RayHit hit)
         {
-            throw new System.NotImplementedException();
+            hit = new RayHit();
+            float deler = RMath.Dot(ray.Direction, Normal);
+            if (Math.Abs(deler) > 0.0001f)
+            {
+                Vector3 diff = Position - ray.Origin;
+                float t = RMath.Dot(diff, Normal) / deler;
+                if (t < 0.0001f) return false;
+                hit.Normal = Normal;
+                hit.Position = ray.Origin + ray.Direction * t;
+                hit.Material = Material;
+                hit.Distance = t;
+                return true;
+            }
+            return false;
         }
     }
 }

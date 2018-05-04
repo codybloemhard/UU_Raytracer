@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Engine;
 using Engine.TemplateCode;
 using OpenTK;
+using RaytraceEngine.Objects;
 
 namespace RaytraceEngine
 {
@@ -50,44 +51,54 @@ namespace RaytraceEngine
 
         private Vector3 TraceColour(Ray ray, RayScene scene, bool shouldDebug = false)
         {
-            RayHit hit, lHit;
-            bool addRays = false;
-            foreach (var primitive in scene.Primitives)
+            RayHit hit, lHit, tempHit;
+            Primitive primitive = null;
+            hit = new RayHit();
+            hit.Distance = 10000000f;
+            bool addRays = false, isHit = false;;
+            foreach (var p in scene.Primitives)
             {
-                bool isHit = primitive.CheckHit(ray, out hit);
+                isHit = p.CheckHit(ray, out tempHit);
                 if (!isHit) continue;
-                if (shouldDebug)
+                if (tempHit.Distance < hit.Distance)
                 {
-                    if (ri % 8 == 0)
-                    {
-                        Rays.Add(new Tuple<Ray, RayHit>(ray, hit));
-                        addRays = true;
-                    }
-                    ++ri;
+                    hit = tempHit;
+                    primitive = p;
                 }
-                Vector3 lEnergy = Vector3.Zero;
-                foreach (var light in scene.Lights)
-                {
-                    Vector3 lightPos = light.GetPos();
-                    Vector3 toLight = hit.Position - lightPos;
-                    toLight.Normalize();
-                    Ray lRay = new Ray();
-                    lRay.Origin = hit.Position + toLight * 0.001f;
-                    lRay.Direction = toLight;
-                    foreach (var prim in scene.Primitives)
-                    {
-                        isHit = primitive.CheckHit(lRay, out lHit);
-                        if (isHit) continue;
-                        //Werkt niet ??? if (addRays) Rays.Add(new Tuple<Ray, RayHit>(lRay, lHit));
-                        float power = RMath.Dot(hit.Normal, toLight);
-                        float dist = (hit.Position - lightPos).Length;
-                        if (power < 0) power = 0;
-                        lEnergy += light.Intensity * power * (1f / (dist * dist * 4 * RMath.PI));
-                    }
-                }
-                return hit.Material.Colour * lEnergy + hit.Material.Colour * scene.ambientLight;
             }
-            return Vector3.Zero;
+            if(primitive == null) return Vector3.Zero;
+            if (shouldDebug)
+            {
+                if (ri % 8 == 0)
+                {
+                    Rays.Add(new Tuple<Ray, RayHit>(ray, hit));
+                    addRays = true;
+                }
+                ++ri;
+            }
+            Vector3 lEnergy = Vector3.Zero;
+            foreach (var light in scene.Lights)
+            {
+                Vector3 lightPos = light.GetPos();
+                Vector3 toLight = lightPos - hit.Position;
+                toLight.Normalize();
+                Ray lRay = new Ray();
+                lRay.Origin = hit.Position + toLight * 0.001f;
+                lRay.Direction = toLight;
+                bool blocked = false;
+                foreach (var prim in scene.Primitives)
+                {
+                    if (prim == primitive) continue;
+                    blocked = prim.CheckHit(lRay, out lHit);
+                    if (blocked) break;
+                }
+                if (blocked) continue;
+                float power = RMath.Dot(hit.Normal, toLight);
+                float dist = (lightPos - hit.Position).Length;
+                if (power < 0) power = 0;
+                lEnergy += light.Intensity * power * (1f / (dist * dist * 4 * RMath.PI));
+            }
+            return hit.Material.Colour * lEnergy + hit.Material.Colour * scene.ambientLight;
         }
     }
 }

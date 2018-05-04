@@ -30,16 +30,22 @@ namespace DemoRaytraceGame
             camera.Aspect = 1;
             Scene = new RayScene(camera);
 
+            var floor = new Plane();
+            floor.Position = new Vector3(0, 0, 0);
+            floor.Normal = new Vector3(0, 1, 0);
+            floor.Material = new Material(Vector3.One, 0f, 0f, 0f);
+            Scene.AddObject(floor);
+
             var sphere1 = new Sphere();
             sphere1.Position = new Vector3(-3, 1, 4);
             sphere1.Radius = 1;
-            sphere1.Material = new Material(new Vector3(1, 0, 0), 0f, 0f, 0f);
+            sphere1.Material = new Material(new Vector3(1, 0.2f, 0.2f), 0f, 0f, 0f);
             Scene.AddObject(sphere1);
 
             var sphere2 = new Sphere();
             sphere2.Position = new Vector3(0, 1, 4);
             sphere2.Radius = 1;
-            sphere2.Material = new Material(new Vector3(0, 1, 0), 0f, 0f, 0f);
+            sphere2.Material = new Material(new Vector3(0.2f, 1, 0.2f), 0f, 0f, 0f);
             Scene.AddObject(sphere2);
             
             var sphere3 = new Sphere();
@@ -52,12 +58,12 @@ namespace DemoRaytraceGame
 
             var light1 = new PointLight();
             light1.Intensity = Vector3.One * 100;
-            light1.Position = new Vector3(0, 5, 2);
+            light1.Position = new Vector3(0, 4, 5);
             Scene.AddObject(light1);
 
             var light2 = new PointLight();
-            light2.Intensity = new Vector3(0.2f, 1f, 0.1f) * 200;
-            light2.Position = new Vector3(5, 3, 0);
+            light2.Intensity = Vector3.One * 100;
+            light2.Position = new Vector3(2f, 4f, 2f);
             Scene.AddObject(light2);
         }
 
