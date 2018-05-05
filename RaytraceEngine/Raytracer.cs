@@ -110,23 +110,24 @@ namespace RaytraceEngine
             Vector3 lEnergy = Vector3.Zero;
             foreach (var light in scene.Lights)
             {
-                ProbeLight(hit, light, scene, ref lEnergy, shouldDebug && ri % debug_freq == 0);
+                Vector3[] lPoints = light.GetPoints(); 
+                foreach(var lp in lPoints)
+                    lEnergy += ProbeLight(hit, lp, light.Intensity, scene, shouldDebug && ri % debug_freq == 0);
+                lEnergy /= lPoints.Length;
             }
             return hit.Material.Colour * lEnergy + hit.Material.Colour * scene.ambientLight;
         }
 
-        private void ProbeLight(RayHit hit, ILightSource light, RayScene scene, ref Vector3 lightEnergy, bool debug = false)
+        private Vector3 ProbeLight(RayHit hit, Vector3 lPos, Vector3 lIntens, RayScene scene, bool debug = false)
         {
-            var lPos = light.NearestPointTo(hit.Position);
             var sRayVec = lPos - hit.Position;
             float distsq = Vector3.Dot(sRayVec, sRayVec);
             sRayVec.Normalize();
             
             //Solve light.Intensity * power * (1f / (dist * dist * 4 * RMath.PI));
             //for dist(now range), and only check for shadow if dist < distance_to_light (dist here)
-            float rangeSq = Vector3.Dot(light.Intensity, light.Intensity) * RMath.roll0_sq;
-            if (distsq > rangeSq) return;
-            
+            float rangeSq = Vector3.Dot(lIntens, lIntens) * RMath.roll0_sq;
+            if (distsq > rangeSq) return Vector3.Zero;
             // Check if something is in rays way
             var sRay = new Ray {
                 Origin = hit.Position + sRayVec * 0.001f,
@@ -136,15 +137,13 @@ namespace RaytraceEngine
                 RayHit tmp;
                 if (prim.CheckHit(sRay, out tmp) && tmp.Distance * tmp.Distance < distsq) {
                     if (debug) ShadowRays.Add(new Tuple<Ray, RayHit>(sRay, tmp));
-                    return;
+                    return Vector3.Zero;
                 }
             }
-            
+            if (debug) LightRays.Add(new Tuple<Ray, RayHit>(sRay, new RayHit(lPos, Vector3.One, 1, null)));
             // Calculate the power of the light
             float power = Math.Max(0, Vector3.Dot(hit.Normal, sRayVec));
-            lightEnergy += light.Intensity * power / (distsq * 4 * RMath.PI);
-           
-            if (debug) LightRays.Add(new Tuple<Ray, RayHit>(sRay, new RayHit(lPos, Vector3.One, 1, null)));
+            return lIntens * power / (distsq * 4 * RMath.PI);
         }
     }
 }

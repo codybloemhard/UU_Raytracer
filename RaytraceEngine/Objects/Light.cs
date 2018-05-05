@@ -7,7 +7,7 @@ namespace RaytraceEngine.Objects
     {
         Vector3 Intensity { get; set; }
 
-        Vector3 NearestPointTo(Vector3 point);
+        Vector3[] GetPoints();
     }
 
     public class PointLight : ILightSource, ITransformative, ITraceable
@@ -16,9 +16,9 @@ namespace RaytraceEngine.Objects
         public Vector3 Position { get; set; }
         public Quaternion Rotation { get; set; }
 
-        public Vector3 NearestPointTo(Vector3 point)
+        public Vector3[] GetPoints()
         {
-            return Position;
+            return new Vector3[] { Position };
         }
 
         public Matrix4 TransformMatrix(Matrix4 matrix)
