@@ -7,6 +7,7 @@ using Engine;
 using Engine.TemplateCode;
 using OpenTK;
 using RaytraceEngine.Objects;
+using RaytraceEngine.Objects.Lights;
 
 namespace RaytraceEngine
 {
@@ -16,10 +17,10 @@ namespace RaytraceEngine
         
         public Area(int x1, int x2, int y1, int y2)
         {
-            this.X1 = x1;
-            this.X2 = x2;
-            this.Y1 = y1;
-            this.Y2 = y2;
+            X1 = x1;
+            X2 = x2;
+            Y1 = y1;
+            Y2 = y2;
         }
     }
     
@@ -47,13 +48,9 @@ namespace RaytraceEngine
             ShadowRays.Clear();
             var projectionPlane = scene.CurrentCamera.GetNearClippingPlane();
 
-            var parallelOptions = new ParallelOptions
-            {
-                MaxDegreeOfParallelism =  Environment.ProcessorCount
-            };
+            var parallelOptions = new ParallelOptions{MaxDegreeOfParallelism =  Environment.ProcessorCount};
             Parallel.For(0, winHeight - 1, parallelOptions, i => {
-                RenderArea(new Area(0, winWidth, i, i+1), projectionPlane, surface,
-                    scene);
+                RenderArea(new Area(0, winWidth, i, i+1), projectionPlane, surface, scene);
             });
         }
 
@@ -83,8 +80,8 @@ namespace RaytraceEngine
 
         private Vector3 TraceColour(Ray ray, RayScene scene, bool shouldDebug = false)
         {
-            RayHit hit, tempHit;
             Primitive primitive = null;
+            RayHit hit, tempHit;
             hit = new RayHit();
             hit.Distance = 10000000f;
             bool isHit = false;
@@ -99,7 +96,7 @@ namespace RaytraceEngine
                 }
             }
             
-            if(primitive == null) return Vector3.Zero;
+            if(!isHit) return Vector3.Zero;
             
             if (shouldDebug)
             {
@@ -128,6 +125,7 @@ namespace RaytraceEngine
             //for dist(now range), and only check for shadow if dist < distance_to_light (dist here)
             float rangeSq = Vector3.Dot(light.Intensity, light.Intensity) * RMath.roll0_sq;
             if (distsq > rangeSq) return Vector3.Zero;
+            
             // Check if something is in rays way
             var sRay = new Ray {
                 Origin = hit.Position + sRayVec * 0.001f,
@@ -141,9 +139,10 @@ namespace RaytraceEngine
                 }
             }
             if (debug) LightRays.Add(new Tuple<Ray, RayHit>(sRay, new RayHit(lPos, Vector3.One, 1, null)));
+            
             // Calculate the power of the light
             float power = Math.Max(0, Vector3.Dot(hit.Normal, sRayVec));
-            power *= light.AnlgeEnergy(-sRayVec);
+            power *= light.AngleEnergy(-sRayVec);
             return light.Intensity * power / (distsq * 4 * RMath.PI);
         }
     }

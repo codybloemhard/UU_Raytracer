@@ -6,6 +6,7 @@ using OpenTK.Input;
 using RaytraceEngine.Objects;
 using GameWindow = Engine.GameWindow;
 using OpenTK.Graphics.OpenGL;
+using RaytraceEngine.Objects.Lights;
 
 
 namespace DemoRaytraceGame

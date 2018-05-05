@@ -4,6 +4,7 @@ using Engine;
 using Engine.Objects;
 using RaytraceEngine.Objects;
 using OpenTK;
+using RaytraceEngine.Objects.Lights;
 
 namespace RaytraceEngine
 {

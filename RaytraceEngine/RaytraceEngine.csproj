@@ -42,7 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DebugRenderer.cs" />
-    <Compile Include="Objects\Light.cs" />
+    <Compile Include="Objects\Lights\Light.cs" />
+    <Compile Include="Objects\Lights\MultiSampleLight.cs" />
+    <Compile Include="Objects\Lights\SpotLight.cs" />
     <Compile Include="Objects\Material.cs" />
     <Compile Include="Objects\Primitive.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
