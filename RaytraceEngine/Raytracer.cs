@@ -112,13 +112,13 @@ namespace RaytraceEngine
                 int ri2 = 0;
                 Vector3[] lPoints = light.GetPoints(scene.maxLightSamples, scene.realLightSample);
                 foreach (var lp in lPoints)
-                    lEnergy += ProbeLight(hit, lp, light.Intensity, scene, shouldDebug && ri % debug_freq == 0 && (ri2++) == 0);
+                    lEnergy += ProbeLight(hit, lp, light, scene, shouldDebug && ri % debug_freq == 0 && (ri2++) == 0);
                 lEnergy /= lPoints.Length;
             }
             return hit.Material.Colour * lEnergy + hit.Material.Colour * scene.ambientLight;
         }
 
-        private Vector3 ProbeLight(RayHit hit, Vector3 lPos, Vector3 lIntens, RayScene scene, bool debug = false)
+        private Vector3 ProbeLight(RayHit hit, Vector3 lPos, ILightSource light, RayScene scene, bool debug = false)
         {
             var sRayVec = lPos - hit.Position;
             float distsq = Vector3.Dot(sRayVec, sRayVec);
@@ -126,7 +126,7 @@ namespace RaytraceEngine
             
             //Solve light.Intensity * power * (1f / (dist * dist * 4 * RMath.PI));
             //for dist(now range), and only check for shadow if dist < distance_to_light (dist here)
-            float rangeSq = Vector3.Dot(lIntens, lIntens) * RMath.roll0_sq;
+            float rangeSq = Vector3.Dot(light.Intensity, light.Intensity) * RMath.roll0_sq;
             if (distsq > rangeSq) return Vector3.Zero;
             // Check if something is in rays way
             var sRay = new Ray {
@@ -143,7 +143,8 @@ namespace RaytraceEngine
             if (debug) LightRays.Add(new Tuple<Ray, RayHit>(sRay, new RayHit(lPos, Vector3.One, 1, null)));
             // Calculate the power of the light
             float power = Math.Max(0, Vector3.Dot(hit.Normal, sRayVec));
-            return lIntens * power / (distsq * 4 * RMath.PI);
+            power *= light.AnlgeEnergy(-sRayVec);
+            return light.Intensity * power / (distsq * 4 * RMath.PI);
         }
     }
 }

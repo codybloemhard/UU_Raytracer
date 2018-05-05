@@ -9,6 +9,7 @@ namespace RaytraceEngine
         //source: my friend google
         public static float PI = 3.14159265359f;
         public static float roll0_sq = 0.81f;
+        public static float R2D = 57.2957795f;
         
         // Sorry forgot the source
         public static class ThreadLocalRandom
@@ -49,7 +50,11 @@ namespace RaytraceEngine
         {
             return (1 - t) * a + t * b;
         }
-        
+        public static float Lerp(float a, float b, float t)
+        {
+            return (1 - t) * a + t * b;
+        }
+
         public static Vector3 RndUnit()
         {
             return new Vector3( (float)ThreadLocalRandom.Instance.NextDouble(),
@@ -64,6 +69,13 @@ namespace RaytraceEngine
             i += (int)(Math.Min(255, c.Y * 255)) << 8;
             i += (int)(Math.Min(255, c.Z * 255));
             return i;
+        }
+
+        public static float Clamp(float min, float max, float val)
+        {
+            if (val < min) val = min;
+            if (val > max) val = max;
+            return val;
         }
 
         public static string ToStr(Vector3 v)
