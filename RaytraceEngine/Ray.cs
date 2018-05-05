@@ -14,7 +14,7 @@ namespace RaytraceEngine
             Direction = direction;
         }
     }
-
+    
     public struct RayHit
     {
         public Vector3 Position;

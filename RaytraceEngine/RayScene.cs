@@ -12,6 +12,7 @@ namespace RaytraceEngine
         public List<Primitive> Primitives;
         public List<ILightSource> Lights;
         public Vector3 ambientLight;
+        public uint maxLightSamples = 8;
 
         public RayScene(Camera camera) : base(camera)
         {

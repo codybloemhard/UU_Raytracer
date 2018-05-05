@@ -8,6 +8,7 @@ namespace RaytraceEngine
         //source: my friend google
         public static float PI = 3.14159265359f;
         public static float roll0_sq = 0.81f;
+        public static Random random = new Random();
 
         //source: the allmighty wikipedia
         public static Vector3 Lerp(Vector3 a, Vector3 b, float t)
@@ -15,6 +16,14 @@ namespace RaytraceEngine
             return (1 - t) * a + t * b;
         }
         
+        public static Vector3 RndUnit()
+        {
+            return new Vector3( (float)random.NextDouble(),
+                                (float)random.NextDouble(),
+                                (float)random.NextDouble())
+                                .Normalized();
+        }
+
         public static int ToIntColour(Vector3 c)
         {
             int i = (int)(Math.Min(255, c.X * 255)) << 16;

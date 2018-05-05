@@ -46,10 +46,10 @@ namespace RaytraceEngine
             LightRays.Clear();
             ShadowRays.Clear();
             var projectionPlane = scene.CurrentCamera.GetNearClippingPlane();
-            
+
             var parallelOptions = new ParallelOptions
             {
-                MaxDegreeOfParallelism = Environment.ProcessorCount
+                MaxDegreeOfParallelism = 1 // Environment.ProcessorCount
             };
             Parallel.For(0, winHeight - 1, parallelOptions, i => {
                 RenderArea(new Area(0, winWidth, i, i+1), projectionPlane, surface,
@@ -83,7 +83,7 @@ namespace RaytraceEngine
 
         private Vector3 TraceColour(Ray ray, RayScene scene, bool shouldDebug = false)
         {
-            RayHit hit, lHit, tempHit;
+            RayHit hit, tempHit;
             Primitive primitive = null;
             hit = new RayHit();
             hit.Distance = 10000000f;
@@ -106,13 +106,13 @@ namespace RaytraceEngine
                 if (ri % debug_freq == 0)  Rays.Add(new Tuple<Ray, RayHit>(ray, hit));
                 ++ri;
             }
-            
             Vector3 lEnergy = Vector3.Zero;
             foreach (var light in scene.Lights)
             {
-                Vector3[] lPoints = light.GetPoints(); 
-                foreach(var lp in lPoints)
-                    lEnergy += ProbeLight(hit, lp, light.Intensity, scene, shouldDebug && ri % debug_freq == 0);
+                int ri2 = 0;
+                Vector3[] lPoints = light.GetPoints(scene.maxLightSamples);
+                foreach (var lp in lPoints)
+                    lEnergy += ProbeLight(hit, lp, light.Intensity, scene, shouldDebug && ri % debug_freq == 0 && (ri2++) == 0);
                 lEnergy /= lPoints.Length;
             }
             return hit.Material.Colour * lEnergy + hit.Material.Colour * scene.ambientLight;
