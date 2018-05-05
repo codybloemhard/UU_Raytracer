@@ -8,7 +8,7 @@ namespace RaytraceEngine.Objects
     {
         Vector3 Intensity { get; set; }
 
-        Vector3[] GetPoints(uint maxSamples);
+        Vector3[] GetPoints(uint maxSamples, bool rng);
     }
 
     public class PointLight : ILightSource, ITransformative, ITraceable
@@ -17,7 +17,7 @@ namespace RaytraceEngine.Objects
         public Vector3 Position { get; set; }
         public Quaternion Rotation { get; set; }
 
-        public Vector3[] GetPoints(uint maxSamples)
+        public Vector3[] GetPoints(uint maxSamples, bool rng)
         {
             return new Vector3[] { Position };
         }
@@ -47,7 +47,7 @@ namespace RaytraceEngine.Objects
             }
         }
         
-        private int uniqSamples = 100;
+        private int uniqSamples = 128;
         private Vector3[] allPoints;
         private float radius;
         private Vector3 position;
@@ -71,15 +71,17 @@ namespace RaytraceEngine.Objects
             }
         }
 
-        public Vector3[] GetPoints(uint maxSamples)
+        public Vector3[] GetPoints(uint maxSamples, bool rng)
         {
             int size = 1 + (int)Math.Abs(maxSamples - 1);
             Vector3[] res = new Vector3[size];
             res[size - 1] = position;
-            for (int i = 0; i < size - 1; i++)
-            {
-                res[i] = allPoints[RMath.ThreadLocalRandom.Instance.Next(0, uniqSamples - 1)];
-            }
+            if (rng)
+                for (int i = 0; i < size - 1; i++)
+                    res[i] = allPoints[RMath.ThreadLocalRandom.Instance.Next(0, uniqSamples - 1)];
+            else
+                for (int i = 0; i < size - 1; i++)
+                    res[i] = allPoints[i % allPoints.Length];
             return res;
         }
 

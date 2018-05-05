@@ -63,6 +63,7 @@ namespace DemoRaytraceGame
 
             Scene.ambientLight = new Vector3(1f) * 0.05f;
             Scene.maxLightSamples = 8;
+            Scene.realLightSample = false;
 
             var light1 = new PointLight();
             light1.Intensity = Vector3.One * 200;
@@ -112,8 +113,6 @@ namespace DemoRaytraceGame
             Scene.CurrentCamera.Rotation = new Quaternion(MathHelper.DegreesToRadians(anglx), MathHelper.DegreesToRadians(angly), MathHelper.DegreesToRadians(anglz));
         }
         
-        
-
         public override void Render2D()
         {
             if(!shouldRender) return; 
@@ -122,7 +121,6 @@ namespace DemoRaytraceGame
             shouldRender = false;
         }
 
-        
         // TODO: remove this when we dont need to render on impulse instead of continious
         public override void Render()
         {

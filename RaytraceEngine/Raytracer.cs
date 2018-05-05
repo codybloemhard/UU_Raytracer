@@ -110,7 +110,7 @@ namespace RaytraceEngine
             foreach (var light in scene.Lights)
             {
                 int ri2 = 0;
-                Vector3[] lPoints = light.GetPoints(scene.maxLightSamples);
+                Vector3[] lPoints = light.GetPoints(scene.maxLightSamples, scene.realLightSample);
                 foreach (var lp in lPoints)
                     lEnergy += ProbeLight(hit, lp, light.Intensity, scene, shouldDebug && ri % debug_freq == 0 && (ri2++) == 0);
                 lEnergy /= lPoints.Length;
