@@ -45,7 +45,7 @@ namespace RaytraceEngine.Objects
 
         public override Vector3 Position
         {
-            get => position;
+            get { return position; }
             set
             {
                 position = value;
@@ -55,7 +55,7 @@ namespace RaytraceEngine.Objects
 
         public override Quaternion Rotation
         {
-            get => rotation;
+            get { return rotation; }
             set
             {
                 rotation = value;

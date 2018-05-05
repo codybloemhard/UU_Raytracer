@@ -133,7 +133,8 @@ namespace RaytraceEngine
                 Direction = sRayVec
             };
             foreach (var prim in scene.Primitives) {
-                if (prim.CheckHit(sRay, out var tmp) && tmp.Distance * tmp.Distance < distsq) {
+                RayHit tmp;
+                if (prim.CheckHit(sRay, out tmp) && tmp.Distance * tmp.Distance < distsq) {
                     if (debug) ShadowRays.Add(new Tuple<Ray, RayHit>(sRay, tmp));
                     return;
                 }
