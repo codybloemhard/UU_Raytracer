@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using OpenTK;
 
 namespace RaytraceEngine
@@ -8,7 +9,40 @@ namespace RaytraceEngine
         //source: my friend google
         public static float PI = 3.14159265359f;
         public static float roll0_sq = 0.81f;
-        public static Random random = new Random();
+        
+        // Sorry forgot the source
+        public static class ThreadLocalRandom
+        {
+            private static readonly Random globalRandom = new Random();
+            private static readonly object globalLock = new object();
+
+            private static readonly ThreadLocal<Random> threadRandom = new ThreadLocal<Random>(NewRandom);
+
+            public static Random NewRandom()
+            {
+                lock (globalLock)
+                {
+                    return new Random(globalRandom.Next());
+                }
+            }
+
+            public static Random Instance { get { return threadRandom.Value; } }
+
+            public static int Next()
+            {
+                return Instance.Next();
+            }
+            
+            public static int Next(int i, int j)
+            {
+                return Instance.Next(i, j);
+            }
+            
+            public static double NextDouble()
+            {
+                return Instance.NextDouble();
+            }
+        }
 
         //source: the allmighty wikipedia
         public static Vector3 Lerp(Vector3 a, Vector3 b, float t)
@@ -18,9 +52,9 @@ namespace RaytraceEngine
         
         public static Vector3 RndUnit()
         {
-            return new Vector3( (float)random.NextDouble(),
-                                (float)random.NextDouble(),
-                                (float)random.NextDouble())
+            return new Vector3( (float)ThreadLocalRandom.Instance.NextDouble(),
+                                (float)ThreadLocalRandom.Instance.NextDouble(),
+                                (float)ThreadLocalRandom.Instance.NextDouble())
                                 .Normalized();
         }
 

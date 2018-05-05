@@ -49,7 +49,7 @@ namespace RaytraceEngine
 
             var parallelOptions = new ParallelOptions
             {
-                MaxDegreeOfParallelism = 1 // Environment.ProcessorCount
+                MaxDegreeOfParallelism =  Environment.ProcessorCount
             };
             Parallel.For(0, winHeight - 1, parallelOptions, i => {
                 RenderArea(new Area(0, winWidth, i, i+1), projectionPlane, surface,

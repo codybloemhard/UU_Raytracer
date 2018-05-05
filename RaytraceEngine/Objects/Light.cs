@@ -78,7 +78,7 @@ namespace RaytraceEngine.Objects
             res[size - 1] = position;
             for (int i = 0; i < size - 1; i++)
             {
-                res[i] = allPoints[RMath.random.Next(0, uniqSamples - 1)];
+                res[i] = allPoints[RMath.ThreadLocalRandom.Instance.Next(0, uniqSamples - 1)];
             }
             return res;
         }
