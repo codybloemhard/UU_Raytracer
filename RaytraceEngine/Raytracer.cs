@@ -96,8 +96,8 @@ namespace RaytraceEngine
                 }
             }
             
-            if(!isHit) return Vector3.Zero;
-            
+            if (primitive == null) return Vector3.Zero;
+
             if (shouldDebug)
             {
                 if (ri % debug_freq == 0)  Rays.Add(new Tuple<Ray, RayHit>(ray, hit));

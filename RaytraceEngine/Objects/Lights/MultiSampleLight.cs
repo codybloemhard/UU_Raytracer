@@ -7,7 +7,7 @@ namespace RaytraceEngine.Objects.Lights
     {
         public override Vector3 Position
         {
-            get => position;
+            get { return position; }
             set
             {
                 position = value;
@@ -47,7 +47,7 @@ namespace RaytraceEngine.Objects.Lights
         private float radius;
         public float Radius
         {
-            get => radius;
+            get { return radius; }
             set
             {
                 radius = value;
