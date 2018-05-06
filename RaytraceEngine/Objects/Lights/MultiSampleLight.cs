@@ -60,18 +60,29 @@ namespace RaytraceEngine.Objects.Lights
         protected override void InitSamples()
         {
             for (int i = 0; i < uniqSamples; i++)
-                allPoints[i] = position + RMath.RndUnit() * radius;
+                allPoints[i] = position + RMath.RndUnit();
         }
     }
 
-    public class SphereVolumeLight : SphereAreaLight
+    public class SphereVolumeLight : MultiSampleLight
     {
+        private float radius;
+        public float Radius
+        {
+            get { return radius; }
+            set
+            {
+                radius = value;
+                InitSamples();
+            }
+        }
+
         public SphereVolumeLight(int uniqSamples) : base(uniqSamples) { }
 
         protected override void InitSamples()
         {
-            base.InitSamples();
-            for (int i = 0; i < uniqSamples; i++) allPoints[i] *= (float)RMath.ThreadLocalRandom.NextDouble();
+            for (int i = 0; i < uniqSamples; i++)
+                allPoints[i] = position + RMath.RndUnit() * radius;
         }
     }
 }

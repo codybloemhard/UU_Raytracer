@@ -39,7 +39,7 @@ namespace DemoRaytraceGame
             Scene.AddObject(floor);
             
             Plane wall = new Plane();
-            wall.Position = new Vector3(0, 0, 5);
+            wall.Position = new Vector3(0, 0, 8);
             wall.Rotation = new Quaternion(MathHelper.DegreesToRadians(-90), 0, 0);
             wall.Material = new Material(Vector3.One, 0f, 0.3f, 0f);
             Scene.AddObject(wall);
@@ -62,28 +62,30 @@ namespace DemoRaytraceGame
             sphere3.Material = new Material(new Vector3(0.2f, 0.2f, 1), 0f, 0f, 0f);
             Scene.AddObject(sphere3);
 
-            var light1 = new SphereVolumeLight(128);
+            var light1 = new SphereVolumeLight(512);
             light1.Colour = Vector3.One;
-            light1.Intensity = 100;
-            light1.MaxEnergy = 100;
-            light1.Position = new Vector3(1.5f, 1f, 1f);
-            light1.Radius = 1f;
+            light1.Intensity = 500;
+            light1.MaxEnergy = 0.7f;
+            light1.Position = new Vector3(1.5f, 3f, 2f);
+            light1.Radius = 0.2f;
             Scene.AddObject(light1);
 
-            var light2 = new SpotLight();
+            var light2 = new SpotLightMultiSample(512);
             light2.Colour = new Vector3(1f, 1f, 0.1f).Normalized();
-            light2.Intensity = 500;
-            light2.MaxEnergy = 500;
-            light2.Position = new Vector3(-3, 8, 4);
+            light2.Intensity = 1000;
+            light2.MaxEnergy = 1000;
+            light2.Position = new Vector3(-1.5f, 8, 3);
+            light2.Radius = 1f;
             light2.Normal = new Vector3(0, -1, 0);
             light2.AngleMin = 15;
             light2.AngleMax = 20f;
-            Scene.AddObject(light2);
+            //Scene.AddObject(light2);
 
             TraceSettings.ambientLight = new Vector3(1f) * 0.05f;
-            TraceSettings.realLightSample = false;
-            TraceSettings.maxLightSamples = 8;
+            TraceSettings.realLightSample = true;
+            TraceSettings.maxLightSamples = 16;
             TraceSettings.recursionDepth = 3;
+            TraceSettings.antiAliasing = 2;
         }
 
         // This is for debugging and should be removed later

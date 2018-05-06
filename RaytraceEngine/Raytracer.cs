@@ -56,19 +56,28 @@ namespace RaytraceEngine
 
         public void RenderArea(Area area, FinitePlane projectionPlane, Surface surface, RayScene scene)
         {
+            int a = (int)TraceSettings.antiAliasing;
+            //Vector3 last = Vector3.Zero;
             for (int x = area.X1; x < area.X2; ++x)
-            for (int y = area.Y1; y < area.Y2; y++) {
-                Ray ray = RayFromPixel(projectionPlane, scene.CurrentCamera, x, y);
-                bool shouldDebug = y == winHeight >> 1;
-                Vector3 colour = TraceColour(ray, scene, (int)TraceSettings.recursionDepth, false);
+            for (int y = area.Y1; y < area.Y2; y++)
+            {
+                Vector3 colour = Vector3.Zero;
+                for (int ix = 0; ix < a; ix++)
+                    for (int iy = 0; iy < a; iy++)
+                    {
+                        Ray ray = RayFromPixel(projectionPlane, scene.CurrentCamera, x * a + ix, y * a + iy, winWidth * a, winHeight * a);
+                        bool shouldDebug = y == winHeight >> 1;
+                        colour += TraceColour(ray, scene, (int)TraceSettings.recursionDepth, false);       
+                    }
+                colour /= a * a;
                 surface.Plot(x, y, RMath.ToIntColour(colour));
             }
         }
 
-        private Ray RayFromPixel(FinitePlane projectionPlane, Camera camera, int x, int y)
+        private Ray RayFromPixel(FinitePlane projectionPlane, Camera camera, int x, int y, int w, int h)
         {
-            float wt = (float)x / winWidth;
-            float ht = (float)y / winHeight;
+            float wt = (float)x / w;
+            float ht = (float)y / h;
             Vector3 onPlane = wt * projectionPlane.NHor + ht * projectionPlane.NVert + projectionPlane.Origin;
             onPlane.Normalize();
 
@@ -109,9 +118,11 @@ namespace RaytraceEngine
             {
                 int ri2 = 0;
                 Vector3[] lPoints = light.GetPoints(TraceSettings.maxLightSamples, TraceSettings.realLightSample);
+                Vector3 localEnergy = Vector3.Zero;
                 foreach (var lp in lPoints)
-                    lEnergy += ProbeLight(hit, lp, light, scene, shouldDebug && ri % debug_freq == 0 && (ri2++) == 0);
-                lEnergy /= lPoints.Length;
+                    localEnergy += ProbeLight(hit, lp, light, scene, shouldDebug && ri % debug_freq == 0 && (ri2++) == 0);
+                localEnergy /= lPoints.Length;
+                lEnergy += localEnergy;
             }
             Vector3 diffLightComp = hit.Material.Colour * lEnergy + hit.Material.Colour * TraceSettings.ambientLight;
             float refPower = primitive.Material.Reflectivity;
