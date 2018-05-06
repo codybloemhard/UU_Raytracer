@@ -14,14 +14,8 @@ namespace RaytraceEngine.Objects
         {
             Colour = colour;
             Roughness = roughness;
-            Set(reflectivity, refractivity);
-        }
-
-        public void Set(float reflectivity, float refractivity)
-        {
-            float total = reflectivity + refractivity;
-            Reflectivity = reflectivity / total;
-            Refractivity = refractivity / total;
+            Reflectivity = reflectivity;
+            Refractivity = refractivity;
         }
     }
 }

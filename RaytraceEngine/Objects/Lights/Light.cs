@@ -6,16 +6,20 @@ namespace RaytraceEngine.Objects.Lights
 {
     public interface ILightSource
     {
-        Vector3 Intensity { get; set; }
+        Vector3 Colour { get; set; }
+        float Intensity { get; set; }
 
         Vector3[] GetPoints(uint maxSamples, bool rng);
 
         float AngleEnergy(Vector3 toLight);
+
+        float MaxEnergy { get; set; }
     }
     
     public class PointLight : ILightSource, ITransformative, ITraceable
     {
-        public virtual Vector3 Intensity { get; set; }
+        public virtual Vector3 Colour { get; set; }
+        public float Intensity { get; set; }
         public virtual Vector3 Position { get; set; }
         public virtual Quaternion Rotation { get; set; }
 
@@ -29,6 +33,8 @@ namespace RaytraceEngine.Objects.Lights
             return 1f;
         }
 
+        public float MaxEnergy { get; set; }
+
         public Matrix4 TransformMatrix(Matrix4 matrix)
         {
             throw new System.NotImplementedException();
@@ -39,8 +45,4 @@ namespace RaytraceEngine.Objects.Lights
             throw new System.NotImplementedException();
         }
     }
-
-   
-
-    
 }

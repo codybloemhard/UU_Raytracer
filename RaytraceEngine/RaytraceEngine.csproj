@@ -53,6 +53,7 @@
     <Compile Include="RaytraceGame.cs" />
     <Compile Include="Raytracer.cs" />
     <Compile Include="RMath.cs" />
+    <Compile Include="TraceSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.csproj">

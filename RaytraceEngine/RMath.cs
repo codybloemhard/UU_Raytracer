@@ -55,6 +55,12 @@ namespace RaytraceEngine
             return (1 - t) * a + t * b;
         }
 
+        //source: https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/reflection-refraction-fresnel
+        public static Vector3 Reflect(Vector3 i, Vector3 n) 
+        { 
+            return i - 2 * Vector3.Dot(i, n) * n; 
+        }
+
         public static Vector3 RndUnit()
         {
             return new Vector3( (float)ThreadLocalRandom.Instance.NextDouble(),

@@ -35,55 +35,55 @@ namespace DemoRaytraceGame
 
             var floor = new Plane();
             floor.Position = new Vector3(0, 0, 0);
-            floor.Material = new Material(Vector3.One, 0f, 0f, 0f);
+            floor.Material = new Material(Vector3.One, 0f, 0.3f, 0f);
             Scene.AddObject(floor);
             
             Plane wall = new Plane();
             wall.Position = new Vector3(0, 0, 5);
             wall.Rotation = new Quaternion(MathHelper.DegreesToRadians(-90), 0, 0);
-            wall.Material = new Material(Vector3.One, 0f, 0f, 0f);
+            wall.Material = new Material(Vector3.One, 0f, 0.3f, 0f);
             Scene.AddObject(wall);
 
             var sphere1 = new Sphere();
-            sphere1.Position = new Vector3(-3, 1, 4);
+            sphere1.Position = new Vector3(-3, 1, 3.5f);
             sphere1.Radius = 1;
-            sphere1.Material = new Material(new Vector3(1, 0.2f, 0.2f), 0f, 0f, 0f);
+            sphere1.Material = new Material(new Vector3(1, 0.2f, 0.2f), 0f, 0.5f, 0f);
             Scene.AddObject(sphere1);
 
             var sphere2 = new Sphere();
             sphere2.Position = new Vector3(0, 1, 4);
             sphere2.Radius = 1;
-            sphere2.Material = new Material(new Vector3(0.2f, 1, 0.2f), 0f, 0f, 0f);
+            sphere2.Material = new Material(new Vector3(0.2f, 1, 0.2f), 0f, 1f, 0f);
             Scene.AddObject(sphere2);
             
             var sphere3 = new Sphere();
-            sphere3.Position = new Vector3(3, 1, 4);
+            sphere3.Position = new Vector3(3, 1, 3.5f);
             sphere3.Radius = 1;
             sphere3.Material = new Material(new Vector3(0.2f, 0.2f, 1), 0f, 0f, 0f);
             Scene.AddObject(sphere3);
 
-            Scene.ambientLight = new Vector3(1f) * 0.05f;
-            Scene.maxLightSamples = 8;
-            Scene.realLightSample = false;
-
-            var light1 = new PointLight();
-            light1.Intensity = Vector3.One * 200;
-            light1.Position = new Vector3(-2, 4, 5);
+            var light1 = new SphereVolumeLight(128);
+            light1.Colour = Vector3.One;
+            light1.Intensity = 100;
+            light1.MaxEnergy = 100;
+            light1.Position = new Vector3(1.5f, 1f, 1f);
+            light1.Radius = 1f;
             Scene.AddObject(light1);
 
-            var light2 = new SphereVolumeLight(128);
-            light2.Intensity = Vector3.One * 100;
-            light2.Position = new Vector3(2f, 4f, 2f);
-            light2.Radius = 2f;
+            var light2 = new SpotLight();
+            light2.Colour = new Vector3(1f, 1f, 0.1f).Normalized();
+            light2.Intensity = 500;
+            light2.MaxEnergy = 500;
+            light2.Position = new Vector3(-3, 8, 4);
+            light2.Normal = new Vector3(0, -1, 0);
+            light2.AngleMin = 15;
+            light2.AngleMax = 20f;
             Scene.AddObject(light2);
 
-            var light3 = new SpotLight();
-            light3.Intensity = new Vector3(1f, 1f, 0.1f) * 300;
-            light3.Position = new Vector3(-3, 8, 4);
-            light3.Normal = new Vector3(0, -1, 0);
-            light3.AngleMin = 15;
-            light3.AngleMax = 20f;
-            Scene.AddObject(light3);
+            TraceSettings.ambientLight = new Vector3(1f) * 0.05f;
+            TraceSettings.realLightSample = false;
+            TraceSettings.maxLightSamples = 8;
+            TraceSettings.recursionDepth = 3;
         }
 
         // This is for debugging and should be removed later

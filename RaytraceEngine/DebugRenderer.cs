@@ -42,7 +42,7 @@ namespace RaytraceEngine
             foreach (var lightSource in scene.Lights) {
                 if(!(lightSource is ITransformative)) continue;
                 var pos = TranslatePos((lightSource as ITransformative).Position);
-                Draw2D.DrawCircle(surface, (int)pos.X, (int)pos.Y, 5, RMath.ToIntColour(lightSource.Intensity));
+                Draw2D.DrawCircle(surface, (int)pos.X, (int)pos.Y, 5, RMath.ToIntColour(lightSource.Colour));
             }
             
             // Draw box around debug window

@@ -60,7 +60,7 @@ namespace RaytraceEngine
             for (int y = area.Y1; y < area.Y2; y++) {
                 Ray ray = RayFromPixel(projectionPlane, scene.CurrentCamera, x, y);
                 bool shouldDebug = y == winHeight >> 1;
-                Vector3 colour = TraceColour(ray, scene, shouldDebug);
+                Vector3 colour = TraceColour(ray, scene, (int)TraceSettings.recursionDepth, false);
                 surface.Plot(x, y, RMath.ToIntColour(colour));
             }
         }
@@ -78,8 +78,9 @@ namespace RaytraceEngine
             };
         }
 
-        private Vector3 TraceColour(Ray ray, RayScene scene, bool shouldDebug = false)
+        private Vector3 TraceColour(Ray ray, RayScene scene, int depth, bool shouldDebug = false)
         {
+            if ((depth--) == 0) return Vector3.Zero;
             Primitive primitive = null;
             RayHit hit, tempHit;
             hit = new RayHit();
@@ -107,12 +108,22 @@ namespace RaytraceEngine
             foreach (var light in scene.Lights)
             {
                 int ri2 = 0;
-                Vector3[] lPoints = light.GetPoints(scene.maxLightSamples, scene.realLightSample);
+                Vector3[] lPoints = light.GetPoints(TraceSettings.maxLightSamples, TraceSettings.realLightSample);
                 foreach (var lp in lPoints)
                     lEnergy += ProbeLight(hit, lp, light, scene, shouldDebug && ri % debug_freq == 0 && (ri2++) == 0);
                 lEnergy /= lPoints.Length;
             }
-            return hit.Material.Colour * lEnergy + hit.Material.Colour * scene.ambientLight;
+            Vector3 diffLightComp = hit.Material.Colour * lEnergy + hit.Material.Colour * TraceSettings.ambientLight;
+            float refPower = primitive.Material.Reflectivity;
+            if (refPower > 0.001f)
+            {
+                Ray rRay = new Ray();
+                rRay.Direction = RMath.Reflect(ray.Direction, hit.Normal);
+                rRay.Origin = hit.Position + rRay.Direction * 0.001f;
+                Vector3 cReflect = TraceColour(rRay, scene, depth, false);
+                return (diffLightComp * (1f - refPower)) + (cReflect * refPower);
+            }
+            return diffLightComp;
         }
 
         private Vector3 ProbeLight(RayHit hit, Vector3 lPos, ILightSource light, RayScene scene, bool debug = false)
@@ -123,7 +134,7 @@ namespace RaytraceEngine
             
             //Solve light.Intensity * power * (1f / (dist * dist * 4 * RMath.PI));
             //for dist(now range), and only check for shadow if dist < distance_to_light (dist here)
-            float rangeSq = Vector3.Dot(light.Intensity, light.Intensity) * RMath.roll0_sq;
+            float rangeSq = light.Intensity * RMath.roll0_sq;
             if (distsq > rangeSq) return Vector3.Zero;
             
             // Check if something is in rays way
@@ -143,7 +154,7 @@ namespace RaytraceEngine
             // Calculate the power of the light
             float power = Math.Max(0, Vector3.Dot(hit.Normal, sRayVec));
             power *= light.AngleEnergy(-sRayVec);
-            return light.Intensity * power / (distsq * 4 * RMath.PI);
+            return light.Colour * Math.Min(light.Intensity * power / (distsq * 4 * RMath.PI), light.MaxEnergy);
         }
     }
 }
