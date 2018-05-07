@@ -55,7 +55,7 @@ namespace RaytraceEngine.Objects.Lights
             }
         }
 
-        protected SphereAreaLight(int uniqSamples) : base(uniqSamples) { }
+        public SphereAreaLight(int uniqSamples) : base(uniqSamples) { }
 
         protected override void InitSamples()
         {
