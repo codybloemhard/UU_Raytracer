@@ -27,7 +27,7 @@ namespace RaytraceEngine
                 }
             }
 
-            public static Random Instance { get { return threadRandom.Value; } }
+            public static Random Instance => threadRandom.Value;
 
             public static int Next()
             {

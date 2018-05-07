@@ -56,7 +56,7 @@ namespace RaytraceEngine
 
         public void RenderArea(Area area, FinitePlane projectionPlane, Surface surface, RayScene scene)
         {
-            int a = (int)TraceSettings.antiAliasing;
+            int a = (int)TraceSettings.AntiAliasing;
             //Vector3 last = Vector3.Zero;
             for (int x = area.X1; x < area.X2; ++x)
             for (int y = area.Y1; y < area.Y2; y++)
@@ -67,7 +67,7 @@ namespace RaytraceEngine
                     {
                         Ray ray = RayFromPixel(projectionPlane, scene.CurrentCamera, x * a + ix, y * a + iy, winWidth * a, winHeight * a);
                         bool shouldDebug = y == winHeight >> 1;
-                        colour += TraceColour(ray, scene, (int)TraceSettings.recursionDepth, false);       
+                        colour += TraceColour(ray, scene, (int)TraceSettings.RecursionDepth, false);       
                     }
                 colour /= a * a;
                 surface.Plot(x, y, RMath.ToIntColour(colour));
@@ -117,14 +117,14 @@ namespace RaytraceEngine
             foreach (var light in scene.Lights)
             {
                 int ri2 = 0;
-                Vector3[] lPoints = light.GetPoints(TraceSettings.maxLightSamples, TraceSettings.realLightSample);
+                Vector3[] lPoints = light.GetPoints(TraceSettings.MaxLightSamples, TraceSettings.RealLightSample);
                 Vector3 localEnergy = Vector3.Zero;
                 foreach (var lp in lPoints)
                     localEnergy += ProbeLight(hit, lp, light, scene, shouldDebug && ri % debug_freq == 0 && (ri2++) == 0);
                 localEnergy /= lPoints.Length;
                 lEnergy += localEnergy;
             }
-            Vector3 diffLightComp = hit.Material.Colour * lEnergy + hit.Material.Colour * TraceSettings.ambientLight;
+            Vector3 diffLightComp = hit.Material.Colour * lEnergy + hit.Material.Colour * TraceSettings.AmbientLight;
             float refPower = primitive.Material.Reflectivity;
             if (refPower > 0.001f)
             {

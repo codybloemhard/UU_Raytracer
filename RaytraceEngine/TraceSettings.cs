@@ -5,10 +5,10 @@ namespace RaytraceEngine
 {
     public static class TraceSettings
     {
-        public static Vector3 ambientLight;
-        public static uint maxLightSamples = 8;
-        public static bool realLightSample = false;
-        public static uint recursionDepth = 3;
-        public static uint antiAliasing = 2;
+        public static Vector3 AmbientLight;
+        public static uint MaxLightSamples = 8;
+        public static bool RealLightSample = false;
+        public static uint RecursionDepth = 3;
+        public static uint AntiAliasing = 2;
     }
 }

@@ -18,22 +18,11 @@ namespace RaytraceEngine.Objects.Lights
         }
     }
 
-    public class SpotLightMultiSample : MultiSampleLight
+    public class SpotLightMultiSample : SphereAreaLight
     {
         public Vector3 Normal { get; set; }
         public float AngleMin = 45f;
         public float AngleMax = 55f;
-
-        private float radius;
-        public float Radius
-        {
-            get { return radius; }
-            set
-            {
-                radius = value;
-                InitSamples();
-            }
-        }
 
         public SpotLightMultiSample(int uniqSamples) : base(uniqSamples) { }
 

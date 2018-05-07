@@ -44,7 +44,7 @@ namespace RaytraceEngine.Objects.Lights
     
     public class SphereAreaLight : MultiSampleLight
     {
-        private float radius;
+        protected float radius;
         public float Radius
         {
             get { return radius; }
@@ -55,7 +55,7 @@ namespace RaytraceEngine.Objects.Lights
             }
         }
 
-        public SphereAreaLight(int uniqSamples) : base(uniqSamples) { }
+        protected SphereAreaLight(int uniqSamples) : base(uniqSamples) { }
 
         protected override void InitSamples()
         {
@@ -64,19 +64,8 @@ namespace RaytraceEngine.Objects.Lights
         }
     }
 
-    public class SphereVolumeLight : MultiSampleLight
+    public class SphereVolumeLight : SphereAreaLight
     {
-        private float radius;
-        public float Radius
-        {
-            get { return radius; }
-            set
-            {
-                radius = value;
-                InitSamples();
-            }
-        }
-
         public SphereVolumeLight(int uniqSamples) : base(uniqSamples) { }
 
         protected override void InitSamples()

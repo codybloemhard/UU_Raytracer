@@ -81,11 +81,11 @@ namespace DemoRaytraceGame
             light2.AngleMax = 20f;
             //Scene.AddObject(light2);
 
-            TraceSettings.ambientLight = new Vector3(1f) * 0.05f;
-            TraceSettings.realLightSample = true;
-            TraceSettings.maxLightSamples = 16;
-            TraceSettings.recursionDepth = 3;
-            TraceSettings.antiAliasing = 2;
+            TraceSettings.AmbientLight = new Vector3(1f) * 0.05f;
+            TraceSettings.RealLightSample = true;
+            TraceSettings.MaxLightSamples = 16;
+            TraceSettings.RecursionDepth = 3;
+            TraceSettings.AntiAliasing = 2;
         }
 
         // This is for debugging and should be removed later
