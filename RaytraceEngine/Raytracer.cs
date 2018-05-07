@@ -40,7 +40,7 @@ namespace RaytraceEngine
         public static List<Tuple<Ray, RayHit>> ShadowRays = new List<Tuple<Ray, RayHit>>();
         private int ri = 0;
         private int debug_freq = 16;
-
+        
         public void Render(Surface surface, RayScene scene)
         {
             Rays.Clear();
@@ -57,7 +57,6 @@ namespace RaytraceEngine
         public void RenderArea(Area area, FinitePlane projectionPlane, Surface surface, RayScene scene)
         {
             int a = (int)TraceSettings.antiAliasing;
-            //Vector3 last = Vector3.Zero;
             for (int x = area.X1; x < area.X2; ++x)
             for (int y = area.Y1; y < area.Y2; y++)
             {
