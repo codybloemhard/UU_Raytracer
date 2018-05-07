@@ -17,8 +17,8 @@ namespace Engine.Graphics
         public Shader(string vs, string fs)
         {
             prID = GL.CreateProgram();
-            LoadShader(vs, ShaderType.VertexShader, prID, out vsID);
-            LoadShader(fs, ShaderType.FragmentShader, prID, out fsID);
+            if(vs != null) LoadShader(vs, ShaderType.VertexShader, prID, out vsID);
+            if(fs != null) LoadShader(fs, ShaderType.FragmentShader, prID, out fsID);
             GL.LinkProgram(prID);
             attributes = new Dictionary<string, int>();
         }
@@ -45,6 +45,14 @@ namespace Engine.Graphics
             return attributes[name];
         }    
 
+        public bool SetVar(string name, int v)
+        {
+            int id = GetVar(name);
+            if (id == -1) return false;
+            GL.Uniform1(id, v);
+            return true;
+        }
+        
         public bool SetVar(string name, float v)
         {
             int id = GetVar(name);
@@ -66,6 +74,14 @@ namespace Engine.Graphics
             int id = GetVar(name);
             if (id == -1) return false;
             GL.UniformMatrix4(id, false, ref v);
+            return true;
+        }
+
+        public bool SetVar(string name, Vector2 v)
+        {
+            int id = GetVar(name);
+            if (id == -1) return false;
+            GL.Uniform2(id, v);
             return true;
         }
 

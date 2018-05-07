@@ -1,5 +1,6 @@
 using Engine;
 using System.Drawing;
+using Engine.Objects;
 using RaytraceEngine;
 using OpenTK;
 using OpenTK.Input;
@@ -14,6 +15,7 @@ namespace DemoRaytraceGame
     public class DemoRaytraceGame : RaytraceGame
     {
         protected DebugRenderer DebugRenderer;
+        protected FXAAPlane FXAA;
 
         public const int Width = 1024;
         public const int Height = 512;
@@ -28,6 +30,11 @@ namespace DemoRaytraceGame
             base.Init();
             Renderer = new Raytracer(Width/2-1, Height-1);
             DebugRenderer = new DebugRenderer(Width/2-1, Height-1, Width/2);
+            FXAA = new FXAAPlane(Screen, ScreenID);
+
+            // Gebruik show edges om te kijken ward wordt ge antialiast
+            //FXAA.ShowEdges = true;
+            //FXAA.LumaThreashold = 0.1f;
 
             var camera = new Camera(new Vector3(0, 1, 0), new Quaternion(0, 0, 0), 1, 1);
             camera.Aspect = 1;
@@ -83,9 +90,9 @@ namespace DemoRaytraceGame
 
             TraceSettings.AmbientLight = new Vector3(1f) * 0.05f;
             TraceSettings.RealLightSample = true;
-            TraceSettings.MaxLightSamples = 16;
+            TraceSettings.MaxLightSamples = 8;
             TraceSettings.RecursionDepth = 3;
-            TraceSettings.AntiAliasing = 2;
+            TraceSettings.AntiAliasing = 1;
         }
 
         // This is for debugging and should be removed later
@@ -135,29 +142,20 @@ namespace DemoRaytraceGame
         // TODO: remove this when we dont need to render on impulse instead of continious
         public override void Render()
         {
+            GL.ClearColor(Color.Black);
+            GL.Enable(EnableCap.Texture2D);
+            GL.Enable(EnableCap.DepthTest);
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.LoadIdentity();
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.LoadIdentity();
+            
             if(shouldRender) Screen.Clear(0);
             Render2D();
             
-            GL.BindTexture( TextureTarget.Texture2D, ScreenID );
-            GL.TexImage2D( TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 
-                Screen.width, Screen.height, 0, PixelFormat.Bgra, 
-                PixelType.UnsignedByte, Screen.pixels 
-            );
-            
-            // clear window contents
-            GL.Clear( ClearBufferMask.ColorBufferBit );
-            // setup camera
-            GL.MatrixMode( MatrixMode.Modelview );
-            GL.LoadIdentity();
-            GL.MatrixMode( MatrixMode.Projection );
-            GL.LoadIdentity();
-            // draw screen filling quad
-            GL.Begin( PrimitiveType.Quads );
-            GL.TexCoord2( 0.0f, 1.0f ); GL.Vertex2( -1.0f, -1.0f );
-            GL.TexCoord2( 1.0f, 1.0f ); GL.Vertex2(  1.0f, -1.0f );
-            GL.TexCoord2( 1.0f, 0.0f ); GL.Vertex2(  1.0f,  1.0f );
-            GL.TexCoord2( 0.0f, 0.0f ); GL.Vertex2( -1.0f,  1.0f );
-            GL.End();
+            FXAA.Render();
         }
     }
 }

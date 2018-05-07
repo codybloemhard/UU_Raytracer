@@ -13,7 +13,7 @@ namespace DemoGame
  
         public static void Main(string[] args)
         {
-            using (var win = new GameWindow(new DemoGame())) { win.Run(30.0, 60.0); }
+            using (var win = new GameWindow(new DemoFXAA())) { win.Run(30.0, 60.0); }
             //using (var win = new GameWindow(new DemoRaytrace())) { win.Run(30.0, 60.0); }
         }
 

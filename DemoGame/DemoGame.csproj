@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DemoFXAA.cs" />
     <Compile Include="DemoGame.cs" />
     <Compile Include="DemoRaytrace.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
