@@ -9,7 +9,6 @@ using GameWindow = Engine.GameWindow;
 using OpenTK.Graphics.OpenGL;
 using RaytraceEngine.Objects.Lights;
 
-
 namespace DemoRaytraceGame
 {
     public class DemoRaytraceGame : RaytraceGame
@@ -46,9 +45,9 @@ namespace DemoRaytraceGame
             Scene.AddObject(floor);
             
             Plane wall = new Plane();
-            wall.Position = new Vector3(0, 0, 8);
+            wall.Position = new Vector3(0, 0, 7);
             wall.Rotation = new Quaternion(MathHelper.DegreesToRadians(-90), 0, 0);
-            wall.Material = new Material(Vector3.One, 0f, 0.3f, 0f);
+            wall.Material = new Material(Vector3.One * 0.5f, 0f, 0f, 0f);
             Scene.AddObject(wall);
 
             var sphere1 = new Sphere();
@@ -69,24 +68,32 @@ namespace DemoRaytraceGame
             sphere3.Material = new Material(new Vector3(0.2f, 0.2f, 1), 0f, 0f, 0f);
             Scene.AddObject(sphere3);
 
-            var light1 = new SphereVolumeLight(512);
+            var light1 = new SphereAreaLight(2048);
             light1.Colour = Vector3.One;
-            light1.Intensity = 500;
-            light1.MaxEnergy = 0.7f;
-            light1.Position = new Vector3(1.5f, 3f, 2f);
-            light1.Radius = 0.2f;
+            light1.Intensity = 1000;
+            light1.MaxEnergy = 0.9f;
+            light1.Position = new Vector3(1.5f, 1f, 2f);
+            light1.Radius = 0.5f;
             Scene.AddObject(light1);
 
-            var light2 = new SpotLightMultiSample(512);
+            var light2 = new SpotLightMultiSample(2048);
             light2.Colour = new Vector3(1f, 1f, 0.1f).Normalized();
-            light2.Intensity = 1000;
-            light2.MaxEnergy = 1000;
-            light2.Position = new Vector3(-1.5f, 8, 3);
+            light2.Intensity = 2000;
+            light2.MaxEnergy = 1;
+            light2.Position = new Vector3(-3, 6, 4f);
             light2.Radius = 1f;
-            light2.Normal = new Vector3(0, -1, 0);
+            light2.Normal = (sphere1.Position - light2.Position).Normalized();
             light2.AngleMin = 15;
             light2.AngleMax = 20f;
-            //Scene.AddObject(light2);
+            Scene.AddObject(light2);
+
+            var light3 = new SphereAreaLight(2048);
+            light3.Colour = Vector3.One;
+            light3.Intensity = 100;
+            light3.MaxEnergy = 2f;
+            light3.Position = new Vector3(-3f, 1f, 6f);
+            light3.Radius = 0.5f;
+            Scene.AddObject(light3);
 
             TraceSettings.AmbientLight = new Vector3(1f) * 0.05f;
             TraceSettings.RealLightSample = true;

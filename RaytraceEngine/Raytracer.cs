@@ -40,7 +40,7 @@ namespace RaytraceEngine
         public static List<Tuple<Ray, RayHit>> ShadowRays = new List<Tuple<Ray, RayHit>>();
         private int ri = 0;
         private int debug_freq = 16;
-
+        
         public void Render(Surface surface, RayScene scene)
         {
             Rays.Clear();
