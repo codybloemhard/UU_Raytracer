@@ -57,7 +57,6 @@ namespace RaytraceEngine
         public void RenderArea(Area area, FinitePlane projectionPlane, Surface surface, RayScene scene)
         {
             int a = (int)TraceSettings.AntiAliasing;
-            //Vector3 last = Vector3.Zero;
             for (int x = area.X1; x < area.X2; ++x)
             for (int y = area.Y1; y < area.Y2; y++)
             {
@@ -87,57 +86,56 @@ namespace RaytraceEngine
             };
         }
 
-        private Vector3 TraceColour(Ray ray, RayScene scene, int depth, bool shouldDebug = false)
+        private Vector3 TraceColour(Ray ray, RayScene scene, int depth, bool debug = false)
         {
-            if ((depth--) == 0) return Vector3.Zero;
-            Primitive primitive = null;
-            RayHit hit, tempHit;
-            hit = new RayHit();
-            hit.Distance = 10000000f;
-            bool isHit = false;
-            foreach (var p in scene.Primitives)
-            {
-                isHit = p.CheckHit(ray, out tempHit);
-                if (!isHit) continue;
-                if (tempHit.Distance < hit.Distance)
-                {
-                    hit = tempHit;
-                    primitive = p;
-                }
-            }
+            if (depth-- == 0) return Vector3.Zero;
             
-            if (primitive == null) return Vector3.Zero;
-
-            if (shouldDebug)
-            {
-                if (ri % debug_freq == 0)  Rays.Add(new Tuple<Ray, RayHit>(ray, hit));
-                ++ri;
+            var hit = new RayHit {Distance = 10000000f};
+            RayHit tmpHit;
+            foreach (var primitive in scene.Primitives) {
+                if (primitive.CheckHit(ray, out tmpHit) && tmpHit.Distance < hit.Distance) hit = tmpHit;
             }
+
+            if (hit.HitObject == null) return Vector3.Zero;
+            
+            if (debug) if (ri++ % debug_freq == 0)  Rays.Add(new Tuple<Ray, RayHit>(ray, hit));
+
+            Vector3 baseCol = hit.HitObject.Material.Colour;
+            if (hit.HitObject.Material.Texture != null)
+                baseCol = hit.HitObject.Material.TexColour(hit.HitObject.GetUV(hit));
+            Vector3 colorComp = baseCol * CalcLightEnergy(scene, hit, debug) +
+                                baseCol * TraceSettings.AmbientLight;
+
+            if (hit.HitObject.Material.Reflectivity > 0.01f) {
+                ApplyReflectivity(scene, depth, ref ray, ref hit, ref colorComp);
+            }
+
+            return colorComp;
+        }
+        
+        private void ApplyReflectivity(RayScene scene, int depth, ref Ray ray, ref RayHit hit, ref Vector3 lightComp)
+        {
+            Ray rRay = new Ray();
+            rRay.Direction = RMath.Reflect(ray.Direction, hit.Normal);
+            rRay.Origin = hit.Position + rRay.Direction * 0.001f;
+            var reflectColor = TraceColour(rRay, scene, depth, false);
+
+            lightComp = lightComp * (1f - hit.HitObject.Material.Reflectivity) +
+                        hit.HitObject.Material.Reflectivity * reflectColor * hit.HitObject.Material.Colour;
+        }
+        
+        private Vector3 CalcLightEnergy(RayScene scene, RayHit hit, bool debug)
+        {
             Vector3 lEnergy = Vector3.Zero;
             foreach (var light in scene.Lights)
             {
-                int ri2 = 0;
-                Vector3[] lPoints = light.GetPoints(TraceSettings.MaxLightSamples, TraceSettings.RealLightSample);
-                Vector3 localEnergy = Vector3.Zero;
-                foreach (var lp in lPoints)
-                    localEnergy += ProbeLight(hit, lp, light, scene, shouldDebug && ri % debug_freq == 0 && (ri2++) == 0);
+                var lPoints = light.GetPoints(TraceSettings.MaxLightSamples, TraceSettings.RealLightSample);
+                var localEnergy = Vector3.Zero;
+                foreach (var lp in lPoints) localEnergy += ProbeLight(hit, lp, light, scene, debug && ri % debug_freq == 0);
                 localEnergy /= lPoints.Length;
                 lEnergy += localEnergy;
             }
-            Vector3 hitCol = hit.Material.Colour;
-            if (hit.Material.Texture != null)
-                hitCol = hit.Material.TexColour(hit.Object.GetUV(hit));
-            Vector3 diffLightComp = hitCol * lEnergy + hitCol * TraceSettings.AmbientLight;
-            float refPower = primitive.Material.Reflectivity;
-            if (refPower > 0.001f)
-            {
-                Ray rRay = new Ray();
-                rRay.Direction = RMath.Reflect(ray.Direction, hit.Normal);
-                rRay.Origin = hit.Position + rRay.Direction * 0.001f;
-                Vector3 cReflect = TraceColour(rRay, scene, depth, false);
-                return (diffLightComp * (1f - refPower)) + (cReflect * refPower * hitCol);
-            }
-            return diffLightComp;
+            return lEnergy;
         }
 
         private Vector3 ProbeLight(RayHit hit, Vector3 lPos, ILightSource light, RayScene scene, bool debug = false)
@@ -163,7 +161,7 @@ namespace RaytraceEngine
                     return Vector3.Zero;
                 }
             }
-            if (debug) LightRays.Add(new Tuple<Ray, RayHit>(sRay, new RayHit(lPos, Vector3.One, 1, null, null)));
+            if (debug) LightRays.Add(new Tuple<Ray, RayHit>(sRay, new RayHit(lPos, Vector3.One, 1, null)));
             
             // Calculate the power of the light
             float power = Math.Max(0, Vector3.Dot(hit.Normal, sRayVec));
