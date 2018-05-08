@@ -59,7 +59,7 @@ namespace DemoRaytraceGame
             var sphere2 = new Sphere();
             sphere2.Position = new Vector3(0, 1, 4);
             sphere2.Radius = 1;
-            sphere2.Material = new Material(new Vector3(0.2f, 1, 0.2f), 0f, 1f, 0f);
+            sphere2.Material = new Material(new Vector3(1f), 0f, 1f, 0f);
             Scene.AddObject(sphere2);
             
             var sphere3 = new Sphere();
@@ -96,10 +96,16 @@ namespace DemoRaytraceGame
             Scene.AddObject(light3);
 
             TraceSettings.AmbientLight = new Vector3(1f) * 0.05f;
-            TraceSettings.RealLightSample = true;
+            TraceSettings.RealLightSample = false;
             TraceSettings.MaxLightSamples = 8;
             TraceSettings.RecursionDepth = 3;
             TraceSettings.AntiAliasing = 1;
+            FXAA.EnableFXAA = false;
+            FXAA.LumaThreashold = 0.1f;
+            FXAA.MulReduce = 8f;
+            FXAA.MinReduce = 128f;
+            FXAA.MaxSpan = 8f;
+            FXAA.ShowEdges = false;
         }
 
         // This is for debugging and should be removed later

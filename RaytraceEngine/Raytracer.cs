@@ -132,7 +132,7 @@ namespace RaytraceEngine
                 rRay.Direction = RMath.Reflect(ray.Direction, hit.Normal);
                 rRay.Origin = hit.Position + rRay.Direction * 0.001f;
                 Vector3 cReflect = TraceColour(rRay, scene, depth, false);
-                return (diffLightComp * (1f - refPower)) + (cReflect * refPower);
+                return (diffLightComp * (1f - refPower)) + (cReflect * refPower * hit.Material.Colour);
             }
             return diffLightComp;
         }
