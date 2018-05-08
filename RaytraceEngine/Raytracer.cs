@@ -50,7 +50,7 @@ namespace RaytraceEngine
             RefractRays.Clear();
             var projectionPlane = scene.CurrentCamera.GetNearClippingPlane();
 
-            var parallelOptions = new ParallelOptions{MaxDegreeOfParallelism =  Environment.ProcessorCount};
+            var parallelOptions = new ParallelOptions{MaxDegreeOfParallelism = Environment.ProcessorCount};
             Parallel.For(0, winHeight - 1, parallelOptions, i => {
                 RenderArea(new Area(0, winWidth, i, i+1), projectionPlane, surface, scene);
             });
@@ -59,7 +59,6 @@ namespace RaytraceEngine
         public void RenderArea(Area area, FinitePlane projectionPlane, Surface surface, RayScene scene)
         {
             int a = (int)TraceSettings.AntiAliasing;
-            //Vector3 last = Vector3.Zero;
             for (int x = area.X1; x < area.X2; ++x)
             for (int y = area.Y1; y < area.Y2; y++)
             {
@@ -95,16 +94,20 @@ namespace RaytraceEngine
             if (depth-- == 0) return Vector3.Zero;
             
             var hit = new RayHit {Distance = 10000000f};
+            RayHit tmpHit;
             foreach (var primitive in scene.Primitives) {
-                if (primitive.CheckHit(ray, out var tmpHit) && tmpHit.Distance < hit.Distance) hit = tmpHit;
+                if (primitive.CheckHit(ray, out tmpHit) && tmpHit.Distance < hit.Distance) hit = tmpHit;
             }
 
             if (hit.HitObject == null) return Vector3.Zero;
             
             if (debug && ri % debug_freq == 0) Rays.Add(new Tuple<Ray, RayHit>(ray, hit));
 
-            Vector3 colorComp = hit.HitObject.Material.Colour * CalcLightEnergy(scene, hit, debug) +
-                                hit.HitObject.Material.Colour * TraceSettings.AmbientLight;
+            Vector3 baseCol = hit.HitObject.Material.Colour;
+            if (hit.HitObject.Material.Texture != null)
+                baseCol = hit.HitObject.Material.TexColour(hit.HitObject.GetUV(hit));
+            Vector3 colorComp = baseCol * CalcLightEnergy(scene, hit, debug) +
+                                baseCol * TraceSettings.AmbientLight;
 
             if (hit.HitObject.Material.Reflectivity > 0.01f) {
                 ApplyReflectivity(scene, depth, ref ray, ref hit, ref colorComp, debug);
@@ -183,7 +186,6 @@ namespace RaytraceEngine
                 lEnergy += localEnergy;
                 first = false;
             }
-
             return lEnergy;
         }
 

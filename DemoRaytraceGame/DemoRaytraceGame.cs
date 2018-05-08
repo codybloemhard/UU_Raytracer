@@ -8,6 +8,7 @@ using RaytraceEngine.Objects;
 using GameWindow = Engine.GameWindow;
 using OpenTK.Graphics.OpenGL;
 using RaytraceEngine.Objects.Lights;
+using Engine.TemplateCode;
 
 namespace DemoRaytraceGame
 {
@@ -39,16 +40,31 @@ namespace DemoRaytraceGame
             camera.Aspect = 1;
             Scene = new RayScene(camera);
 
+            Surface wallTex = new Surface("assets/wall.png");
+            Surface woodTex = new Surface("assets/wood.png");
+
             var floor = new Plane();
             floor.Position = new Vector3(0, 0, 0);
-            floor.Material = new Material(Vector3.One, 0f, 0.3f, 0f);
+            floor.Material = new Material(Vector3.One, 0f, 0.5f, 0f);
+            floor.Material.Texture = wallTex;
+            floor.Material.TextureScale = 4f;
             Scene.AddObject(floor);
             
-            Plane wall = new Plane();
-            wall.Position = new Vector3(0, 0, 7);
-            wall.Rotation = new Quaternion(MathHelper.DegreesToRadians(-90), 0, 0);
-            wall.Material = new Material(Vector3.One * 0.5f, 0f, 0f, 0f);
-            Scene.AddObject(wall);
+            Plane wall1 = new Plane();
+            wall1.Position = new Vector3(0, 0, 7);
+            wall1.Rotation = new Quaternion(MathHelper.DegreesToRadians(-90), 0, 0);
+            wall1.Material = new Material(Vector3.One, 0f, 0f, 0f);
+            wall1.Material.Texture = woodTex;
+            wall1.Material.TextureScale = 8f;
+            Scene.AddObject(wall1);
+
+            Plane wall2 = new Plane();
+            wall2.Position = new Vector3(0, 0, -1);
+            wall2.Rotation = new Quaternion(MathHelper.DegreesToRadians(90), 0, 0);
+            wall2.Material = new Material(Vector3.One, 0f, 0f, 0f);
+            wall2.Material.Texture = woodTex;
+            wall2.Material.TextureScale = 8f;
+            Scene.AddObject(wall2);
 
             var sphere1 = new Sphere();
             sphere1.Position = new Vector3(-3, 1, 3.5f);
