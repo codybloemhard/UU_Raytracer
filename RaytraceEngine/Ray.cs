@@ -21,13 +21,15 @@ namespace RaytraceEngine
         public Vector3 Normal;
         public float Distance;
         public Material Material;
+        public Primitive Object;
 
-        public RayHit(Vector3 position, Vector3 normal, float distance, Material material)
+        public RayHit(Vector3 position, Vector3 normal, float distance, Material material, Primitive _object)
         {
             Position = position;
             Normal = normal;
             Distance = distance;
             Material = material;
+            Object = _object;
         }
     }
 }

@@ -48,7 +48,7 @@ namespace RaytraceEngine
             ShadowRays.Clear();
             var projectionPlane = scene.CurrentCamera.GetNearClippingPlane();
 
-            var parallelOptions = new ParallelOptions{MaxDegreeOfParallelism =  Environment.ProcessorCount};
+            var parallelOptions = new ParallelOptions{MaxDegreeOfParallelism = Environment.ProcessorCount};
             Parallel.For(0, winHeight - 1, parallelOptions, i => {
                 RenderArea(new Area(0, winWidth, i, i+1), projectionPlane, surface, scene);
             });
@@ -124,7 +124,10 @@ namespace RaytraceEngine
                 localEnergy /= lPoints.Length;
                 lEnergy += localEnergy;
             }
-            Vector3 diffLightComp = hit.Material.Colour * lEnergy + hit.Material.Colour * TraceSettings.AmbientLight;
+            Vector3 hitCol = hit.Material.Colour;
+            if (hit.Material.Texture != null)
+                hitCol = hit.Material.TexColour(hit.Object.GetUV(hit));
+            Vector3 diffLightComp = hitCol * lEnergy + hitCol * TraceSettings.AmbientLight;
             float refPower = primitive.Material.Reflectivity;
             if (refPower > 0.001f)
             {
@@ -132,7 +135,7 @@ namespace RaytraceEngine
                 rRay.Direction = RMath.Reflect(ray.Direction, hit.Normal);
                 rRay.Origin = hit.Position + rRay.Direction * 0.001f;
                 Vector3 cReflect = TraceColour(rRay, scene, depth, false);
-                return (diffLightComp * (1f - refPower)) + (cReflect * refPower * hit.Material.Colour);
+                return (diffLightComp * (1f - refPower)) + (cReflect * refPower * hitCol);
             }
             return diffLightComp;
         }
@@ -160,7 +163,7 @@ namespace RaytraceEngine
                     return Vector3.Zero;
                 }
             }
-            if (debug) LightRays.Add(new Tuple<Ray, RayHit>(sRay, new RayHit(lPos, Vector3.One, 1, null)));
+            if (debug) LightRays.Add(new Tuple<Ray, RayHit>(sRay, new RayHit(lPos, Vector3.One, 1, null, null)));
             
             // Calculate the power of the light
             float power = Math.Max(0, Vector3.Dot(hit.Normal, sRayVec));

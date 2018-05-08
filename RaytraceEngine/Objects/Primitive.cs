@@ -13,6 +13,7 @@ namespace RaytraceEngine.Objects
     {
         public Material Material { get; set; }
         public abstract bool CheckHit(Ray ray, out RayHit hit);
+        public abstract Vector2 GetUV(RayHit hit);
     }
 
     public class Sphere : Primitive
@@ -34,7 +35,13 @@ namespace RaytraceEngine.Objects
             hit.Distance = t;
             hit.Material = Material;
             hit.Normal = (hit.Position - Position).Normalized();
+            hit.Object = this;
             return true;
+        }
+
+        public override Vector2 GetUV(RayHit hit)
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -42,6 +49,7 @@ namespace RaytraceEngine.Objects
     {
         private Vector3 position;
         private Quaternion rotation;
+        private Vector3 u, v;
 
         public override Vector3 Position
         {
@@ -64,10 +72,15 @@ namespace RaytraceEngine.Objects
         }
 
         public Vector3 Normal { get;  private set; }
-
+        //uv axis:
+        //http://www.flipcode.com/archives/Raytracing_Topics_Techniques-Part_6_Textures_Cameras_and_Speed.shtml
         public void UpdateNormal()
         {
             Normal = Vector3.UnitY * Matrix3.CreateFromQuaternion(Rotation);
+            u = new Vector3(Normal.Y, Normal.Z, -Normal.X);
+            v = Vector3.Cross(u, Normal);
+            u.Normalize();
+            v.Normalize();
         }
 
         public override bool CheckHit(Ray ray, out RayHit hit)
@@ -83,7 +96,13 @@ namespace RaytraceEngine.Objects
             hit.Position = ray.Origin + ray.Direction * t;
             hit.Material = Material;
             hit.Distance = t;
+            hit.Object = this;
             return true;
+        }
+
+        public override Vector2 GetUV(RayHit hit)
+        {
+            return new Vector2(Vector3.Dot(hit.Position, u), Vector3.Dot(hit.Position, v));
         }
     }
 }
