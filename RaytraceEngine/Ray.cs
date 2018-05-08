@@ -20,14 +20,14 @@ namespace RaytraceEngine
         public Vector3 Position;
         public Vector3 Normal;
         public float Distance;
-        public Material Material;
+        public Primitive HitObject;
 
-        public RayHit(Vector3 position, Vector3 normal, float distance, Material material)
+        public RayHit(Vector3 position, Vector3 normal, float distance, Primitive hitObject)
         {
             Position = position;
             Normal = normal;
             Distance = distance;
-            Material = material;
+            HitObject = hitObject;
         }
     }
 }

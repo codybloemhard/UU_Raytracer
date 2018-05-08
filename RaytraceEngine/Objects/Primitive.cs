@@ -30,9 +30,10 @@ namespace RaytraceEngine.Objects
             if (p2 > rsq) return false;
             t -= (float)Math.Sqrt(rsq - p2);
             if (t < 0) return false;
+            
             hit.Position = ray.Origin + ray.Direction * t;
             hit.Distance = t;
-            hit.Material = Material;
+            hit.HitObject = this;
             hit.Normal = (hit.Position - Position).Normalized();
             return true;
         }
@@ -79,9 +80,10 @@ namespace RaytraceEngine.Objects
             Vector3 diff = Position - ray.Origin;
             float t = Vector3.Dot(diff, Normal) / deler;
             if (t < 0.0001f) return false;
+            
             hit.Normal = Normal;
             hit.Position = ray.Origin + ray.Direction * t;
-            hit.Material = Material;
+            hit.HitObject = this;
             hit.Distance = t;
             return true;
         }
