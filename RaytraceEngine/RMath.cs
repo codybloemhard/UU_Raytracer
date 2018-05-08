@@ -56,9 +56,18 @@ namespace RaytraceEngine
         }
 
         //source: https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/reflection-refraction-fresnel
-        public static Vector3 Reflect(Vector3 i, Vector3 n) 
+        public static Vector3 Reflect(Vector3 incidentVector, Vector3 N) 
         { 
-            return i - 2 * Vector3.Dot(i, n) * n; 
+            return incidentVector - 2 * Vector3.Dot(incidentVector, N) * N; 
+        }
+
+        // Source http://asawicki.info/news_1301_reflect_and_refract_functions.html
+        public static Vector3 Refract(Vector3 incidentVector, Vector3 N, float eta)
+        {
+            float N_dot_I = Vector3.Dot(N, incidentVector);
+            float k = 1f - eta * eta * (1f - N_dot_I * N_dot_I);
+            if (k < 0) return Vector3.Zero;
+            return eta * incidentVector - (eta * N_dot_I + (float)Math.Sqrt(k)) * N;
         }
 
         public static Vector3 RndUnit()
@@ -87,6 +96,12 @@ namespace RaytraceEngine
         public static string ToStr(Vector3 v)
         {
             return "" + v.X + " , " + v.Y + " , " + v.Z;
+        }
+        
+        public static void Swap<T> (ref T lhs, ref T rhs) {
+            T temp = lhs;
+            lhs = rhs;
+            rhs = temp;
         }
     }
 }

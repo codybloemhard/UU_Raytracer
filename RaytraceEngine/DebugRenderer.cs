@@ -79,6 +79,11 @@ namespace RaytraceEngine
                 var p2 = TranslatePos(ray.Item2.Position);
                 surface.Line((int)p1.X, (int)p1.Y, (int)p2.X, (int)p2.Y, 0x6200B3);
             }
+            foreach (var ray in Raytracer.RefractRays) {
+                var p1 = TranslatePos(ray.Item1.Origin);
+                var p2 = TranslatePos(ray.Item2.Position);
+                surface.Line((int)p1.X, (int)p1.Y, (int)p2.X, (int)p2.Y, 0xDF3B57);
+            }
         }
 
         private Vector2 TranslatePos(Vector3 pos)

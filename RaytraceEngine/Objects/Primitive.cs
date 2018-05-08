@@ -8,6 +8,11 @@ namespace RaytraceEngine.Objects
     {
         bool CheckHit(Ray ray, out RayHit hit);
     }
+
+    public interface IVolumetricTraceable
+    {
+        bool CheckHitInside(Ray ray, out RayHit hit);
+    }
     
     public abstract class Primitive : Object, ITraceable
     {
@@ -15,7 +20,7 @@ namespace RaytraceEngine.Objects
         public abstract bool CheckHit(Ray ray, out RayHit hit);
     }
 
-    public class Sphere : Primitive
+    public class Sphere : Primitive, IVolumetricTraceable
     {
         public float Radius { get; set; }
         
@@ -35,6 +40,25 @@ namespace RaytraceEngine.Objects
             hit.Distance = t;
             hit.HitObject = this;
             hit.Normal = (hit.Position - Position).Normalized();
+            return true;
+        }
+
+        public bool CheckHitInside(Ray ray, out RayHit hit)
+        {
+            hit = new RayHit();
+            var c = Position - ray.Origin;
+            float t = Vector3.Dot(c, ray.Direction);
+            var q = c - t * ray.Direction;
+            float p2 = Vector3.Dot(q, q);
+            float rsq = Radius * Radius;
+            if (p2 > rsq) return false;
+            t += (float)Math.Sqrt(rsq - p2);
+            if (t < 0) return false;
+            
+            hit.Position = ray.Origin + ray.Direction * t;
+            hit.Distance = t;
+            hit.HitObject = this;
+            hit.Normal = (Position - hit.Position).Normalized();
             return true;
         }
     }

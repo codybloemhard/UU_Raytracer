@@ -67,6 +67,12 @@ namespace DemoRaytraceGame
             sphere3.Radius = 1;
             sphere3.Material = new Material(new Vector3(0.2f, 0.2f, 1), 0f, 0f, 0f);
             Scene.AddObject(sphere3);
+            
+            var sphere4 = new Sphere();
+            sphere4.Position = new Vector3(-1, 1, 2f);
+            sphere4.Radius = 1;
+            sphere4.Material = new Material(new Vector3(1f), 0f, 0f, 1f, 1.5f);
+            Scene.AddObject(sphere4);
 
             var light1 = new SphereAreaLight(2048);
             light1.Colour = Vector3.One;
@@ -97,7 +103,7 @@ namespace DemoRaytraceGame
 
             TraceSettings.AmbientLight = new Vector3(1f) * 0.05f;
             TraceSettings.RealLightSample = false;
-            TraceSettings.MaxLightSamples = 8;
+            TraceSettings.MaxLightSamples = 1;
             TraceSettings.RecursionDepth = 3;
             TraceSettings.AntiAliasing = 1;
             FXAA.EnableFXAA = false;
