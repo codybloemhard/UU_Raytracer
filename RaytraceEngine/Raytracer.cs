@@ -148,10 +148,11 @@ namespace RaytraceEngine
                 lightComp = lightComp * (1f - hit.HitObject.Material.Refractivity) +
                             hit.HitObject.Material.Refractivity * refractColor * hit.HitObject.Material.Colour;
                 return;
-            } 
+            }
             
+            RayHit innerRayHit;
             for (int i = depth; i >= 0; --i) {
-                if(!objectOfInterest.CheckHitInside(rRay, out var innerRayHit)) break;
+                if (!objectOfInterest.CheckHitInside(rRay, out innerRayHit)) break;
                 if (debug && ri % debug_freq == 0) RefractRays.Add(new Tuple<Ray, RayHit>(rRay, innerRayHit));
 
                 rRay.Direction = RMath.Refract(rRay.Direction, innerRayHit.Normal, 1f/material.RefractETA);

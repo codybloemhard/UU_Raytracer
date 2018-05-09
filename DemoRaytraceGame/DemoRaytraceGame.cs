@@ -40,8 +40,8 @@ namespace DemoRaytraceGame
             camera.Aspect = 1;
             Scene = new RayScene(camera);
 
-            Surface wallTex = new Surface("assets/wall.png");
-            Surface woodTex = new Surface("assets/wood.png");
+            Surface wallTex = new Surface("../../Assets/wall.png");
+            Surface woodTex = new Surface("../../Assets/wood.png");
 
             var floor = new Plane();
             floor.Position = new Vector3(0, 0, 0);
