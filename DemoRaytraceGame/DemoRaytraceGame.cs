@@ -42,6 +42,7 @@ namespace DemoRaytraceGame
 
             Surface wallTex = new Surface("../../Assets/wall.png");
             Surface woodTex = new Surface("../../Assets/wood.png");
+            Surface metalTex = new Surface("../../Assets/metal.png");
 
             var floor = new Plane();
             floor.Position = new Vector3(0, 0, 0);
@@ -57,7 +58,7 @@ namespace DemoRaytraceGame
             wall1.Material.Texture = woodTex;
             wall1.Material.TextureScale = 8f;
             Scene.AddObject(wall1);
-
+            
             Plane wall2 = new Plane();
             wall2.Position = new Vector3(0, 0, -1);
             wall2.Rotation = new Quaternion(MathHelper.DegreesToRadians(90), 0, 0);
@@ -65,6 +66,14 @@ namespace DemoRaytraceGame
             wall2.Material.Texture = woodTex;
             wall2.Material.TextureScale = 8f;
             Scene.AddObject(wall2);
+
+            Plane roof = new Plane();
+            roof.Position = new Vector3(0, 7, 0);
+            roof.Rotation = new Quaternion(MathHelper.DegreesToRadians(180), 0, 0);
+            roof.Material = new Material(new Vector3(1f), 0f, 0f, 0f);
+            roof.Material.Texture = metalTex;
+            roof.Material.TextureScale = 8f;
+            Scene.AddObject(roof);
 
             var sphere1 = new Sphere();
             sphere1.Position = new Vector3(-3, 1, 3.5f);
