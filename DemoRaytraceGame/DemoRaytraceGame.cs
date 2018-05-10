@@ -39,11 +39,11 @@ namespace DemoRaytraceGame
             var camera = new Camera(new Vector3(0, 1, 0), new Quaternion(0, 0, 0), 1, 1);
             camera.Aspect = 1;
             Scene = new RayScene(camera);
-
+            
             Surface wallTex = new Surface("../../Assets/wall.png");
             Surface woodTex = new Surface("../../Assets/wood.png");
             Surface metalTex = new Surface("../../Assets/metal.png");
-
+            
             var floor = new Plane();
             floor.Position = new Vector3(0, 0, 0);
             floor.Material = new Material(Vector3.One, 0f, 0.5f, 0f);
