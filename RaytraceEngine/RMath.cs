@@ -86,6 +86,14 @@ namespace RaytraceEngine
             return i;
         }
 
+        public static Vector3 ToFloatColour(int c)
+        {
+            float b = (byte)(c & 0x000000FF);
+            float g = (byte)((c & 0x0000FF00) >> 8);
+            float t = (byte)((c & 0x00FF0000) >> 16);
+            return new Vector3(t / 255f, g / 255f, b / 255f);
+        }
+
         public static float Clamp(float min, float max, float val)
         {
             if (val < min) val = min;

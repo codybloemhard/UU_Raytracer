@@ -54,6 +54,9 @@ namespace RaytraceEngine
             Parallel.For(0, winHeight - 1, parallelOptions, i => {
                 RenderArea(new Area(0, winWidth, i, i+1), projectionPlane, surface, scene);
             });
+            /*for(int i = 0; i < winHeight - 1; i++)
+                RenderArea(new Area(0, winWidth, i, i + 1), projectionPlane, surface, scene);
+            */
         }
 
         public void RenderArea(Area area, FinitePlane projectionPlane, Surface surface, RayScene scene)
@@ -99,7 +102,7 @@ namespace RaytraceEngine
                 if (primitive.CheckHit(ray, out tmpHit) && tmpHit.Distance < hit.Distance) hit = tmpHit;
             }
 
-            if (hit.HitObject == null) return Vector3.Zero;
+            if (hit.HitObject == null) return scene.Sky.SkyColour(ray.Direction);
             
             if (debug && ri % debug_freq == 0) Rays.Add(new Tuple<Ray, RayHit>(ray, hit));
 

@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DebugRenderer.cs" />
+    <Compile Include="Objects\CubeMap.cs" />
     <Compile Include="Objects\Lights\Light.cs" />
     <Compile Include="Objects\Lights\MultiSampleLight.cs" />
     <Compile Include="Objects\Lights\SpotLight.cs" />
