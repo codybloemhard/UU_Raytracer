@@ -49,7 +49,7 @@ namespace RaytraceEngine
             ShadowRays.Clear();
             RefractRays.Clear();
             var projectionPlane = scene.CurrentCamera.GetNearClippingPlane();
-
+            
             var parallelOptions = new ParallelOptions{MaxDegreeOfParallelism = Environment.ProcessorCount};
             Parallel.For(0, winHeight - 1, parallelOptions, i => {
                 RenderArea(new Area(0, winWidth, i, i+1), projectionPlane, surface, scene);
@@ -125,9 +125,24 @@ namespace RaytraceEngine
         private void ApplyReflectivity(RayScene scene, int depth, ref Ray ray, ref RayHit hit, ref Vector3 lightComp, bool debug)
         {
             Ray rRay = new Ray();
-            rRay.Direction = RMath.Reflect(ray.Direction, hit.Normal);
-            rRay.Origin = hit.Position + rRay.Direction * 0.001f;
-            var reflectColor = TraceColour(rRay, scene, depth, debug);
+            Vector3 reflDir = RMath.Reflect(ray.Direction, hit.Normal);
+            rRay.Origin = hit.Position + hit.Normal * 0.001f;
+            var reflectColor = Vector3.Zero;
+
+            if(hit.HitObject.Material.Roughness > 0.0001f)
+            {
+                for (int i = 0; i < TraceSettings.MaxReflectionSamples; i++)
+                {
+                    rRay.Direction = RMath.RandomChange(reflDir, hit.HitObject.Material.Roughness);
+                    reflectColor += TraceColour(rRay, scene, depth, debug);
+                }
+                reflectColor /= TraceSettings.MaxReflectionSamples;
+            }
+            else
+            {
+                rRay.Direction = reflDir;
+                reflectColor = TraceColour(rRay, scene, depth, debug);
+            }
 
             lightComp = lightComp * (1f - hit.HitObject.Material.Reflectivity) +
                         hit.HitObject.Material.Reflectivity * reflectColor * hit.HitObject.Material.Colour;

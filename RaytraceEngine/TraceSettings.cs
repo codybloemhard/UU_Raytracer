@@ -10,5 +10,6 @@ namespace RaytraceEngine
         public static bool RealLightSample = false;
         public static uint RecursionDepth = 3;
         public static uint AntiAliasing = 2;
+        public static uint MaxReflectionSamples = 8;
     }
 }

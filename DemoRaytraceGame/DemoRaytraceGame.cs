@@ -49,7 +49,7 @@ namespace DemoRaytraceGame
             
             var floor = new Plane();
             floor.Position = new Vector3(0, 0, 0);
-            floor.Material = new Material(Vector3.One, 0f, 0.5f, 0f);
+            floor.Material = new Material(Vector3.One, 0.08f, 0.5f, 0f);
             floor.Material.Texture = wallTex;
             floor.Material.TextureScale = 4f;
             Scene.AddObject(floor);
@@ -57,7 +57,7 @@ namespace DemoRaytraceGame
             Plane wall1 = new Plane();
             wall1.Position = new Vector3(0, 0, 7);
             wall1.Rotation = new Quaternion(MathHelper.DegreesToRadians(-90), 0, 0);
-            wall1.Material = new Material(Vector3.One, 0f, 0f, 0f);
+            wall1.Material = new Material(Vector3.One, 0.05f, 1f, 0f);
             wall1.Material.Texture = woodTex;
             wall1.Material.TextureScale = 8f;
             //Scene.AddObject(wall1);
@@ -87,7 +87,7 @@ namespace DemoRaytraceGame
             var sphere2 = new Sphere();
             sphere2.Position = new Vector3(0, 1, 4);
             sphere2.Radius = 1;
-            sphere2.Material = new Material(new Vector3(1f), 0f, 1f, 0f);
+            sphere2.Material = new Material(new Vector3(1f), 0.2f, 1f, 0f);
             Scene.AddObject(sphere2);
             
             var sphere3 = new Sphere();
@@ -100,7 +100,7 @@ namespace DemoRaytraceGame
             sphere4.Position = new Vector3(-1, 1, 2f);
             sphere4.Radius = 1;
             sphere4.Material = new Material(new Vector3(1f), 0f, 0f, 1f, 1.5f);
-            Scene.AddObject(sphere4);
+            //Scene.AddObject(sphere4);
 
             var light1 = new SphereAreaLight(2048);
             light1.Colour = Vector3.One;
@@ -134,6 +134,7 @@ namespace DemoRaytraceGame
             TraceSettings.MaxLightSamples = 1;
             TraceSettings.RecursionDepth = 3;
             TraceSettings.AntiAliasing = 1;
+            TraceSettings.MaxReflectionSamples = 32;
             FXAA.EnableFXAA = false;
             FXAA.LumaThreashold = 0.1f;
             FXAA.MulReduce = 8f;
