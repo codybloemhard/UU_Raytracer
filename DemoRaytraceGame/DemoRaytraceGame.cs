@@ -87,7 +87,7 @@ namespace DemoRaytraceGame
             var sphere4 = new Sphere();
             sphere4.Position = new Vector3(-1, 1, 2f);
             sphere4.Radius = 1;
-            sphere4.Material = new Material(new Vector3(1f), 0f, 0f, 1f, 1.5f);
+            sphere4.Material = new Material(new Vector3(1f), 0f, 0f, 0.6f, 1.5f);
             Scene.AddObject(sphere4);
 
             var light1 = new SphereAreaLight(2048);

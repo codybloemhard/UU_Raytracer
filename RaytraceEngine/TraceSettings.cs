@@ -10,5 +10,10 @@ namespace RaytraceEngine
         public static bool RealLightSample = false;
         public static uint RecursionDepth = 3;
         public static uint AntiAliasing = 2;
+        
+        /// <summary>
+        /// With refractivity of 1 light ray through object of length of 20 is fully dimmed 
+        /// </summary>
+        public static float RefractLightDecayConstant = 15; 
     }
 }
