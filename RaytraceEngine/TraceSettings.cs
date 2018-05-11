@@ -15,5 +15,6 @@ namespace RaytraceEngine
         /// With refractivity of 1 light ray through object of length of 20 is fully dimmed 
         /// </summary>
         public static float RefractLightDecayConstant = 15; 
+        public static uint MaxReflectionSamples = 8;
     }
 }

@@ -12,11 +12,13 @@ namespace RaytraceEngine
     {
         public List<Primitive> Primitives;
         public List<ILightSource> Lights;
+        public CubeMap Sky;
 
-        public RayScene(Camera camera) : base(camera)
+        public RayScene(Camera camera, CubeMap sky) : base(camera)
         {
             Primitives = new List<Primitive>();
             Lights = new List<ILightSource>();
+            Sky = sky;
         }
 
         public override void AddObject(ITransformative obj)

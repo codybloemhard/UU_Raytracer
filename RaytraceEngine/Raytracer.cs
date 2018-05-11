@@ -98,8 +98,8 @@ namespace RaytraceEngine
                 if (primitive.CheckHit(ray, out tmpHit) && tmpHit.Distance < hit.Distance) hit = tmpHit;
             }
 
-            if (hit.HitObject == null) return Vector3.Zero;
-
+            if (hit.HitObject == null) return scene.Sky.SkyColour(ray.Direction);
+            
             if (debug && ri % debug_freq == 0) Rays.Add(new Tuple<Ray, RayHit>(ray, hit));
 
             Vector3 baseCol = hit.HitObject.Material.Colour;
@@ -123,9 +123,24 @@ namespace RaytraceEngine
             bool debug = false)
         {
             Ray rRay = new Ray();
-            rRay.Direction = RMath.Reflect(ray.Direction, hit.Normal);
-            rRay.Origin = hit.Position + rRay.Direction * 0.001f;
-            var reflectColor = TraceColour(rRay, scene, depth, debug);
+            Vector3 reflDir = RMath.Reflect(ray.Direction, hit.Normal);
+            rRay.Origin = hit.Position + hit.Normal * 0.001f;
+            var reflectColor = Vector3.Zero;
+
+            if(hit.HitObject.Material.Roughness > 0.0001f)
+            {
+                for (int i = 0; i < TraceSettings.MaxReflectionSamples; i++)
+                {
+                    rRay.Direction = RMath.RandomChange(reflDir, hit.HitObject.Material.Roughness);
+                    reflectColor += TraceColour(rRay, scene, depth, debug);
+                }
+                reflectColor /= TraceSettings.MaxReflectionSamples;
+            }
+            else
+            {
+                rRay.Direction = reflDir;
+                reflectColor = TraceColour(rRay, scene, depth, debug);
+            }
 
             lightComp = lightComp * (1f - reflectivity) + reflectivity * reflectColor * hit.HitObject.Material.Colour;
         }
@@ -211,7 +226,7 @@ namespace RaytraceEngine
 
         private Vector3 CalcLightEnergy(RayScene scene, RayHit hit, bool debug)
         {
-            Vector3 lEnergy = Vector3.Zero;
+            Vector3 lEnergy = TraceSettings.AmbientLight;
             bool first = true;
             foreach (var light in scene.Lights) {
                 var lPoints = light.GetPoints(TraceSettings.MaxLightSamples, TraceSettings.RealLightSample);

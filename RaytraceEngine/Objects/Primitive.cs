@@ -71,20 +71,9 @@ namespace RaytraceEngine.Objects
 
     public class Plane : Primitive
     {
-        private Vector3 position;
         private Quaternion rotation;
         private Vector3 u, v;
-
-        public override Vector3 Position
-        {
-            get { return position; }
-            set
-            {
-                position = value;
-                UpdateNormal();
-            }
-        }
-
+        
         public override Quaternion Rotation
         {
             get { return rotation; }
@@ -101,6 +90,15 @@ namespace RaytraceEngine.Objects
         public void UpdateNormal()
         {
             Normal = Vector3.UnitY * Matrix3.CreateFromQuaternion(Rotation);
+            u = new Vector3(Normal.Y, Normal.Z, -Normal.X);
+            v = Vector3.Cross(u, Normal);
+            u.Normalize();
+            v.Normalize();
+        }
+
+        public void UpdateNormal(Vector3 normal)
+        {
+            Normal = normal;
             u = new Vector3(Normal.Y, Normal.Z, -Normal.X);
             v = Vector3.Cross(u, Normal);
             u.Normalize();

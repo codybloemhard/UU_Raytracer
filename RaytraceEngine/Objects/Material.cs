@@ -47,10 +47,7 @@ namespace RaytraceEngine.Objects
             int xx = (int)(Texture.width * uv.X);
             int yy = (int)(Texture.height * uv.Y);
             int c = Texture.pixels[xx * Texture.height + yy];
-            float B = (byte)(c & 0x000000FF);
-            float G = (byte)((c & 0x0000FF00) >> 8);
-            float R = (byte)((c & 0x00FF0000) >> 16);
-            return new Vector3(R / 255f, G / 255f, B / 255f);
+            return RMath.ToFloatColour(c);
         }
     }
 }

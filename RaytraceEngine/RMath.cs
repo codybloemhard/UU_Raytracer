@@ -60,6 +60,22 @@ namespace RaytraceEngine
         { 
             return incidentVector - 2 * Vector3.Dot(incidentVector, N) * N; 
         }
+        //source: wikipedia
+        public static Vector3 ToPolar(Vector3 cart)
+        {
+            float r = cart.Length;
+            float o = (float)Math.Acos(cart.Z / r);
+            float y = (float)Math.Atan2(cart.Y , cart.X);
+            return new Vector3(r, o, y);
+        }
+
+        public static Vector3 RandomChange(Vector3 vec, float power)
+        {
+            Vector3 r = new Vector3((float)ThreadLocalRandom.Instance.NextDouble(),
+                                    (float)ThreadLocalRandom.Instance.NextDouble(),
+                                    (float)ThreadLocalRandom.Instance.NextDouble());
+            return (vec + r * power).Normalized();
+        }
 
         // Source http://asawicki.info/news_1301_reflect_and_refract_functions.html
         public static Vector3 Refract(Vector3 incidentVector, Vector3 N, float eta)
@@ -84,6 +100,14 @@ namespace RaytraceEngine
             i += (int)(Math.Min(255, c.Y * 255)) << 8;
             i += (int)(Math.Min(255, c.Z * 255));
             return i;
+        }
+
+        public static Vector3 ToFloatColour(int c)
+        {
+            float b = (byte)(c & 0x000000FF);
+            float g = (byte)((c & 0x0000FF00) >> 8);
+            float t = (byte)((c & 0x00FF0000) >> 16);
+            return new Vector3(t / 255f, g / 255f, b / 255f);
         }
 
         public static float Clamp(float min, float max, float val)
