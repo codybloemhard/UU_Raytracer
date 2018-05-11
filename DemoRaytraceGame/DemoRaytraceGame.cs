@@ -109,7 +109,7 @@ namespace DemoRaytraceGame
             light1.Position = new Vector3(1.5f, 3f, 2f);
             light1.Radius = 0.5f;
             Scene.AddObject(light1);
-
+            
             var light2 = new SpotLightMultiSample(2048);
             light2.Colour = new Vector3(1f, 1f, 0.1f).Normalized();
             light2.Intensity = 2000;
@@ -120,7 +120,7 @@ namespace DemoRaytraceGame
             light2.AngleMin = 15;
             light2.AngleMax = 20f;
             //Scene.AddObject(light2);
-
+            
             var light3 = new SphereAreaLight(2048);
             light3.Colour = Vector3.One;
             light3.Intensity = 100;

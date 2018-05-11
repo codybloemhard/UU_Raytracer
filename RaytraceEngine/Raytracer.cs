@@ -179,7 +179,7 @@ namespace RaytraceEngine
         
         private Vector3 CalcLightEnergy(RayScene scene, RayHit hit, bool debug)
         {
-            Vector3 lEnergy = Vector3.Zero;
+            Vector3 lEnergy = TraceSettings.AmbientLight;
             bool first = true;
             foreach (var light in scene.Lights)
             {

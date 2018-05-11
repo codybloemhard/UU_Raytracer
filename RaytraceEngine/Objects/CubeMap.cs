@@ -120,6 +120,8 @@ namespace RaytraceEngine.Objects
             if (uv.Y > 1) uv.Y = 0;
             uv *= size;
             uv += corners[closeIndex];
+            uv.X = RMath.Clamp(corners[closeIndex].X + 1, corners[closeIndex].X + size - 1, uv.X);
+            uv.Y = RMath.Clamp(corners[closeIndex].Y + 1, corners[closeIndex].Y + size - 1, uv.Y);
             int pixel = (int)uv.X + ((int)uv.Y * texture.width);
             int c = texture.pixels[pixel];
             return RMath.ToFloatColour(c);
