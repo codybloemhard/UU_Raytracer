@@ -44,6 +44,8 @@ namespace RaytraceEngine.Objects
             uv.Y = uv.Y - (float)Math.Truncate(uv.Y);
             if (uv.X < 0) uv.X = 1f + uv.X;
             if (uv.Y < 0) uv.Y = 1f + uv.Y;
+            if (uv.X > 0.999f) uv.X = 0.999f;
+            if (uv.Y > 0.999f) uv.Y = 0.999f;
             int xx = (int)(Texture.width * uv.X);
             int yy = (int)(Texture.height * uv.Y);
             int c = Texture.pixels[xx * Texture.height + yy];
