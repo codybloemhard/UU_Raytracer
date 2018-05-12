@@ -93,7 +93,8 @@ namespace RaytraceEngine
                                 (float)ThreadLocalRandom.Instance.NextDouble() - 0.5f)
                                 .Normalized();
         }
-
+        //source of sampling on sphere, stratified by myself.
+        //https://www.gamasutra.com/view/news/169816/Indepth_Generating_uniformly_distributed_points_on_a_sphere.php
         public static Vector3 RndUnitStratified(int steps, int stepZ, int stepT)
         {
             float z = (float)((ThreadLocalRandom.Instance.NextDouble() / steps) + (stepZ * (1f / steps))) * 2f - 1f;
