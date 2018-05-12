@@ -50,11 +50,15 @@ namespace RaytraceEngine
             RefractRays.Clear();
             var projectionPlane = scene.CurrentCamera.GetNearClippingPlane();
 
-            var parallelOptions = new ParallelOptions {MaxDegreeOfParallelism = Environment.ProcessorCount};
-            Parallel.For(0, winHeight - 1, parallelOptions,
+            var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount };
+            if(TraceSettings.Multithreading)
+                Parallel.For(0, winHeight - 1, parallelOptions,
                 i => { RenderArea(new Area(0, winWidth, i, i + 1), projectionPlane, surface, scene); });
+            else
+                for (int i = 0; i < winHeight - 1; i++)
+                    RenderArea(new Area(0, winWidth, i, i + 1), projectionPlane, surface, scene);
         }
-
+        
         public void RenderArea(Area area, FinitePlane projectionPlane, Surface surface, RayScene scene)
         {
             int a = (int) TraceSettings.AntiAliasing;

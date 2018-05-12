@@ -88,11 +88,16 @@ namespace RaytraceEngine
 
         public static Vector3 RndUnit()
         {
-            return new Vector3( (float)ThreadLocalRandom.Instance.NextDouble(),
-                                (float)ThreadLocalRandom.Instance.NextDouble(),
-                                (float)ThreadLocalRandom.Instance.NextDouble())
+            return new Vector3( (float)ThreadLocalRandom.Instance.NextDouble() - 0.5f,
+                                (float)ThreadLocalRandom.Instance.NextDouble() - 0.5f,
+                                (float)ThreadLocalRandom.Instance.NextDouble() - 0.5f)
                                 .Normalized();
         }
+
+        /*public static Vector3 RndUnitStratified()
+        {
+
+        }*/
 
         public static int ToIntColour(Vector3 c)
         {
