@@ -131,7 +131,7 @@ namespace DemoRaytraceGame
             TraceSettings.Multithreading = true;
             TraceSettings.AmbientLight = new Vector3(1f) * 0.05f;
             TraceSettings.RealLightSample = true;
-            TraceSettings.MaxLightSamples = 32;
+            TraceSettings.MaxLightSamples = 64;
             TraceSettings.RecursionDepth = 3;
             TraceSettings.AntiAliasing = 1;
             TraceSettings.MaxReflectionSamples = 32;

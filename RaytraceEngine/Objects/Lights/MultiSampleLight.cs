@@ -56,11 +56,15 @@ namespace RaytraceEngine.Objects.Lights
         }
 
         public SphereAreaLight(int uniqSamples) : base(uniqSamples) { }
-
+        
         protected override void InitSamples()
         {
-            for (int i = 0; i < uniqSamples; i++)
-                allPoints[i] = position + RMath.RndUnit() * radius;
+            int a = 0;
+            int steps = (int)Math.Sqrt(uniqSamples);
+            for (int i = 0; i < steps; i++)
+            for (int j = 0; j < steps; j++)
+                allPoints[a++] = position + RMath.RndUnitStratified(steps, i, j) * radius;
+            
         }
     }
 }

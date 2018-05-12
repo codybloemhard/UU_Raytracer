@@ -94,10 +94,15 @@ namespace RaytraceEngine
                                 .Normalized();
         }
 
-        /*public static Vector3 RndUnitStratified()
+        public static Vector3 RndUnitStratified(int steps, int stepZ, int stepT)
         {
-
-        }*/
+            float z = (float)((ThreadLocalRandom.Instance.NextDouble() / steps) + (stepZ * (1f / steps))) * 2f - 1f;
+            float t = (float)((ThreadLocalRandom.Instance.NextDouble() / steps) + (stepT * (1f / steps)) * Math.PI) * 2f;
+            float r = (float)Math.Sqrt(1 - z*z);
+            float x = r * (float)Math.Cos(t);
+            float y = r * (float)Math.Sin(t);
+            return new Vector3(x, y, z);
+        }
 
         public static int ToIntColour(Vector3 c)
         {
