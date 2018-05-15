@@ -181,6 +181,7 @@ namespace DemoRaytraceGame
         
         public override void Render2D()
         {
+            Scene.PrepareForRender();
             if(!shouldRender) return; 
             DebugRenderer.Render(Screen, Scene);
             base.Render2D();
