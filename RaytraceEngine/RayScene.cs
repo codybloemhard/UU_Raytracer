@@ -34,6 +34,8 @@ namespace RaytraceEngine
         {
             Primitives = _primitives.ToArray();
             Lights = _lights.ToArray();
+            foreach (var l in Lights) l.Init();
+            foreach (var p in Primitives) p.Init();
         }
     }
 }

@@ -59,7 +59,7 @@ namespace DemoRaytraceGame
             wall1.Material = new Material(Vector3.One, 0.0f, 0f, 0f);
             wall1.Material.Texture = woodTex;
             wall1.Material.TextureScale = 8f;
-            Scene.AddObject(wall1);
+            //Scene.AddObject(wall1);
             
             Plane wall2 = new Plane();
             wall2.Position = new Vector3(0, 0, -1);
@@ -75,7 +75,7 @@ namespace DemoRaytraceGame
             roof.Material = new Material(new Vector3(1f), 0f, 0f, 0f);
             roof.Material.Texture = metalTex;
             roof.Material.TextureScale = 8f;
-            Scene.AddObject(roof);
+            //Scene.AddObject(roof);
 
             var sphere1 = new Sphere();
             sphere1.Position = new Vector3(-3, 1, 3.5f);

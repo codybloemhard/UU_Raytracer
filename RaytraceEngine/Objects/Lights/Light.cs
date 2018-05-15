@@ -14,6 +14,8 @@ namespace RaytraceEngine.Objects.Lights
         float AngleEnergy(Vector3 toLight);
 
         float MaxEnergy { get; set; }
+
+        void Init();
     }
     
     public class PointLight : ILightSource, ITransformative, ITraceable
@@ -22,6 +24,8 @@ namespace RaytraceEngine.Objects.Lights
         public float Intensity { get; set; }
         public virtual Vector3 Position { get; set; }
         public virtual Quaternion Rotation { get; set; }
+
+        public virtual void Init() { }
 
         public virtual Vector3[] GetPoints(uint maxSamples, bool rng)
         {
