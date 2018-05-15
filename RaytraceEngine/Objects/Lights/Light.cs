@@ -9,7 +9,7 @@ namespace RaytraceEngine.Objects.Lights
         Vector3 Colour { get; set; }
         float Intensity { get; set; }
 
-        Vector3[] GetPoints(uint maxSamples, bool rng);
+        Vector3[] GetPoints(uint maxSamples, LightSampleMode mode);
 
         float AngleEnergy(Vector3 toLight);
 
@@ -27,7 +27,7 @@ namespace RaytraceEngine.Objects.Lights
 
         public virtual void Init() { }
 
-        public virtual Vector3[] GetPoints(uint maxSamples, bool rng)
+        public virtual Vector3[] GetPoints(uint maxSamples, LightSampleMode mode)
         {
             return new Vector3[] { Position };
         }

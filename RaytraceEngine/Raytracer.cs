@@ -233,7 +233,7 @@ namespace RaytraceEngine
             Vector3 lEnergy = TraceSettings.AmbientLight;
             bool first = true;
             foreach (var light in scene.Lights) {
-                var lPoints = light.GetPoints(TraceSettings.MaxLightSamples, TraceSettings.RealLightSample);
+                var lPoints = light.GetPoints(TraceSettings.MaxLightSamples, TraceSettings.LSM);
                 var localEnergy = Vector3.Zero;
                 foreach (var lp in lPoints)
                     localEnergy += ProbeLight(hit, lp, light, scene, debug && first && ri % debug_freq == 0);

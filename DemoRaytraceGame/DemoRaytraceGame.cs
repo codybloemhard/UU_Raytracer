@@ -59,7 +59,7 @@ namespace DemoRaytraceGame
             wall1.Material = new Material(Vector3.One, 0.0f, 0f, 0f);
             wall1.Material.Texture = woodTex;
             wall1.Material.TextureScale = 8f;
-            //Scene.AddObject(wall1);
+            Scene.AddObject(wall1);
             
             Plane wall2 = new Plane();
             wall2.Position = new Vector3(0, 0, -1);
@@ -78,7 +78,7 @@ namespace DemoRaytraceGame
             //Scene.AddObject(roof);
 
             var sphere1 = new Sphere();
-            sphere1.Position = new Vector3(-3, 1, 3.5f);
+            sphere1.Position = new Vector3(-2.5f, 1, 3.5f);
             sphere1.Radius = 1;
             sphere1.Material = new Material(new Vector3(1, 0.2f, 0.2f), 0f, 0.5f, 0f);
             Scene.AddObject(sphere1);
@@ -90,7 +90,7 @@ namespace DemoRaytraceGame
             //Scene.AddObject(sphere2);
             
             var sphere3 = new Sphere();
-            sphere3.Position = new Vector3(3, 1, 3.5f);
+            sphere3.Position = new Vector3(2.5f, 1, 3.5f);
             sphere3.Radius = 1;
             sphere3.Material = new Material(new Vector3(0.2f, 0.2f, 1), 0f, 0f, 0f);
             Scene.AddObject(sphere3);
@@ -130,10 +130,10 @@ namespace DemoRaytraceGame
             
             TraceSettings.Multithreading = true;
             TraceSettings.AmbientLight = new Vector3(1f) * 0.05f;
-            TraceSettings.RealLightSample = true;
-            TraceSettings.MaxLightSamples = 128;
+            TraceSettings.LSM = LightSampleMode.TRUE_STRATIFIED;
+            TraceSettings.MaxLightSamples = 32;
             TraceSettings.RecursionDepth = 3;
-            TraceSettings.AntiAliasing = 1;
+            TraceSettings.AntiAliasing = 2;
             TraceSettings.MaxReflectionSamples = 16;
             FXAA.EnableFXAA = false;
             FXAA.LumaThreashold = 0.1f;

@@ -91,10 +91,7 @@ namespace RaytraceEngine.Objects
             } 
         }
 
-        public override void Init()
-        {
-
-        }
+        public override void Init() { }
 
         public Vector3 Normal { get;  private set; }
         //uv axis:
