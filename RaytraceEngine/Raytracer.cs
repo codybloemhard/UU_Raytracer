@@ -40,7 +40,7 @@ namespace RaytraceEngine
         public static List<Tuple<Ray, RayHit>> ShadowRays = new List<Tuple<Ray, RayHit>>();
         public static List<Tuple<Ray, RayHit>> RefractRays = new List<Tuple<Ray, RayHit>>();
         private int ri = 0;
-        private int debug_freq = 32;
+        private int debug_freq = 64;
 
         public void Render(Surface surface, RayScene scene)
         {
@@ -231,15 +231,19 @@ namespace RaytraceEngine
         private Vector3 CalcLightEnergy(RayScene scene, RayHit hit, bool debug)
         {
             Vector3 lEnergy = TraceSettings.AmbientLight;
-            bool first = true;
             foreach (var light in scene.Lights) {
                 var lPoints = light.GetPoints(TraceSettings.MaxLightSamples, TraceSettings.LSM);
                 var localEnergy = Vector3.Zero;
-                foreach (var lp in lPoints)
-                    localEnergy += ProbeLight(hit, lp, light, scene, debug && first && ri % debug_freq == 0);
+                
+                bool first = true;
+                foreach (var lp in lPoints) {
+                    localEnergy += ProbeLight(hit, lp, light, scene, debug && first);
+                    first = false;
+                }
+
                 localEnergy /= lPoints.Length;
                 lEnergy += localEnergy;
-                first = false;
+                
             }
 
             return lEnergy;
@@ -266,13 +270,12 @@ namespace RaytraceEngine
             foreach (var prim in scene.Primitives) {
                 RayHit tmp;
                 if (prim.CheckHit(sRay, out tmp) && tmp.Distance * tmp.Distance < distsq) {
-                    if (debug) ShadowRays.Add(new Tuple<Ray, RayHit>(sRay, tmp));
+                    if (debug && ri % debug_freq == 0) ShadowRays.Add(new Tuple<Ray, RayHit>(sRay, tmp));
                     return Vector3.Zero;
                 }
             }
 
-            if (debug && ri % debug_freq == 0)
-                LightRays.Add(new Tuple<Ray, RayHit>(sRay, new RayHit(lPos, Vector3.One, 1, null)));
+            if (debug && ri % debug_freq == 0) LightRays.Add(new Tuple<Ray, RayHit>(sRay, new RayHit(lPos, Vector3.One, 1, null)));
 
             // Calculate the power of the light
             power *= light.AngleEnergy(-sRayVec);
