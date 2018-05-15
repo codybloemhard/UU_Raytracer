@@ -127,14 +127,14 @@ namespace DemoRaytraceGame
             light3.Position = new Vector3(-3f, 1f, 6f);
             light3.Radius = 0.5f;
             //Scene.AddObject(light3);
-
+            
             TraceSettings.Multithreading = true;
             TraceSettings.AmbientLight = new Vector3(1f) * 0.05f;
             TraceSettings.RealLightSample = true;
-            TraceSettings.MaxLightSamples = 256;
+            TraceSettings.MaxLightSamples = 128;
             TraceSettings.RecursionDepth = 3;
-            TraceSettings.AntiAliasing = 2;
-            TraceSettings.MaxReflectionSamples = 32;
+            TraceSettings.AntiAliasing = 1;
+            TraceSettings.MaxReflectionSamples = 16;
             FXAA.EnableFXAA = false;
             FXAA.LumaThreashold = 0.1f;
             FXAA.MulReduce = 8f;
