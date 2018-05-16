@@ -48,7 +48,7 @@ namespace DemoRaytraceGame
             
             var floor = new Plane();
             floor.Position = new Vector3(0, 0, 0);
-            floor.Material = new Material(Vector3.One, 0f, 0f, 0f);
+            floor.Material = new Material(Vector3.One, 0.05f, 0.5f, 0f);
             floor.Material.Texture = wallTex;
             floor.Material.TextureScale = 4f;
             Scene.AddObject(floor);
@@ -87,7 +87,7 @@ namespace DemoRaytraceGame
             sphere2.Position = new Vector3(0, 1, 4);
             sphere2.Radius = 1;
             sphere2.Material = new Material(new Vector3(1f), 0.2f, 1f, 0f);
-            //Scene.AddObject(sphere2);
+            Scene.AddObject(sphere2);
             
             var sphere3 = new Sphere();
             sphere3.Position = new Vector3(2.5f, 1, 3.5f);
@@ -100,6 +100,11 @@ namespace DemoRaytraceGame
             sphere4.Radius = 1;
             sphere4.Material = new Material(new Vector3(1f), 0f, 0f, 0.6f, 1.5f);
             //Scene.AddObject(sphere4);
+
+            var triangle1 = new Triangle();
+            triangle1.Vertices = new Vector3[] { new Vector3(-1, 0, 1), new Vector3(1, 0, 1), new Vector3(0, 1, 1) };
+            triangle1.Material = new Material(new Vector3(0.9f, 0.1f, 0.1f), 0f, .8f, 0f);
+            Scene.AddObject(triangle1);
 
             var light1 = new SphereAreaLight(2048);
             light1.Colour = Vector3.One;
@@ -130,11 +135,19 @@ namespace DemoRaytraceGame
             
             TraceSettings.Multithreading = true;
             TraceSettings.AmbientLight = new Vector3(1f) * 0.05f;
+<<<<<<< HEAD
+            TraceSettings.RealLightSample = false;
+            TraceSettings.MaxLightSamples = 4;
+            TraceSettings.RecursionDepth = 3;
+            TraceSettings.AntiAliasing = 1;
+            TraceSettings.MaxReflectionSamples = 4;
+=======
             TraceSettings.LSM = LightSampleMode.TRUE_STRATIFIED;
             TraceSettings.MaxLightSamples = 32;
             TraceSettings.RecursionDepth = 3;
             TraceSettings.AntiAliasing = 2;
             TraceSettings.MaxReflectionSamples = 16;
+>>>>>>> cae2d7769e73e174db6ea7a8ec1572dde2af3d67
             FXAA.EnableFXAA = false;
             FXAA.LumaThreashold = 0.1f;
             FXAA.MulReduce = 8f;
