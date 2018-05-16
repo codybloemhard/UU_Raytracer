@@ -17,7 +17,7 @@ namespace RaytraceEngine.Objects.Lights
             return (AngleMax - ang) / (AngleMax - AngleMin);
         }
     }
-
+    
     public class SpotLightMultiSample : SphereAreaLight
     {
         public Vector3 Normal { get; set; }
@@ -34,10 +34,10 @@ namespace RaytraceEngine.Objects.Lights
             return (AngleMax - ang) / (AngleMax - AngleMin);
         }
 
-        protected override void InitSamples()
+        public override void Init()
         {
             for (int i = 0; i < uniqSamples; i++)
-                allPoints[i] = position + RMath.RndUnit() * radius;
+                allPoints[i] = Position + RMath.RndUnit() * Radius;
         }
     }
 }

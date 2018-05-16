@@ -49,7 +49,7 @@ namespace RaytraceEngine
             ShadowRays.Clear();
             RefractRays.Clear();
             var projectionPlane = scene.CurrentCamera.GetNearClippingPlane();
-
+            
             var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount };
             if(TraceSettings.Multithreading)
                 Parallel.For(0, winHeight - 1, parallelOptions,
@@ -233,7 +233,7 @@ namespace RaytraceEngine
             Vector3 lEnergy = TraceSettings.AmbientLight;
             bool first = true;
             foreach (var light in scene.Lights) {
-                var lPoints = light.GetPoints(TraceSettings.MaxLightSamples, TraceSettings.RealLightSample);
+                var lPoints = light.GetPoints(TraceSettings.MaxLightSamples, TraceSettings.LSM);
                 var localEnergy = Vector3.Zero;
                 foreach (var lp in lPoints)
                     localEnergy += ProbeLight(hit, lp, light, scene, debug && first && ri % debug_freq == 0);
@@ -250,7 +250,9 @@ namespace RaytraceEngine
             var sRayVec = lPos - hit.Position;
             float distsq = Vector3.Dot(sRayVec, sRayVec);
             sRayVec.Normalize();
-
+            //see if were not turned away from the light
+            float power = Math.Max(0, Vector3.Dot(hit.Normal, sRayVec));
+            if (power < 0.0001f) return Vector3.Zero;
             //Solve light.Intensity * power * (1f / (dist * dist * 4 * RMath.PI));
             //for dist(now range), and only check for shadow if dist < distance_to_light (dist here)
             float rangeSq = light.Intensity * RMath.roll0_sq;
@@ -273,9 +275,8 @@ namespace RaytraceEngine
                 LightRays.Add(new Tuple<Ray, RayHit>(sRay, new RayHit(lPos, Vector3.One, 1, null)));
 
             // Calculate the power of the light
-            float power = Math.Max(0, Vector3.Dot(hit.Normal, sRayVec));
             power *= light.AngleEnergy(-sRayVec);
-            return light.Colour * Math.Min(light.Intensity * power / (distsq * 4 * RMath.PI), light.MaxEnergy);
+            return light.Colour * Math.Min(light.Intensity * power / distsq, light.MaxEnergy);
         }
     }
 }

@@ -7,6 +7,7 @@ namespace RaytraceEngine.Objects
     public interface ITraceable
     {
         bool CheckHit(Ray ray, out RayHit hit);
+        void Init();
     }
 
     public interface IVolumetricTraceable
@@ -24,7 +25,15 @@ namespace RaytraceEngine.Objects
     public class Sphere : Primitive, IVolumetricTraceable
     {
         public float Radius { get; set; }
-        
+        private float radSq;
+        private float invRad;
+
+        public override void Init()
+        {
+            radSq = Radius * Radius;
+            invRad = 1f / Radius;
+        }
+
         public override bool CheckHit(Ray ray, out RayHit hit)
         {
             hit = new RayHit();
@@ -32,15 +41,14 @@ namespace RaytraceEngine.Objects
             float t = Vector3.Dot(c, ray.Direction);
             Vector3 q = c - t * ray.Direction;
             float p2 = Vector3.Dot(q, q);
-            float rsq = Radius * Radius;
-            if (p2 > rsq) return false;
-            t -= (float)Math.Sqrt(rsq - p2);
+            if (p2 > radSq) return false;
+            t -= (float)Math.Sqrt(radSq - p2);
             if (t < 0) return false;
             
             hit.Position = ray.Origin + ray.Direction * t;
             hit.Distance = t;
             hit.HitObject = this;
-            hit.Normal = (hit.Position - Position).Normalized();
+            hit.Normal = (hit.Position - Position) * invRad;
             return true;
         }
 
@@ -56,15 +64,14 @@ namespace RaytraceEngine.Objects
             float t = Vector3.Dot(c, ray.Direction);
             var q = c - t * ray.Direction;
             float p2 = Vector3.Dot(q, q);
-            float rsq = Radius * Radius;
-            if (p2 > rsq) return false;
-            t += (float)Math.Sqrt(rsq - p2);
+            if (p2 > radSq) return false;
+            t += (float)Math.Sqrt(radSq - p2);
             if (t < 0) return false;
             
             hit.Position = ray.Origin + ray.Direction * t;
             hit.Distance = t;
             hit.HitObject = this;
-            hit.Normal = (Position - hit.Position).Normalized();
+            hit.Normal = (Position - hit.Position) * invRad;
             return true;
         }
     }
@@ -83,6 +90,8 @@ namespace RaytraceEngine.Objects
                 UpdateNormal();
             } 
         }
+
+        public override void Init() { }
 
         public Vector3 Normal { get;  private set; }
         //uv axis:

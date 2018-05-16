@@ -9,11 +9,13 @@ namespace RaytraceEngine.Objects.Lights
         Vector3 Colour { get; set; }
         float Intensity { get; set; }
 
-        Vector3[] GetPoints(uint maxSamples, bool rng);
+        Vector3[] GetPoints(uint maxSamples, LightSampleMode mode);
 
         float AngleEnergy(Vector3 toLight);
 
         float MaxEnergy { get; set; }
+
+        void Init();
     }
     
     public class PointLight : ILightSource, ITransformative, ITraceable
@@ -23,7 +25,9 @@ namespace RaytraceEngine.Objects.Lights
         public virtual Vector3 Position { get; set; }
         public virtual Quaternion Rotation { get; set; }
 
-        public virtual Vector3[] GetPoints(uint maxSamples, bool rng)
+        public virtual void Init() { }
+
+        public virtual Vector3[] GetPoints(uint maxSamples, LightSampleMode mode)
         {
             return new Vector3[] { Position };
         }

@@ -78,7 +78,7 @@ namespace DemoRaytraceGame
             //Scene.AddObject(roof);
 
             var sphere1 = new Sphere();
-            sphere1.Position = new Vector3(-3, 1, 3.5f);
+            sphere1.Position = new Vector3(-2.5f, 1, 3.5f);
             sphere1.Radius = 1;
             sphere1.Material = new Material(new Vector3(1, 0.2f, 0.2f), 0f, 0.5f, 0f);
             Scene.AddObject(sphere1);
@@ -90,7 +90,7 @@ namespace DemoRaytraceGame
             Scene.AddObject(sphere2);
             
             var sphere3 = new Sphere();
-            sphere3.Position = new Vector3(3, 1, 3.5f);
+            sphere3.Position = new Vector3(2.5f, 1, 3.5f);
             sphere3.Radius = 1;
             sphere3.Material = new Material(new Vector3(0.2f, 0.2f, 1), 0f, 0f, 0f);
             Scene.AddObject(sphere3);
@@ -132,14 +132,22 @@ namespace DemoRaytraceGame
             light3.Position = new Vector3(-3f, 1f, 6f);
             light3.Radius = 0.5f;
             //Scene.AddObject(light3);
-
+            
             TraceSettings.Multithreading = true;
             TraceSettings.AmbientLight = new Vector3(1f) * 0.05f;
+<<<<<<< HEAD
             TraceSettings.RealLightSample = false;
             TraceSettings.MaxLightSamples = 4;
             TraceSettings.RecursionDepth = 3;
             TraceSettings.AntiAliasing = 1;
             TraceSettings.MaxReflectionSamples = 4;
+=======
+            TraceSettings.LSM = LightSampleMode.TRUE_STRATIFIED;
+            TraceSettings.MaxLightSamples = 32;
+            TraceSettings.RecursionDepth = 3;
+            TraceSettings.AntiAliasing = 2;
+            TraceSettings.MaxReflectionSamples = 16;
+>>>>>>> cae2d7769e73e174db6ea7a8ec1572dde2af3d67
             FXAA.EnableFXAA = false;
             FXAA.LumaThreashold = 0.1f;
             FXAA.MulReduce = 8f;
@@ -186,6 +194,7 @@ namespace DemoRaytraceGame
         
         public override void Render2D()
         {
+            Scene.PrepareForRender();
             if(!shouldRender) return; 
             DebugRenderer.Render(Screen, Scene);
             base.Render2D();
