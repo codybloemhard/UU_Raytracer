@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using OpenTK;
 
@@ -137,6 +138,38 @@ namespace RaytraceEngine
             T temp = lhs;
             lhs = rhs;
             rhs = temp;
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="I">angle of incidence</param>
+        /// <param name="N">Normal ofcourse</param>
+        /// <param name="ior">Index of refraction</param>
+        /// <returns></returns>
+        public static float Fresnel(Vector3 I, Vector3 N, float ior) 
+        {
+            float cosi = Clamp(-1, 1, Vector3.Dot(I, N)); 
+            float etai = 1, etat = ior; 
+            if (cosi > 0) { Swap(ref etai, ref etat); } 
+            // Compute sini using Snell's law
+            float sint = etai / etat * (float)Math.Sqrt(Math.Max(0, 1 - cosi * cosi)); 
+            // Total internal reflection
+            if (sint >= 1) return 1;
+            
+            float cost = (float)Math.Sqrt(Math.Max(0, 1 - sint * sint));
+            cosi = Math.Abs(cosi);
+            float Rs = ((etat * cosi) - (etai * cost)) / ((etat * cosi) + (etai * cost));
+            float Rp = ((etai * cosi) - (etat * cost)) / ((etai * cosi) + (etat * cost));
+            return (Rs * Rs + Rp * Rp) / 2;
+        }
+
+        public static Vector3 Exp(Vector3 v)
+        {
+            v.X = (float)Math.Exp(v.X);
+            v.Y = (float)Math.Exp(v.Y);
+            v.Z = (float)Math.Exp(v.Z);
+            return v;
         }
     }
 }
