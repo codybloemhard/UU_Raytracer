@@ -48,7 +48,7 @@ namespace DemoRaytraceGame
             
             var floor = new Plane();
             floor.Position = new Vector3(0, 0, 0);
-            floor.Material = new Material(Vector3.One, 0.05f, 0.5f, 0f);
+            floor.Material.Diffuse = Vector3.One;
             floor.Material.Texture = wallTex;
             floor.Material.TextureScale = 4f;
             Scene.AddObject(floor);
@@ -56,7 +56,7 @@ namespace DemoRaytraceGame
             Plane wall1 = new Plane();
             wall1.Position = new Vector3(0, 0, 5);
             wall1.Rotation = new Quaternion(MathHelper.DegreesToRadians(-90), 0, 0);
-            wall1.Material = new Material(Vector3.One, 0.0f, 0f, 0f);
+            wall1.Material.Diffuse = Vector3.One;
             wall1.Material.Texture = woodTex;
             wall1.Material.TextureScale = 8f;
             Scene.AddObject(wall1);
@@ -64,7 +64,7 @@ namespace DemoRaytraceGame
             Plane wall2 = new Plane();
             wall2.Position = new Vector3(0, 0, -1);
             wall2.Rotation = new Quaternion(MathHelper.DegreesToRadians(90), 0, 0);
-            wall2.Material = new Material(Vector3.One, 0f, 0f, 0f);
+            wall2.Material.Diffuse = Vector3.One;
             wall2.Material.Texture = woodTex;
             wall2.Material.TextureScale = 8f;
             //Scene.AddObject(wall2);
@@ -72,7 +72,7 @@ namespace DemoRaytraceGame
             Plane roof = new Plane();
             roof.Position = new Vector3(0, 7, 0);
             roof.Rotation = new Quaternion(MathHelper.DegreesToRadians(180), 0, 0);
-            roof.Material = new Material(new Vector3(1f), 0f, 0f, 0f);
+            roof.Material.Diffuse = Vector3.One;
             roof.Material.Texture = metalTex;
             roof.Material.TextureScale = 8f;
             //Scene.AddObject(roof);
@@ -80,31 +80,31 @@ namespace DemoRaytraceGame
             var sphere1 = new Sphere();
             sphere1.Position = new Vector3(-2.5f, 1, 3.5f);
             sphere1.Radius = 1;
-            sphere1.Material = new Material(new Vector3(1, 0.2f, 0.2f), 0f, 0.5f, 0f);
+            sphere1.Material.Diffuse = new Vector3(1, 0.2f, 0.2f);
             Scene.AddObject(sphere1);
 
             var sphere2 = new Sphere();
             sphere2.Position = new Vector3(0, 1, 4);
             sphere2.Radius = 1;
-            sphere2.Material = new Material(new Vector3(1f), 0.2f, 1f, 0f);
+            sphere2.Material.Diffuse = new Vector3(1f);
             Scene.AddObject(sphere2);
             
             var sphere3 = new Sphere();
             sphere3.Position = new Vector3(2.5f, 1, 3.5f);
             sphere3.Radius = 1;
-            sphere3.Material = new Material(new Vector3(0.2f, 0.2f, 1), 0f, 0f, 0f);
+            sphere3.Material.Diffuse = new Vector3(0.2f, 0.2f, 1);
             Scene.AddObject(sphere3);
             
             var sphere4 = new Sphere();
             sphere4.Position = new Vector3(-1, 1, 2f);
             sphere4.Radius = 1;
-            sphere4.Material = new Material(new Vector3(1f), 0f, 0f, 0.6f, 1.5f);
+            sphere4.Material.Diffuse = new Vector3(1f);
             //Scene.AddObject(sphere4);
 
-            var triangle1 = new Triangle();
+            /*var triangle1 = new Triangle();
             triangle1.Vertices = new Vector3[] { new Vector3(-1, 0, 1), new Vector3(1, 0, 1), new Vector3(0, 1, 1) };
             triangle1.Material = new Material(new Vector3(0.9f, 0.1f, 0.1f), 0f, .8f, 0f);
-            Scene.AddObject(triangle1);
+            Scene.AddObject(triangle1);*/
 
             var light1 = new SphereAreaLight(2048);
             light1.Colour = Vector3.One;
@@ -138,7 +138,7 @@ namespace DemoRaytraceGame
             TraceSettings.LSM = LightSampleMode.TRUE_STRATIFIED;
             TraceSettings.MaxLightSamples = 32;
             TraceSettings.RecursionDepth = 3;
-            TraceSettings.AntiAliasing = 2;
+            TraceSettings.AntiAliasing = 1;
             TraceSettings.MaxReflectionSamples = 16;
             FXAA.EnableFXAA = false;
             FXAA.LumaThreashold = 0.1f;

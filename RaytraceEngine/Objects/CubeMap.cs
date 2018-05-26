@@ -22,22 +22,22 @@ namespace RaytraceEngine.Objects
                 faces[i] = new Plane();
             //left
             faces[0].Position = new Vector3(-1, 0, 0);
-            faces[0].UpdateNormal(new Vector3(1, 0, 0));
+            faces[0].Normal = new Vector3(1, 0, 0);
             //right
             faces[1].Position = new Vector3(1, 0, 0);
-            faces[1].UpdateNormal(new Vector3(-1, 0, 0));
+            faces[1].Normal = new Vector3(-1, 0, 0);
             //down
             faces[2].Position = new Vector3(0, -1, 0);
-            faces[2].UpdateNormal(new Vector3(0, 1, 0));
+            faces[2].Normal = new Vector3(0, 1, 0);
             //up
             faces[3].Position = new Vector3(0, 1, 0);
-            faces[3].UpdateNormal(new Vector3(0, -1, 0));
+            faces[3].Normal = new Vector3(0, -1, 0);
             //back
             faces[4].Position = new Vector3(0, 0, -1);
-            faces[4].UpdateNormal(new Vector3(0, 0, 1));
+            faces[4].Normal = new Vector3(0, 0, 1);
             //front
             faces[5].Position = new Vector3(0, 0, 1);
-            faces[5].UpdateNormal(new Vector3(0, 0, -1));
+            faces[5].Normal = new Vector3(0, 0, -1);
 
             corners = new Vector2[6];
             //left, right, down, up, back, front
@@ -51,7 +51,7 @@ namespace RaytraceEngine.Objects
 
         public Vector3 SkyColour(Vector3 dir)
         {
-            RayHit hit;
+            RayHit hit = new RayHit();
             Ray ray = new Ray();
             ray.Origin = Vector3.Zero;
             ray.Direction = dir;
@@ -60,10 +60,10 @@ namespace RaytraceEngine.Objects
             int closeIndex = -1;
             for(int i = 0; i < 6; i++)
             {
-                if(!faces[i].CheckHit(ray, out hit)) continue;
-                if(hit.Distance < min)
+                if(!faces[i].CheckHit(ray, ref hit)) continue;
+                if(hit.Length < min)
                 {
-                    min = hit.Distance;
+                    min = hit.Length;
                     closeHit = hit;
                     closeIndex = i;
                 }

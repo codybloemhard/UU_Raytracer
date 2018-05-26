@@ -93,7 +93,6 @@ namespace FrockRaytracer
             GL.Ortho(-1.0, 1.0, -1.0, 1.0, 0.0, 4.0);
         }
 
-
         public virtual void Init()  {}
 
         public virtual void Update() { }

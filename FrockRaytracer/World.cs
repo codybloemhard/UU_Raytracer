@@ -15,12 +15,21 @@ namespace FrockRaytracer
             Camera = camera;
         }
 
+        /// <summary>
+        /// Add an object to world
+        /// </summary>
+        /// <param name="o"></param>
         public void  addObject(Primitive o)
         {
             Objects.Add(o);
             Changed = true;
         }
         
+        
+        /// <summary>
+        /// Add a light to world
+        /// </summary>
+        /// <param name="l"></param>
         public void addLight(Light l)
         {
             Lights.Add(l);

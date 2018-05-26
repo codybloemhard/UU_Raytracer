@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaytraceEngine", "RaytraceE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoRaytraceGame", "DemoRaytraceGame\DemoRaytraceGame.csproj", "{BF708464-71D5-4FE1-A3E4-12D90D1F740E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrockRaytracer", "FrockRaytracer\FrockRaytracer.csproj", "{44340E40-20EC-48E4-B7DA-720806E5633F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrockRaytracerDemo", "FrockRaytracerDemo\FrockRaytracerDemo.csproj", "{68B36AA3-261C-4364-820C-5C9E2612F795}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{BF708464-71D5-4FE1-A3E4-12D90D1F740E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF708464-71D5-4FE1-A3E4-12D90D1F740E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF708464-71D5-4FE1-A3E4-12D90D1F740E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44340E40-20EC-48E4-B7DA-720806E5633F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44340E40-20EC-48E4-B7DA-720806E5633F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44340E40-20EC-48E4-B7DA-720806E5633F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44340E40-20EC-48E4-B7DA-720806E5633F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68B36AA3-261C-4364-820C-5C9E2612F795}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68B36AA3-261C-4364-820C-5C9E2612F795}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68B36AA3-261C-4364-820C-5C9E2612F795}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68B36AA3-261C-4364-820C-5C9E2612F795}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

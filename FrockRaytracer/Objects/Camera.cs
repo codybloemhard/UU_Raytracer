@@ -24,15 +24,15 @@ namespace FrockRaytracer.Objects
 
     public class Camera : Object
     {
-        protected float aspect, fovy, znear;
+        protected float aspect, fovy, ZNear;
         public FinitePlane FOVPlane { get; private set; }
 
-        public Camera(Vector3 position, Quaternion rotation, float aspect = 1f, float fovy = 1.6f, float znear = .1f)
+        public Camera(Vector3 position, Quaternion rotation, float aspect = 1f, float fovy = 1f, float zNear = .1f)
             : base(position, rotation)
         {
             this.aspect = aspect;
             this.fovy = fovy;
-            this.znear = znear;
+            this.ZNear = zNear;
         }
 
         public float Aspect
@@ -57,15 +57,15 @@ namespace FrockRaytracer.Objects
 
         public float Znear
         {
-            get => znear;
+            get => ZNear;
             set
             {
-                znear = value;
+                ZNear = value;
                 position_cached = false;
             }
         }
 
-        void RotateBy(Vector3 v)
+        public void RotateBy(Vector3 v)
         {
             v *= Constants.DEG_TO_RAD;
             Rotation = (Rotation * new Quaternion(v)).Normalized();
@@ -74,12 +74,14 @@ namespace FrockRaytracer.Objects
         public override void Cache()
         {
             if (position_cached) return;
-            float halfHeight = (float) Math.Atan(fovy) * znear * 2;
-            float halfWidth = (float) Math.Atan(fovy * aspect) * znear * 2;
+            var rotationMatrix = Matrix3.CreateFromQuaternion(Rotation);
 
-            var leftTop = Rotation * new Vector3(-halfWidth, halfHeight, znear);
-            var rightTop = Rotation * new Vector3(halfWidth, halfHeight, znear);
-            var leftBottom = Rotation * new Vector3(-halfWidth, -halfHeight, znear);
+            float halfHeight = (float) (Math.Atan(Fovy) * ZNear * 2);
+            float halfWidth = (float) (Math.Atan(Fovy * Aspect) * ZNear * 2); // Fovy * Aspect = Fovx
+            
+            var leftTop = new Vector3(-halfWidth, halfHeight, ZNear) * rotationMatrix;
+            var rightTop = new Vector3(halfWidth, halfHeight, ZNear) * rotationMatrix;
+            var leftBottom = new Vector3(-halfWidth, -halfHeight, ZNear) * rotationMatrix ;
 
             FOVPlane = new FinitePlane(leftTop, rightTop - leftTop, leftBottom - leftTop);
             position_cached = true;

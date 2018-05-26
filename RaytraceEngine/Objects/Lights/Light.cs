@@ -18,7 +18,7 @@ namespace RaytraceEngine.Objects.Lights
         void Init();
     }
     
-    public class PointLight : ILightSource, ITransformative, ITraceable
+    public class PointLight : ILightSource, ITransformative
     {
         public virtual Vector3 Colour { get; set; }
         public float Intensity { get; set; }

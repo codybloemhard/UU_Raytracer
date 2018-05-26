@@ -26,6 +26,7 @@ namespace FrockRaytracer
             raster = _raster;
             ddat.Clear();
             world.Cache();
+            Threads.Clear();
 
             if (Settings.IsMultithread) {
                 var ConcurrentWorkerCount = Environment.ProcessorCount;

@@ -6,35 +6,24 @@ namespace RaytraceEngine.Objects
 {
     public class Material
     {
-        public Vector3 Colour { get; set; }
-        public float Roughness { get; set; }
-        public float Reflectivity { get; set; }
-        public float Refractivity { get; set; }
-        public float RefractETA { get; set; }
+        public Vector3 Diffuse = Vector3.One;
+        public Vector3 Specular = Vector3.One;
+        public Vector3 Absorb = Vector3.One;
+        public bool Glossy = false;
+        public float Shinyness = 3;
+        public float Roughness = 3;
+        public bool IsDielectic = false;
+        public bool IsMirror = false;
+        public float Reflectivity = 0;
+        public bool IsRefractive = false;
+        public float RefractionIndex = Constants.LIGHT_IOR;
+        
         public Surface Texture = null;
         private float texScale = 1f;
         public float TextureScale
         {
             get { return texScale; }
             set { texScale = 1f / value; }
-        }
-
-        public Material(Vector3 colour, float roughness, float reflectivity, float refractivity)
-        {
-            Colour = colour;
-            Roughness = roughness;
-            Reflectivity = reflectivity;
-            Refractivity = refractivity;
-            RefractETA = 1f;
-        }
-
-        public Material(Vector3 colour, float roughness, float reflectivity, float refractivity, float refractEta)
-        {
-            Colour = colour;
-            Roughness = roughness;
-            Reflectivity = reflectivity;
-            Refractivity = refractivity;
-            RefractETA = refractEta;
         }
 
         public Vector3 TexColour(Vector2 uv)

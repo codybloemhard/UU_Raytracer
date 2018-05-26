@@ -7,11 +7,23 @@ namespace FrockRaytracer.Utils
     /// </summary>
     public static class RayTrans
     {
+        /// <summary>
+        /// Reflect a ray
+        /// </summary>
+        /// <param name="ray"></param>
+        /// <param name="hit"></param>
+        /// <returns></returns>
         public static Ray Reflect(Ray ray, RayHit hit) {
             var dir = QuickMaths.Reflect(ray.Direction, hit.Normal);
             return new Ray(hit.Position + dir * Constants.EPSILON, dir, ray.Outside, ray.Depth + 1);
         }
 
+        /// <summary>
+        /// Refract a ray
+        /// </summary>
+        /// <param name="ray"></param>
+        /// <param name="hit"></param>
+        /// <returns></returns>
         public static Ray Refract(Ray ray, RayHit hit) {
             float eta = ray.isOutside()
                 ? hit.Obj.Material.RefractionIndex / Constants.LIGHT_IOR
