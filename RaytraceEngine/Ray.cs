@@ -28,14 +28,14 @@ namespace RaytraceEngine
     {
         public Vector3 Position;
         public Vector3 Normal;
-        public float Length;
+        public float Distance;
         public Primitive HitObject;
 
         public RayHit()
         {
             Position = Vector3.Zero;
             Normal = Vector3.Zero;
-            Length = 999999;
+            Distance = 999999;
             HitObject = null;
         }
 
@@ -44,7 +44,7 @@ namespace RaytraceEngine
         {
             Position = position;
             Normal = normal;
-            Length = length;
+            Distance = length;
             HitObject = hitObject;
         }
     }

@@ -60,10 +60,10 @@ namespace RaytraceEngine.Objects
             int closeIndex = -1;
             for(int i = 0; i < 6; i++)
             {
-                if(!faces[i].CheckHit(ray, ref hit)) continue;
-                if(hit.Length < min)
+                if(!faces[i].CheckHit(ray, out hit)) continue;
+                if(hit.Distance < min)
                 {
-                    min = hit.Length;
+                    min = hit.Distance;
                     closeHit = hit;
                     closeIndex = i;
                 }

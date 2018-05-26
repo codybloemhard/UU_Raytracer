@@ -100,7 +100,7 @@ namespace RaytraceEngine.Objects
 
         public override void Init() { }
 
-        public Vector3 Normal { get;  private set; }
+        public Vector3 Normal { get;  set; }
         //uv axis:
         //http://www.flipcode.com/archives/Raytracing_Topics_Techniques-Part_6_Textures_Cameras_and_Speed.shtml
         public void UpdateNormal()

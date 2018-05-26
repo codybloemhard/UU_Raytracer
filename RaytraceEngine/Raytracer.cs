@@ -110,7 +110,7 @@ namespace RaytraceEngine
             
             if (debug && ri % debug_freq == 0) Rays.Add(new Tuple<Ray, RayHit>(ray, hit));
 
-            Vector3 baseCol = hit.HitObject.Material.Colour;
+            Vector3 baseCol = hit.HitObject.Material.Diffuse;
             if (hit.HitObject.Material.Texture != null)
                 baseCol = hit.HitObject.Material.TexColour(hit.HitObject.GetUV(hit));
             Vector3 colorComp = baseCol * CalcLightEnergy(scene, hit, debug) +
@@ -120,9 +120,9 @@ namespace RaytraceEngine
                 ApplyReflectivity(scene, depth, ref ray, ref hit, hit.HitObject.Material.Reflectivity, ref colorComp, debug);
             }
 
-            if (hit.HitObject.Material.Refractivity > 0.01f) {
+            /*if (hit.HitObject.Material.IsRefractive > 0.01f) {
                 ApplyRefractivity(scene, depth, ref ray, ref hit, ref colorComp, debug);
-            }
+            }*/
 
             return colorComp;
         }
@@ -151,10 +151,10 @@ namespace RaytraceEngine
                 reflectColor = TraceColour(rRay, scene, depth, debug);
             }
 
-            lightComp = lightComp * (1f - reflectivity) + reflectivity * reflectColor * hit.HitObject.Material.Colour;
+            lightComp = lightComp * (1f - reflectivity) + reflectivity * reflectColor * hit.HitObject.Material.Diffuse;
         }
 
-        //Applies refractivity to the given lightComp
+        /*//Applies refractivity to the given lightComp
         private void ApplyRefractivity(RayScene scene, int depth, ref Ray ray, ref RayHit hit, ref Vector3 lightComp,
             bool debug = false)
         {
@@ -178,8 +178,9 @@ namespace RaytraceEngine
 
             var refractColor = TraceColour(refractRays[refractRays.Count - 1], scene, depth, debug);
             lightComp = lightComp * materialOpacity + refractColor * (1f - materialOpacity);
-        }
+        }*/
 
+        /*
         /// <summary>
         /// Handles refraction with the hit object. All rays fired inside the object are returned including the outgoing
         /// ray(last element). 
@@ -233,6 +234,7 @@ namespace RaytraceEngine
 
             return null;
         }
+*/
 
         //Calculates the light energy at a certain hit position, from all the light sources in the scene
         private Vector3 CalcLightEnergy(RayScene scene, RayHit hit, bool debug)
