@@ -19,7 +19,9 @@ namespace FrockRaytracer.Graphics
 
         public Raster Raster;
 
-        public ProjectionPlane()
+        public ProjectionPlane() { }
+
+        public void Init()
         {
             MakeTexture();
 
@@ -75,7 +77,7 @@ namespace FrockRaytracer.Graphics
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, Texture);
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb,
-                Raster.Width, Raster.Height, 0, PixelFormat.Bgr,
+                Raster.Width, Raster.Height, 0, PixelFormat.Rgb,
                 PixelType.UnsignedByte, Raster.Pixels
             );
 

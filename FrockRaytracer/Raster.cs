@@ -6,18 +6,6 @@ using OpenTK;
 
 namespace FrockRaytracer
 {
-    public struct Color
-    {
-        public byte R, G, B;
-
-        public Color(byte r, byte g, byte b)
-        {
-            R = r;
-            G = g;
-            B = b;
-        }
-    }
-
     public struct Raster
     {
         public byte[] Pixels;
@@ -72,17 +60,6 @@ namespace FrockRaytracer
             Pixels[offset++] = r;
             Pixels[offset++] = g;
             Pixels[offset] = b;
-        }
-
-        /// <summary>
-        /// Set color from a Color struct
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="c"></param>
-        public void setPixel(int x, int y, Color c)
-        {
-            setPixel(x, y, c.R, c.G, c.B);
         }
 
         /// <summary>

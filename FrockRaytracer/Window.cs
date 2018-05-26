@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
+using System.Net.WebSockets;
 using FrockRaytracer.Graphics;
+using FrockRaytracer.Objects;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -11,15 +13,22 @@ namespace FrockRaytracer
     {
         public static int RAYTRACE_AREA_WIDTH = 512;
         public static int RAYTRACE_AREA_HEIGHT = 512;
+        public static Vector2 RAYTRACE_DEBUG_AREA_LT = new Vector2(-5, 9);
+        public static float RAYTRACE_DEBUG_AREA_EXT = 10;
+        public static int RAYTRACE_DEBUG_AREA_WIDTH = 512;
         
-        protected bool Changed = true;
 
         protected ProjectionPlane Projection;
-        protected Raster Raster => Projection.Raster;
+        public Raster Raster => Projection.Raster;
+        public World World;
+        public Raytracer Raytracer;
 
         public Window(Size size)
         {
             ClientSize = size;
+            Projection = new ProjectionPlane();
+            World = new World(new Camera(new Vector3(0, 1, 0), Quaternion.Identity));
+            Raytracer = new Raytracer();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -29,7 +38,8 @@ namespace FrockRaytracer
             GL.Enable(EnableCap.Texture2D);
             GL.Disable(EnableCap.DepthTest);
             GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);
-            Projection = new ProjectionPlane();
+            
+            Projection.Init();
             Init();
         }
 
@@ -55,14 +65,14 @@ namespace FrockRaytracer
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             // Raytrace only if changed
-            if (Changed) {
+            if (World.Changed) {
                 Raster.Clear();
                 Render();
             } 
             
             Projection.Render();
             SwapBuffers();
-            Changed = false;
+            World.Changed = false;
         }
 
         /// <summary>
@@ -71,7 +81,9 @@ namespace FrockRaytracer
         private void UpdateViewport()
         {
             RAYTRACE_AREA_WIDTH = ClientSize.Width / 2;
+            RAYTRACE_DEBUG_AREA_WIDTH = ClientSize.Width / 2;
             RAYTRACE_AREA_HEIGHT = ClientSize.Height;
+            Settings.RaytraceDebugRow = RAYTRACE_AREA_WIDTH / 2;
 
             Projection.Resize(ClientSize);
 
@@ -86,6 +98,9 @@ namespace FrockRaytracer
 
         public virtual void Update() { }
 
-        public virtual void Render() {}
+        public virtual void Render()
+        {
+            Raytracer.Raytrace(World, Raster);
+        }
     }
 }

@@ -45,18 +45,31 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
+    <Compile Include="DebugRenderer.cs" />
     <Compile Include="Graphics\Buffers.cs" />
     <Compile Include="Graphics\Mesh.cs" />
     <Compile Include="Graphics\ProjectionPlane.cs" />
     <Compile Include="Graphics\Shader.cs" />
+    <Compile Include="Objects\Camera.cs" />
+    <Compile Include="Objects\Light.cs" />
+    <Compile Include="Objects\Object.cs" />
+    <Compile Include="Objects\Plane.cs" />
+    <Compile Include="Objects\Primitive.cs" />
+    <Compile Include="Objects\Sphere.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Raster.cs" />
+    <Compile Include="Raytracer.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Structs\Material.cs" />
+    <Compile Include="Structs\Ray.cs" />
     <Compile Include="Utils\Draw.cs" />
     <Compile Include="Utils\Generics.cs" />
     <Compile Include="Utils\GraphicUtils.cs" />
     <Compile Include="Utils\Mem.cs" />
+    <Compile Include="Utils\QuickMaths.cs" />
+    <Compile Include="Utils\RayTrans.cs" />
     <Compile Include="Window.cs" />
+    <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\shaders\fxaa_FS.glsl">

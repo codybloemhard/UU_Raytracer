@@ -9,5 +9,13 @@
         public static float FXAAMulReduce = 8.0f;
         public static float FXAAMinReduce = 128.0f;
         public static float FXAAMaxSpan = 8.0f;
+        
+        public static int RaytraceDebugRow = 256;
+        public static int RaytraceDebugFrequency = 16;
+        public static bool DrawDebugLine = true;
+        
+        public static int MaxDepth = 4;
+
+        public static bool IsMultithread = true;
     }
 }
