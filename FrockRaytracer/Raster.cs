@@ -74,16 +74,12 @@ namespace FrockRaytracer
                 (byte) (Math.Min(1, color.Z) * 0xFF));
         }
 
-        // Hehehe unsafe
-        [DllImport("msvcrt.dll")]
-        private static extern void memset(byte[] dest, int c, int count);
-
         /// <summary>
         /// Clear the Pixels by setting by using memset. A handy c function which is proven to be fast.
         /// </summary>
         public void Clear()
         {
-            memset(Pixels, 0, Pixels.Length);
+            for (int i = 0; i < Pixels.Length; ++i) Pixels[i] = 0;
         }
     }
 }
