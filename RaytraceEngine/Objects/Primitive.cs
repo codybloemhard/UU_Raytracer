@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Globalization;
 using OpenTK;
 using Object = Engine.Objects.Object;
 
@@ -198,6 +201,87 @@ namespace RaytraceEngine.Objects
         public override Vector2 GetUV(RayHit hit)
         {
             throw new NotImplementedException();
+        }
+    }
+
+    public class Mesh : Primitive
+    {
+        public Vector3 Color;
+        public float Roughness, Reflectivity, Refractivity;
+
+        private List<Triangle> triangles = new List<Triangle>();
+        public Vector3[] Vertices { get; set; }
+        private int[] faces;
+        public int[] Faces
+        {
+            get { return faces; }
+            set { faces = value; CreateTriangles(); }
+        }
+
+        public override bool CheckHit(Ray ray, out RayHit hit)
+        {
+            hit = new RayHit { Distance = 10000000f };
+            RayHit tmpHit;
+
+            foreach (Triangle triangle in triangles)
+            {
+                if (triangle.CheckHit(ray, out tmpHit) && tmpHit.Distance < hit.Distance) hit = tmpHit;
+            }
+
+            if (hit.HitObject == null) return false;
+            return true;
+        }
+
+        public override Vector2 GetUV(RayHit hit)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CreateTriangles()
+        {
+            for (int i = 0; i < faces.Length;)
+            {
+                Triangle t = new Triangle();
+                t.Material = Material;
+                t.Vertices = new Vector3[] { Vertices[faces[i++]], Vertices[faces[i++]], Vertices[faces[i++]] };
+                triangles.Add(t);
+            }
+        }
+
+        public void ImportMesh(string url)
+        {
+            List<Vector3> verts = new List<Vector3>();
+            List<int> facs = new List<int>();
+
+            string line;
+
+            // Read the file and display it line by line.  
+            StreamReader file = new StreamReader(url);
+            while ((line = file.ReadLine()) != null)
+            {
+                if (line.Length == 0) continue;
+                if(line[0] == 'v')
+                {
+                    //vertex
+                    string[] coords = System.Text.RegularExpressions.Regex.Split(line, @"\s+");
+                    verts.Add(new Vector3(
+                        float.Parse(coords[1], CultureInfo.InvariantCulture)*Scale.X + Position.X, 
+                        float.Parse(coords[2], CultureInfo.InvariantCulture)*Scale.Y + Position.Y, 
+                        float.Parse(coords[3], CultureInfo.InvariantCulture)*Scale.Z + Position.Z));
+                }
+                else if (line[0] == 'f')
+                {
+                    //face
+                    string[] coords = System.Text.RegularExpressions.Regex.Split(line, @"\s+");
+                    facs.Add(int.Parse(coords[1], CultureInfo.InvariantCulture) - 1);
+                    facs.Add(int.Parse(coords[2], CultureInfo.InvariantCulture) - 1);
+                    facs.Add(int.Parse(coords[3], CultureInfo.InvariantCulture) - 1);
+                }
+            }
+            file.Close();
+
+            Vertices = verts.ToArray();
+            Faces = facs.ToArray();
         }
     }
 }
