@@ -21,7 +21,11 @@ namespace RaytraceEngine.Objects
     public abstract class Primitive : Object, ITraceable
     {
         public Material Material { get; set; }
+
+        //returns true if an object is hit, and returns the information about this hit
         public abstract bool CheckHit(Ray ray, out RayHit hit);
+
+        //returns uv coordinates to be used for texturing
         public abstract Vector2 GetUV(RayHit hit);
     }
 
@@ -164,7 +168,6 @@ namespace RaytraceEngine.Objects
 
         public override bool CheckHit(Ray ray, out RayHit hit)
         {
-            float eps = 0.000001f;
             hit = new RayHit();
             Vector3 edge1, edge2, h, s, q;
             float a, f, u, v;
@@ -172,7 +175,7 @@ namespace RaytraceEngine.Objects
             edge2 = vertices[2] - vertices[0];
             h = Vector3.Cross(ray.Direction, edge2);
             a = Vector3.Dot(edge1, h);
-            if (a > -eps && a < eps) return false;
+            if (a > -RMath.Eps && a < RMath.Eps) return false;
             f = 1 / a;
             s = ray.Origin - vertices[0];
             u = f * Vector3.Dot(s, h);
@@ -184,7 +187,7 @@ namespace RaytraceEngine.Objects
             if (u + v > 1) return false;
 
             float t = f * Vector3.Dot(edge2, q);
-            if(t > eps)
+            if(t > RMath.Eps)
             {
                 hit.Position = ray.Origin + ray.Direction * t;
                 hit.Distance = t;
@@ -220,7 +223,7 @@ namespace RaytraceEngine.Objects
 
         public override bool CheckHit(Ray ray, out RayHit hit)
         {
-            hit = new RayHit { Distance = 10000000f };
+            hit = new RayHit { Distance = int.MaxValue };
             RayHit tmpHit;
 
             foreach (Triangle triangle in triangles)
