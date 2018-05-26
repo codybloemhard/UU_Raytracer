@@ -92,9 +92,9 @@ namespace FrockRaytracer
             if (hit.Obj == null) return ret; // TODO: cube map
             if (debug) ddat.PrimaryRays.Add(new Tuple<Ray, RayHit>(ray, hit));
             
-            // Calculate color and specular highlights
+            // Calculate color and specular highlights. Pure mirrors dont have diffuse
             Vector3 specular = Vector3.Zero;
-            Vector3 color = illuminate(ray, hit, ref specular, debug);
+            Vector3 color = hit.Obj.Material.IsMirror ? Vector3.Zero : illuminate(ray, hit, ref specular, debug);
             
             // Different materials are handled differently. Would be cool to move that into material
             if (hit.Obj.Material.IsMirror) {
@@ -198,15 +198,18 @@ namespace FrockRaytracer
             // Diffuse
             var color = hit.Obj.Material.Diffuse * Math.Max(0.0f, Vector3.Dot(hit.Normal, light_vec));
 
+            // Inverse square law
+            var light_powah = light.Intensity / (Constants.PI4 * dist_sq);
+
             // Specular will be used separately
             if (hit.Obj.Material.IsGlossy) {
                 var hardness = Math.Max(.0f, Vector3.Dot(-ray.Direction, QuickMaths.Reflect(-light_vec, hit.Normal)));
-                specular += light.Color * light.Intensity * hit.Obj.Material.Specular *
+                specular += light.Color * light_powah * hit.Obj.Material.Specular *
                     (float)Math.Pow(hardness, hit.Obj.Material.Shinyness);
             }
 
             if (debug) ddat.ShadowRays.Add(new Tuple<Ray, Vector3>(shadow_ray, light.Position));
-            return light.Color * color;
+            return light.Color * color * light_powah;
         }
        
         /// <summary>

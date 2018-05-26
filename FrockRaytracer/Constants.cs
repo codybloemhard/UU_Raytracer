@@ -9,6 +9,7 @@ namespace FrockRaytracer
         public const float BIG_NUMBER = 999999;
         public const float EPSILON = 0.0001f;
         public const float LIGHT_DECAY = 0.81f;
+        public const float PI4 = 12.566f;
 
         public static readonly Vector3 RAYTRACE_DEBUG_OBJ_COLOR = new Vector3(1, 1, 1);
         public static readonly Vector3 RAYTRACE_DEBUG_PRIMARY_RAY_COLOR = new Vector3(0, 1, 1);

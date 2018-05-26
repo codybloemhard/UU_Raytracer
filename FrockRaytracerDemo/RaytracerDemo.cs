@@ -64,7 +64,7 @@ namespace FrockRaytracerDemo
                 };
                 world.addObject(sphere_glass);
                 
-                var light = new Light(new Vector3(0, 7, 0.5f), Vector3.One, 15);
+                var light = new Light(new Vector3(0, 7, 0.5f), Vector3.One, 2000);
                 world.addLight(light);
                 
                 win.Run(30.0, 60.0);
