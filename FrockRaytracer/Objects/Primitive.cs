@@ -20,5 +20,12 @@ namespace FrockRaytracer.Objects
         {
             return false;
         } 
+        
+        /// <summary>
+        /// Get UV coordinates to map texture to.
+        /// </summary>
+        /// <param name="pos"></param>
+        /// <returns></returns>
+        public virtual Vector2 GetUV(Vector3 pos) { return Vector2.Zero;}
     }
 }
