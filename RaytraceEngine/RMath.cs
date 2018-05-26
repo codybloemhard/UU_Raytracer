@@ -11,7 +11,8 @@ namespace RaytraceEngine
         public static float PI = 3.14159265359f;
         public static float roll0_sq = 0.81f;
         public static float R2D = 57.2957795f;
-        
+        public static float Eps = 0.00001f;
+
         // Sorry forgot the source
         public static class ThreadLocalRandom
         {

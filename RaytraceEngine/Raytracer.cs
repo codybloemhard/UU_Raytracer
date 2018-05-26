@@ -42,6 +42,7 @@ namespace RaytraceEngine
         private int ri = 0;
         private int debug_freq = 64;
 
+        //Sets everything up for rendering, prepares multithreading, and renders the whole screen
         public void Render(Surface surface, RayScene scene)
         {
             Rays.Clear();
@@ -55,10 +56,11 @@ namespace RaytraceEngine
                 Parallel.For(0, winHeight - 1, parallelOptions,
                 i => { RenderArea(new Area(0, winWidth, i, i + 1), projectionPlane, surface, scene); });
             else
-                for (int i = 0; i < winHeight - 1; i++)
-                    RenderArea(new Area(0, winWidth, i, i + 1), projectionPlane, surface, scene);
+                RenderArea(new Area(0, winWidth, 0, winHeight), projectionPlane, surface, scene);
         }
         
+        //Shoots all needed rays in the given area from the camera position through the projection plane, 
+        //traces their colour and draws them on the surface.
         public void RenderArea(Area area, FinitePlane projectionPlane, Surface surface, RayScene scene)
         {
             int a = (int) TraceSettings.AntiAliasing;
@@ -79,6 +81,7 @@ namespace RaytraceEngine
             }
         }
 
+        //Returns a ray from a pixel (the camera) through a point in the projection plane
         private Ray RayFromPixel(FinitePlane projectionPlane, Camera camera, int x, int y, int w, int h)
         {
             float wt = (float) x / w;
@@ -92,20 +95,22 @@ namespace RaytraceEngine
             };
         }
 
+        //Returns the color of a given ray (including reflectivity/refractivity)
         private Vector3 TraceColour(Ray ray, RayScene scene, int depth, bool debug = false)
         {
             if (depth-- == 0) return Vector3.Zero;
 
-            var hit = new RayHit();
+            var hit = new RayHit {Distance = int.MaxValue};
+            RayHit tmpHit;
             foreach (var primitive in scene.Primitives) {
-                primitive.CheckHit(ray, ref hit);
+                if (primitive.CheckHit(ray, out tmpHit) && tmpHit.Distance < hit.Distance) hit = tmpHit;
             }
 
-            if (hit.HitObject == null) return Vector3.Zero;//scene.Sky.SkyColour(ray.Direction);
+            if (hit.HitObject == null) return scene.Sky.SkyColour(ray.Direction);
             
             if (debug && ri % debug_freq == 0) Rays.Add(new Tuple<Ray, RayHit>(ray, hit));
 
-            Vector3 baseCol = hit.HitObject.Material.Diffuse;
+            Vector3 baseCol = hit.HitObject.Material.Colour;
             if (hit.HitObject.Material.Texture != null)
                 baseCol = hit.HitObject.Material.TexColour(hit.HitObject.GetUV(hit));
             Vector3 colorComp = baseCol * CalcLightEnergy(scene, hit, debug) +
@@ -115,13 +120,14 @@ namespace RaytraceEngine
                 ApplyReflectivity(scene, depth, ref ray, ref hit, hit.HitObject.Material.Reflectivity, ref colorComp, debug);
             }
 
-            /*if (hit.HitObject.Material.Refractivity > 0.01f) {
+            if (hit.HitObject.Material.Refractivity > 0.01f) {
                 ApplyRefractivity(scene, depth, ref ray, ref hit, ref colorComp, debug);
-            }*/
+            }
 
             return colorComp;
         }
 
+        //Applies reflectivity to the given lightComp using the ray and rayHit, by tracing the colour of a new reflected ray
         private void ApplyReflectivity(RayScene scene, int depth, ref Ray ray, ref RayHit hit, float reflectivity, ref Vector3 lightComp,
             bool debug = false)
         {
@@ -145,9 +151,10 @@ namespace RaytraceEngine
                 reflectColor = TraceColour(rRay, scene, depth, debug);
             }
 
-            lightComp = lightComp * (1f - reflectivity) + reflectivity * reflectColor * hit.HitObject.Material.Diffuse;
+            lightComp = lightComp * (1f - reflectivity) + reflectivity * reflectColor * hit.HitObject.Material.Colour;
         }
 
+        //Applies refractivity to the given lightComp
         private void ApplyRefractivity(RayScene scene, int depth, ref Ray ray, ref RayHit hit, ref Vector3 lightComp,
             bool debug = false)
         {
@@ -155,7 +162,7 @@ namespace RaytraceEngine
             if (refractRays == null || refractRays.Count == 1) return;
             if (refractRays.Count == 0) {
                 // Handle reflection TODO: use refract weight?
-                ApplyReflectivity(scene, depth, ref ray, ref hit, RMath.Clamp(0, 1, hit.HitObject.Material.Reflectivity), ref lightComp, debug );
+                ApplyReflectivity(scene, depth, ref ray, ref hit, RMath.Clamp(0, 1, hit.HitObject.Material.Refractivity), ref lightComp, debug );
                 return;
             }
 
@@ -166,7 +173,7 @@ namespace RaytraceEngine
 
             float materialOpacity = RMath.Clamp(0, 1, compoundLength /
                                                       (TraceSettings.RefractLightDecayConstant *
-                                                       hit.HitObject.Material.Reflectivity));
+                                                       hit.HitObject.Material.Refractivity));
             if (materialOpacity > 0.98) return; // Not worth shooting another ray
 
             var refractColor = TraceColour(refractRays[refractRays.Count - 1], scene, depth, debug);
@@ -185,46 +192,49 @@ namespace RaytraceEngine
         /// <returns></returns>
         private List<Ray> RefractifityLoop(int depth, ref Ray ray, ref RayHit hit, bool debug = false)
         {
+            if (!(hit.HitObject is IVolumetricTraceable)) return null;
+
             var ret = new List<Ray>();
-            var objectOfInterest = hit.HitObject;
+            var objectOfInterest = (IVolumetricTraceable) hit.HitObject;
             var material = hit.HitObject.Material;
 
             var rRay = new Ray();
-            rRay.Direction = RMath.Refract(ray.Direction, hit.Normal, material.RefractionIndex);
-            rRay.Origin = hit.Position + rRay.Direction * 0.001f;
+            rRay.Direction = RMath.Refract(ray.Direction, hit.Normal, material.RefractETA);
+            rRay.Origin = hit.Position + rRay.Direction * RMath.Eps;
 
             // Ray is instantly reflected before entering the object
             if (Vector3.Dot(rRay.Direction, rRay.Direction) < 0.001) return ret;
 
             // Ray inside object loop
             ret.Add(ray);
-            RayHit innerRayHit = new RayHit();
+            RayHit innerRayHit;
             for (int i = depth; i >= 0; --i) {
                 ret.Add(rRay);
-                if (!objectOfInterest.CheckHit(rRay, ref innerRayHit)) break;
+                if (!objectOfInterest.CheckHitInside(rRay, out innerRayHit)) break;
                 
                 if (debug && ri % debug_freq == 0) {
                     RefractRays.Add(new Tuple<Ray, RayHit>(rRay, innerRayHit));
                 }
 
                 rRay = new Ray();
-                rRay.Direction = RMath.Refract(rRay.Direction, innerRayHit.Normal, 1f / material.RefractionIndex);
-                rRay.Origin = innerRayHit.Position + rRay.Direction * 0.001f;
+                rRay.Direction = RMath.Refract(rRay.Direction, innerRayHit.Normal, 1f / material.RefractETA);
+                rRay.Origin = innerRayHit.Position + rRay.Direction * RMath.Eps;
 
                 // Ray refracts out of the object
-                if (Vector3.Dot(rRay.Direction, rRay.Direction) > 0.001) {
+                if (Vector3.Dot(rRay.Direction, rRay.Direction) > RMath.Eps) {
                     ret.Add(rRay);
                     return ret;
                 }
 
                 // Ray gets reflected back inside the object
                 rRay.Direction = RMath.Reflect(rRay.Direction, innerRayHit.Normal);
-                rRay.Origin = innerRayHit.Position + rRay.Direction * 0.001f;
+                rRay.Origin = innerRayHit.Position + rRay.Direction * RMath.Eps;
             }
 
             return null;
         }
 
+        //Calculates the light energy at a certain hit position, from all the light sources in the scene
         private Vector3 CalcLightEnergy(RayScene scene, RayHit hit, bool debug)
         {
             Vector3 lEnergy = TraceSettings.AmbientLight;
@@ -246,6 +256,7 @@ namespace RaytraceEngine
             return lEnergy;
         }
 
+        //Calculate the energy of one lightsource for a hit position
         private Vector3 ProbeLight(RayHit hit, Vector3 lPos, ILightSource light, RayScene scene, bool debug = false)
         {
             var sRayVec = lPos - hit.Position;
@@ -253,20 +264,20 @@ namespace RaytraceEngine
             sRayVec.Normalize();
             //see if were not turned away from the light
             float power = Math.Max(0, Vector3.Dot(hit.Normal, sRayVec));
-            if (power < 0.0001f) return Vector3.Zero;
-            //Solve light.Intensity * power * (1f / (dist * dist * 4 * RMath.PI));
-            //for dist(now range), and only check for shadow if dist < distance_to_light (dist here)
+            if (power < RMath.Eps) return Vector3.Zero;
+            //Solve light.Intensity * power * (1f / (range * range * 4 * RMath.PI));
+            //for range, and only check for shadow if range < dist
             float rangeSq = light.Intensity * RMath.roll0_sq;
             if (distsq > rangeSq) return Vector3.Zero;
 
             // Check if something is in rays way
             var sRay = new Ray {
-                Origin = hit.Position + sRayVec * 0.001f,
+                Origin = hit.Position + sRayVec * RMath.Eps,
                 Direction = sRayVec
             };
             foreach (var prim in scene.Primitives) {
-                RayHit tmp = new RayHit();
-                if (prim.CheckHit(sRay, ref tmp) && tmp.Length * tmp.Length < distsq) {
+                RayHit tmp;
+                if (prim.CheckHit(sRay, out tmp) && tmp.Distance * tmp.Distance < distsq) {
                     if (debug && ri % debug_freq == 0) ShadowRays.Add(new Tuple<Ray, RayHit>(sRay, tmp));
                     return Vector3.Zero;
                 }
