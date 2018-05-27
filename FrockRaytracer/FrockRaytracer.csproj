@@ -63,8 +63,10 @@
     <Compile Include="Raster.cs" />
     <Compile Include="Raytracer.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Structs\CheckerboardTexture.cs" />
     <Compile Include="Structs\Material.cs" />
     <Compile Include="Structs\Ray.cs" />
+    <Compile Include="Structs\Texture.cs" />
     <Compile Include="Utils\Draw.cs" />
     <Compile Include="Utils\Generics.cs" />
     <Compile Include="Utils\GraphicUtils.cs" />

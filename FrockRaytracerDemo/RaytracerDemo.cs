@@ -1,13 +1,17 @@
 ﻿using System.Drawing;
 using FrockRaytracer;
 using FrockRaytracer.Objects;
+using FrockRaytracer.Structs;
 using OpenTK;
+using OpenTK.Graphics.ES30;
 using OpenTK.Input;
 
 namespace FrockRaytracerDemo
 {
     internal class RaytracerDemo : Window
     {
+        private const int MOVE_SPHERE_ID = 4;
+        
         public static void Main(string[] args)
         {
             using (
@@ -15,7 +19,10 @@ namespace FrockRaytracerDemo
                 var world = win.World;
 
                 var plane = new Plane(new Vector3(0, 0, 0), Quaternion.Identity) {
-                    Material = {Diffuse = new Vector3(0.2f, 0.2f, 0.2f)}
+                    Material = {
+                        Diffuse = new Vector3(0.2f, 0.2f, 0.2f),
+                        Texture = new CheckerboardTexture(1)
+                    }
                 };
                 world.addObject(plane);
                 
@@ -23,8 +30,9 @@ namespace FrockRaytracerDemo
                     Material = {
                         Diffuse = new Vector3(1, 0.2f, 0.2f),
                         IsGlossy = true,
-                        Specular = new Vector3(1, 0.2f, 0.2f) * .5f,
-                        Shinyness = 8
+                        Specular = new Vector3(1, 1f, 1f) * .5f,
+                        Shinyness = 8,
+                        Texture = new CheckerboardTexture(5, 10)
                     }
                 };
                 world.addObject(sphere_matte);
@@ -62,9 +70,18 @@ namespace FrockRaytracerDemo
                         RefractionIndex = 1.3f
                     }
                 };
-                world.addObject(sphere_glass);
+                //world.addObject(sphere_glass);
+
+                Vector3 A = new Vector3(-1, 0f, 3), B = new Vector3(1, 0f, 3), C = new Vector3(0, 2f, 5);
+                var polygon = new Polygon((A + B + C) / 3, new Vector3[] { A, B, C })
+                {
+                    Material = {
+                        Diffuse = new Vector3(0.2f, 0.2f, 0.2f)
+                    }
+                };
+                //world.addObject(polygon);
                 
-                var light = new Light(new Vector3(0, 7, 0.5f), Vector3.One, 15);
+                var light = new Light(new Vector3(0, 1, 0.5f), Vector3.One, 2000);
                 world.addLight(light);
                 
                 win.Run(30.0, 60.0);
@@ -100,22 +117,22 @@ namespace FrockRaytracerDemo
             }
 
             if (keyState.IsKeyDown(Key.W)) {
-                World.Objects[4].Position = World.Objects[4].Position + new Vector3(0, 0, 0.1f);
+                World.Objects[MOVE_SPHERE_ID].Position = World.Objects[MOVE_SPHERE_ID].Position + new Vector3(0, 0, 0.1f);
                 World.Changed = true;
             }
             
             if (keyState.IsKeyDown(Key.S)) {
-                World.Objects[4].Position = World.Objects[4].Position + new Vector3(0, 0, -0.1f);
+                World.Objects[MOVE_SPHERE_ID].Position = World.Objects[MOVE_SPHERE_ID].Position + new Vector3(0, 0, -0.1f);
                 World.Changed = true;
             }
 
             if (keyState.IsKeyDown(Key.D)) {
-                World.Objects[4].Position = World.Objects[4].Position + new Vector3(0.1f, 0, 0);
+                World.Objects[MOVE_SPHERE_ID].Position = World.Objects[MOVE_SPHERE_ID].Position + new Vector3(0.1f, 0, 0);
                 World.Changed = true;
             }
 
             if (keyState.IsKeyDown(Key.A)) {
-                World.Objects[4].Position = World.Objects[4].Position + new Vector3(-0.1f, 0, 0);
+                World.Objects[MOVE_SPHERE_ID].Position = World.Objects[MOVE_SPHERE_ID].Position + new Vector3(-0.1f, 0, 0);
                 World.Changed = true;
             }
         }

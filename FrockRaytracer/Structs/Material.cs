@@ -15,6 +15,7 @@ namespace FrockRaytracer.Structs
         public float Reflectivity;
         public bool IsRefractive;
         public float RefractionIndex;
+        public Texture Texture;
 
         public Material(Vector3 diffuse, Vector3 specular, Vector3 absorb, bool isGlossy, float shinyness,
             float roughness, bool isDielectic, bool isMirror, float reflectivity, bool isRefractive,
@@ -31,6 +32,7 @@ namespace FrockRaytracer.Structs
             Reflectivity = reflectivity;
             IsRefractive = isRefractive;
             RefractionIndex = refractionIndex;
+            Texture = null;
         }
 
         public static Material Default()

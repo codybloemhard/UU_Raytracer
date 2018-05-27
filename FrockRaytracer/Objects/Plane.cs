@@ -7,11 +7,16 @@ namespace FrockRaytracer.Objects
     public class Plane : Primitive
     {
         private Vector3 normal;
-
+        private Vector3 u, v;
+        
         public Vector3 Normal
         {
             get { return normal; }
-            set { normal = value; }
+            set
+            {
+                normal = value;
+                position_cached = true;
+            }
         }
 
         public Plane(Vector3 position, Quaternion rotation) : base(position, rotation, false) { }
@@ -32,10 +37,20 @@ namespace FrockRaytracer.Objects
             return true;
         }
 
+        public override Vector2 GetUV(RayHit hit)
+        {
+            return new Vector2(Vector3.Dot(hit.Position, u), Vector3.Dot(hit.Position, v));
+        }
+
         public override void Cache()
         {
             if (position_cached) return;
             normal = Rotation * Vector3.UnitY;
+            
+            u = new Vector3(Normal.Y, Normal.Z, -Normal.X);
+            v = Vector3.Cross(u, Normal);
+            u.Normalize();
+            v.Normalize();
 
             position_cached = true;
         }

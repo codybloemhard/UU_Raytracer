@@ -19,13 +19,13 @@ namespace FrockRaytracer.Objects
         public virtual bool Intersect(Ray ray, ref RayHit hit)
         {
             return false;
-        } 
-        
+        }
+
         /// <summary>
         /// Get UV coordinates to map texture to.
         /// </summary>
-        /// <param name="pos"></param>
+        /// <param name="hit"></param>
         /// <returns></returns>
-        public virtual Vector2 GetUV(Vector3 pos) { return Vector2.Zero;}
+        public virtual Vector2 GetUV(RayHit hit) { return Vector2.Zero;}
     }
 }
