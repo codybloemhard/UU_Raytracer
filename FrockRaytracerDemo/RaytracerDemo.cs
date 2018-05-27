@@ -93,8 +93,8 @@ namespace FrockRaytracerDemo
                     },
                     Scale = new Vector3(1)
                 };
-                mesh.ImportMesh("assets/objects/mesh.obj");
-                world.addObject(mesh);
+                //mesh.ImportMesh("assets/models/lamp.obj");
+                //world.addObject(mesh);
 
                 var light = new Light(new Vector3(0, 1, 0.5f), Vector3.One, 2000);
                 world.addLight(light);
