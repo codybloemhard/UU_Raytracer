@@ -19,6 +19,7 @@ namespace FrockRaytracer.Objects.Primitives
         }
 
         private Vector2[] Vertices;
+        private Vector3[] originalVertices;
 
         public Polygon(Vector3 position, Vector3[] verts) : base(position, Quaternion.Identity, false)
         {
@@ -28,6 +29,7 @@ namespace FrockRaytracer.Objects.Primitives
             {
                 Vertices[i] = new Vector2(Vector3.Dot(verts[i] - Position, right), Vector3.Dot(verts[i] - Position, up));
             }
+            originalVertices = verts;
         }
 
         public override bool Intersect(Ray ray, ref RayHit hit)
@@ -57,7 +59,22 @@ namespace FrockRaytracer.Objects.Primitives
 
         private bool isLeft(Vector2 vertice1, Vector2 vertice2, Vector2 point)
         {
-            return ((vertice2.X - vertice1.X) * (point.Y - vertice1.Y) - (vertice2.Y - vertice1.Y) * (point.X - vertice1.X)) > 0;
+            return ((vertice2.X - vertice1.X) * (point.Y - vertice1.Y) - (vertice2.Y - vertice1.Y) * (point.X - vertice1.X)) >= 0;
+        }
+
+        public override AABB GetBox()
+        {
+            Vector3 mn = new Vector3(float.MaxValue), mx = new Vector3(-float.MaxValue);
+            for(int i = 0; i < originalVertices.Length; i++)
+            {
+                mn.X = Math.Min(mn.X, originalVertices[i].X);
+                mn.Y = Math.Min(mn.Y, originalVertices[i].Y);
+                mn.Z = Math.Min(mn.Z, originalVertices[i].Z);
+                mx.X = Math.Max(mx.X, originalVertices[i].X);
+                mx.Y = Math.Max(mx.Y, originalVertices[i].Y);
+                mx.Z = Math.Max(mx.Z, originalVertices[i].Z);
+            }
+            return new AABB(Vector3.Zero, Quaternion.Identity) { min = mn, max = mx };
         }
     }
 }

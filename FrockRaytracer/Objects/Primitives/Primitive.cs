@@ -21,6 +21,8 @@ namespace FrockRaytracer.Objects.Primitives
             return false;
         }
 
+        public virtual AABB GetBox() { return null; }
+
         /// <summary>
         /// Get UV coordinates to map texture to.
         /// </summary>

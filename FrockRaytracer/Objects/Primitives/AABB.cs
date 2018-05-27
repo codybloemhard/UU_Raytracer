@@ -12,6 +12,7 @@ namespace FrockRaytracer.Objects.Primitives
     {
         public Vector3 min, max;
         public AABB(Vector3 position, Quaternion rotation) : base(position, rotation, true){ }
+        public Primitive A, B;
 
         //source: powerpoint of lecture 'acceleration'
         public override bool Intersect(Ray ray, ref RayHit hit)
@@ -33,13 +34,17 @@ namespace FrockRaytracer.Objects.Primitives
             tmin = Math.Max(tmin, Math.Min(tz1, tz2));
             tmax = Math.Min(tmax, Math.Max(tz1, tz2));
 
-            if (tmax < tmin || tmax < 0 || tmax > hit.T) return false; // Check if is relevant hit
+            if (tmax < tmin || tmax < 0) return false;
 
-            hit.T = tmax;
-            hit.Position = ray.Origin * tmax;
-            hit.Normal = Vector3.UnitY;
-            hit.Obj = this;
-            return true;
+            return A.Intersect(ray, ref hit) | B.Intersect(ray, ref hit);
+        }
+
+        public void PrintStuff()
+        {
+            if (!(A is AABB) || !(B is AABB)) { Console.WriteLine("Polygonz"); return; }
+            Console.WriteLine("Min: {0}, max: {1}", min, max);
+            (A as AABB).PrintStuff();
+            (B as AABB).PrintStuff();
         }
     }
 }

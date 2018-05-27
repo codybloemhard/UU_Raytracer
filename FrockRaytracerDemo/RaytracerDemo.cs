@@ -89,15 +89,15 @@ namespace FrockRaytracerDemo
                 };
                 //world.addObject(polygon);
 
-                var mesh = new Mesh(new Vector3(0, 1, 4), Quaternion.Identity)
+                var mesh = new Mesh(new Vector3(0, 0f, 1.5f), Quaternion.Identity)
                 {
                     Material = {
-                        Diffuse = new Vector3(0.2f, 0.2f, 0.2f)
+                        Diffuse = new Vector3(.05f)
                     },
-                    Scale = new Vector3(1)
+                    Scale = new Vector3(.5f)
                 };
-                //mesh.ImportMesh("assets/models/lamp.obj");
-                //world.addObject(mesh);
+                mesh.ImportMesh("assets/models/lamp.obj");
+                world.addObject(mesh);
 
                 var light = new Light(new Vector3(0, 1, 0.5f), Vector3.One, 2000);
                 world.addLight(light);
