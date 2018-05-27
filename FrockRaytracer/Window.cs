@@ -13,13 +13,6 @@ namespace FrockRaytracer
 {
     public class Window : OpenTK.GameWindow
     {
-        public static int RAYTRACE_AREA_WIDTH = 512;
-        public static int RAYTRACE_AREA_HEIGHT = 512;
-        public static Vector2 RAYTRACE_DEBUG_AREA_LT = new Vector2(-5, 9);
-        public static float RAYTRACE_DEBUG_AREA_EXT = 10;
-        public static int RAYTRACE_DEBUG_AREA_WIDTH = 512;
-        
-
         protected ProjectionPlane Projection;
         public Raster Raster => Projection.Raster;
         public World World;
@@ -82,11 +75,6 @@ namespace FrockRaytracer
         /// </summary>
         private void UpdateViewport()
         {
-            RAYTRACE_AREA_WIDTH = ClientSize.Width / 2;
-            RAYTRACE_DEBUG_AREA_WIDTH = ClientSize.Width / 2;
-            RAYTRACE_AREA_HEIGHT = ClientSize.Height;
-            Settings.RaytraceDebugRow = RAYTRACE_AREA_WIDTH / 2;
-
             Projection.Resize(ClientSize);
 
             GL.Viewport(0, 0, Width, Height);

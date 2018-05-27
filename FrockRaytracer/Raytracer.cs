@@ -31,7 +31,7 @@ namespace FrockRaytracer
 
             if (Settings.IsMultithread) {
                 var ConcurrentWorkerCount = Environment.ProcessorCount;
-                var rpt = Window.RAYTRACE_AREA_HEIGHT / ConcurrentWorkerCount;
+                var rpt = raster.Height / ConcurrentWorkerCount;
 
                 for (int i = 0; i < ConcurrentWorkerCount; ++i) {
                     var i1 = i;
@@ -42,7 +42,7 @@ namespace FrockRaytracer
                 for (int i = 0; i < ConcurrentWorkerCount; ++i) Threads[i].Join();
             }
             else {
-                RenderRows(0, Window.RAYTRACE_AREA_HEIGHT);
+                RenderRows(0, raster.Height);
             }
             
             DebugRenderer.DebugDraw(ddat, raster, world);
@@ -57,13 +57,14 @@ namespace FrockRaytracer
         {
             bool is_debug_row = false;
             int debug_column = Settings.RaytraceDebugFrequency;
+            int debug_row = (int) (Settings.RaytraceDebugRow * raster.Height);
 
             for (int y = start; y < end; ++y) {
-                if (y == Settings.RaytraceDebugRow) is_debug_row = true;
+                if (y == debug_row) is_debug_row = true;
 
-                for (int x = 0; x < Window.RAYTRACE_AREA_WIDTH; ++x) {
-                    float wt = (float) x / Window.RAYTRACE_AREA_WIDTH;
-                    float ht = (float) y / Window.RAYTRACE_AREA_HEIGHT;
+                for (int x = 0; x < raster.WidthHalf; ++x) {
+                    float wt = (float) x / raster.WidthHalf;
+                    float ht = (float) y / raster.Height;
                     
                     Vector3 onPlane = world.Camera.FOVPlane.PointAt(wt, ht);
                     onPlane.Normalize();

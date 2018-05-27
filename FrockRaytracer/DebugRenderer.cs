@@ -25,6 +25,9 @@ namespace FrockRaytracer
 
     public static class DebugRenderer
     {
+        private static int Width = 512;
+        private static int Height = 512;
+        
         /// <summary>
         /// Project points X on x axis and Z on z axis. After that transform it to debug scene coordinates
         /// </summary>
@@ -33,10 +36,8 @@ namespace FrockRaytracer
         public static Vector2 translate_to_debug(Vector3 pos)
         {
             return new Vector2(
-                (pos.X - Window.RAYTRACE_DEBUG_AREA_LT.X) / Window.RAYTRACE_DEBUG_AREA_EXT *
-                Window.RAYTRACE_DEBUG_AREA_WIDTH +
-                Window.RAYTRACE_AREA_WIDTH,
-                (Window.RAYTRACE_DEBUG_AREA_LT.Y - pos.Z) / Window.RAYTRACE_DEBUG_AREA_EXT * Window.RAYTRACE_AREA_HEIGHT
+                (pos.X - Settings.DEBUG_AREA_LT.X) / Settings.DEBUG_AREA_EXT * Width + Width,
+                (Settings.DEBUG_AREA_LT.Y - pos.Z) / Settings.DEBUG_AREA_EXT * Height
             );
         }
 
@@ -48,16 +49,16 @@ namespace FrockRaytracer
         /// <param name="world"></param>
         public static void DebugDraw(DebugData data, Raster raster, World world)
         {
+            Width = raster.WidthHalf;
+            Height = raster.Height;
             raster.Debug = true;
 
             // Draw primitives
             foreach (var primitive in world.Objects) {
                 if (primitive is Sphere) {
                     var pos = translate_to_debug(primitive.Position);
-                    var r = ((Sphere) primitive).Radius / Window.RAYTRACE_DEBUG_AREA_EXT *
-                            Window.RAYTRACE_DEBUG_AREA_WIDTH;
-                    Draw.Circle(raster, (int) pos.X, (int) pos.Y, (int) r,
-                        Constants.RAYTRACE_DEBUG_OBJ_COLOR);
+                    var r = ((Sphere) primitive).Radius / Settings.DEBUG_AREA_EXT * Width;
+                    Draw.Circle(raster, (int) pos.X, (int) pos.Y, (int) r, Constants.RAYTRACE_DEBUG_OBJ_COLOR);
                     continue;
                 }
             }
@@ -65,11 +66,10 @@ namespace FrockRaytracer
             // Draw a debug line to indictae which row of pixels it debugged
             if (Settings.DrawDebugLine) {
                 raster.Debug = false;
-                Draw.Line(raster, 0, Settings.RaytraceDebugRow, Window.RAYTRACE_AREA_WIDTH, Settings.RaytraceDebugRow,
-                    new Vector3(.3f, .3f, .3f));
-                for (int i = 0; i < Window.RAYTRACE_DEBUG_AREA_WIDTH / Settings.RaytraceDebugFrequency; ++i) {
-                    raster.setPixel(i * Settings.RaytraceDebugFrequency, Settings.RaytraceDebugRow,
-                        new Vector3(1, 0, 0));
+                int debugRow = (int) (Settings.RaytraceDebugRow * raster.Height);
+                Draw.Line(raster, 0, debugRow, raster.WidthHalf, debugRow, new Vector3(.3f, .3f, .3f));
+                for (int i = 0; i < Width / Settings.RaytraceDebugFrequency; ++i) {
+                    raster.setPixel(i * Settings.RaytraceDebugFrequency, debugRow, new Vector3(1, 0, 0));
                 }
 
                 raster.Debug = true;
