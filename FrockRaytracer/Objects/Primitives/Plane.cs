@@ -11,7 +11,7 @@ namespace FrockRaytracer.Objects
         
         public Vector3 Normal
         {
-            get => normal;
+            get { return normal;}
             set
             {
                 normal = value;

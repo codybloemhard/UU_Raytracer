@@ -18,7 +18,7 @@ namespace FrockRaytracer.Objects
 
         public float Radius
         {
-            get => radius;
+            get { return radius; }
             set
             {
                 radius = value;

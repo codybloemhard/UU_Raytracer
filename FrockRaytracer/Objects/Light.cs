@@ -16,7 +16,7 @@ namespace FrockRaytracer.Objects
         public PointLightCache PointLightCache;
         public float Intensity
         {
-            get => intensity;
+            get { return intensity; }
             set
             {
                 intensity = value;
