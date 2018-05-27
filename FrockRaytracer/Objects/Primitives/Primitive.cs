@@ -1,7 +1,7 @@
 ﻿using FrockRaytracer.Structs;
 using OpenTK;
 
-namespace FrockRaytracer.Objects
+namespace FrockRaytracer.Objects.Primitives
 {
     public class Primitive : Object
     {

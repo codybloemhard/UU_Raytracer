@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using FrockRaytracer;
 using FrockRaytracer.Objects;
+using FrockRaytracer.Objects.Primitives;
 using FrockRaytracer.Structs;
 using OpenTK;
 using OpenTK.Graphics.ES30;
@@ -84,7 +85,17 @@ namespace FrockRaytracerDemo
                     }
                 };
                 //world.addObject(polygon);
-                
+
+                var mesh = new Mesh(new Vector3(0, 1, 4), Quaternion.Identity)
+                {
+                    Material = {
+                        Diffuse = new Vector3(0.2f, 0.2f, 0.2f)
+                    },
+                    Scale = new Vector3(1)
+                };
+                mesh.ImportMesh("assets/objects/mesh.obj");
+                world.addObject(mesh);
+
                 var light = new Light(new Vector3(0, 1, 0.5f), Vector3.One, 2000);
                 world.addLight(light);
                 

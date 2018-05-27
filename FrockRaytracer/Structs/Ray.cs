@@ -1,4 +1,4 @@
-﻿using FrockRaytracer.Objects;
+﻿using FrockRaytracer.Objects.Primitives;
 using OpenTK;
 
 namespace FrockRaytracer.Structs

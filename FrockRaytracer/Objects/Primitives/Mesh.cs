@@ -5,7 +5,7 @@ using System.IO;
 using System.Globalization;
 using FrockRaytracer.Structs;
 
-namespace FrockRaytracer.Objects
+namespace FrockRaytracer.Objects.Primitives
 {
     public class Mesh : Primitive
     {
@@ -60,7 +60,7 @@ namespace FrockRaytracer.Objects
             string line;
 
             // Read the file and display it line by line.  
-            StreamReader file = new StreamReader(url);
+            StreamReader file = new StreamReader("../../"+ url);
             while ((line = file.ReadLine()) != null)
             {
                 if (line.Length == 0) continue;

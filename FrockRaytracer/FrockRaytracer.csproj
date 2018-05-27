@@ -59,6 +59,7 @@
     <Compile Include="Objects\Environent.cs" />
     <Compile Include="Objects\EnvironmentBox.cs" />
     <Compile Include="Objects\Light.cs" />
+    <Compile Include="Objects\Primitives\AABB.cs" />
     <Compile Include="Objects\Primitives\Mesh.cs" />
     <Compile Include="Objects\Object.cs" />
     <Compile Include="Objects\Primitives\Polygon.cs" />

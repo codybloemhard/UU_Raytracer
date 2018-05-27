@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using FrockRaytracer.Objects;
+using FrockRaytracer.Objects.Primitives;
 using FrockRaytracer.Structs;
 using FrockRaytracer.Utils;
 using OpenTK;

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using FrockRaytracer.Objects;
+using FrockRaytracer.Objects.Primitives;
 using FrockRaytracer.Structs;
 using OpenTK;
 
