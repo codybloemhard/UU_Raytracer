@@ -10,8 +10,8 @@ namespace FrockRaytracer.Objects
 
         public Vector3 Normal
         {
-            get => normal;
-            set => normal = value;
+            get { return normal; }
+            set { normal = value; }
         }
 
         public Plane(Vector3 position, Quaternion rotation) : base(position, rotation, false) { }

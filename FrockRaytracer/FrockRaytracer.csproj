@@ -52,10 +52,13 @@
     <Compile Include="Graphics\Shader.cs" />
     <Compile Include="Objects\Camera.cs" />
     <Compile Include="Objects\Light.cs" />
+    <Compile Include="Objects\Mesh.cs" />
     <Compile Include="Objects\Object.cs" />
     <Compile Include="Objects\Plane.cs" />
+    <Compile Include="Objects\Polygon.cs" />
     <Compile Include="Objects\Primitive.cs" />
     <Compile Include="Objects\Sphere.cs" />
+    <Compile Include="Objects\Triangle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Raster.cs" />
     <Compile Include="Raytracer.cs" />

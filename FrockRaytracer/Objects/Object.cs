@@ -10,7 +10,7 @@ namespace FrockRaytracer.Objects
 
         public Vector3 Position
         {
-            get => position;
+            get { return position; }
             set
             {
                 position = value;
@@ -20,7 +20,7 @@ namespace FrockRaytracer.Objects
 
         public Quaternion Rotation
         {
-            get => rotation;
+            get { return rotation; }
             set
             {
                 rotation = value;
