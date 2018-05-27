@@ -94,7 +94,12 @@ namespace FrockRaytracer
             
             // Calculate color and specular highlights. Pure mirrors dont have diffuse
             Vector3 specular = Vector3.Zero;
-            Vector3 color = hit.Obj.Material.IsMirror ? Vector3.Zero : illuminate(ray, hit, ref specular, debug);
+            Vector3 color = Vector3.Zero;
+            if (!hit.Obj.Material.IsMirror) {
+                color += illuminate(ray, hit, ref specular, debug);
+                color += world.Environent.AmbientLight * color;
+            }
+            
             
             // Different materials are handled differently. Would be cool to move that into material
             if (hit.Obj.Material.IsMirror) {
@@ -225,7 +230,7 @@ namespace FrockRaytracer
         /// <returns></returns>
         protected Vector3 illuminate(Ray ray, RayHit hit, ref Vector3 specular, bool debug)
         {
-            Vector3 ret = Vector3.Zero;
+            var ret = world.Environent.AmbientLight;
             foreach(var light in world.Lights) ret += illuminateBy(light, ray, hit, ref specular, debug);
             return ret;
         }

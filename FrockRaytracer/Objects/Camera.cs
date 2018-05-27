@@ -48,6 +48,7 @@ namespace FrockRaytracer.Objects
         public float Fovy
         {
             get { return fovy; }
+        
             set
             {
                 fovy = value;
@@ -58,6 +59,7 @@ namespace FrockRaytracer.Objects
         public float Znear
         {
             get { return ZNear; }
+
             set
             {
                 ZNear = value;
