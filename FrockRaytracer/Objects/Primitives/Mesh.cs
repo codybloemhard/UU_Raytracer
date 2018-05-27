@@ -11,6 +11,7 @@ namespace FrockRaytracer.Objects.Primitives
     {
         public Vector3 Scale;
 
+        private AABB box;
         private List<Polygon> polygons = new List<Polygon>();
         public Vector3[] Vertices { get; set; }
         private int[][] faces;
@@ -24,14 +25,12 @@ namespace FrockRaytracer.Objects.Primitives
 
         public override bool Intersect(Ray ray, ref RayHit hit)
         {
-            bool intersects = false;
+            //return box.Intersect(ray, ref hit);
 
-            foreach (Polygon polygon in polygons)
-            {
-                if(polygon.Intersect(ray, ref hit)) intersects = true;
-            }
-
-            return intersects;
+            bool i = false;
+            foreach (Polygon p in polygons)
+                if(p.Intersect(ray, ref hit)) i = true;
+            return i;
         }
 
         private void CreateTriangles()
@@ -50,6 +49,46 @@ namespace FrockRaytracer.Objects.Primitives
                 p.Material = Material;
                 polygons.Add(p);
             }
+
+            box = CreateBoxes(polygons);
+            (box as AABB).PrintStuff();
+        }
+
+        private AABB CreateBoxes(List<Polygon> polys)
+        {
+            if(polys.Count <= 2)
+            {
+                AABB newBox = new AABB(Vector3.Zero, Quaternion.Identity);
+                newBox.A = polys[0];
+                newBox.B = polys[polys.Count - 1];
+                Vector3[] minmax = MergeBoxes(newBox.A.GetBox(), newBox.B.GetBox());
+                newBox.min = minmax[0];
+                newBox.max = minmax[1];
+                return newBox;
+            }
+            List<Polygon> lA, lB;
+            lA = polys.GetRange(0, polys.Count / 2);
+            lB = polys.GetRange(polys.Count / 2, polys.Count - polys.Count / 2  );
+            AABB newBox2 = new AABB(Vector3.Zero, Quaternion.Identity);
+            newBox2.A = CreateBoxes(lA);
+            newBox2.B = CreateBoxes(lB);
+            Vector3[] minmax2 = MergeBoxes((AABB)newBox2.A, (AABB)newBox2.B);
+            newBox2.min = minmax2[0];
+            newBox2.max = minmax2[1];
+
+            return newBox2;
+        }
+
+        private Vector3[] MergeBoxes(AABB A, AABB B)
+        {
+            Vector3 min, max;
+            min.X = Math.Min(A.min.X, B.min.X);
+            min.Y = Math.Min(A.min.Y, B.min.Y);
+            min.Z = Math.Min(A.min.Z, B.min.Z);
+            max.X = Math.Max(A.max.X, B.max.X);
+            max.Y = Math.Max(A.max.Y, B.max.Y);
+            max.Z = Math.Max(A.max.Z, B.max.Z);
+            return new Vector3[] { min, max };
         }
 
         public void ImportMesh(string url)
