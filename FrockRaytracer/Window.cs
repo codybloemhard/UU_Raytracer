@@ -11,7 +11,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace FrockRaytracer
 {
-    public class Window : OpenTK.GameWindow
+    public class Window : GameWindow
     {
         protected ProjectionPlane Projection;
         public Raster Raster => Projection.Raster;
@@ -61,9 +61,9 @@ namespace FrockRaytracer
         {
             // Raytrace only if changed
             if (World.Changed) {
-                Raster.Clear();
-                Render();
+                Raytracer.Raytrace(World, Raster);
             } 
+            Raytracer.MaintainThreads();
             
             Projection.Render();
             SwapBuffers();
@@ -89,7 +89,6 @@ namespace FrockRaytracer
 
         public virtual void Render()
         {
-            Raytracer.Raytrace(World, Raster);
         }
     }
 }

@@ -51,6 +51,7 @@ namespace FrockRaytracer
         {
             Width = raster.WidthHalf;
             Height = raster.Height;
+            raster.Clear(Width, raster.Width, 0, raster.Height);
             raster.Debug = true;
 
             // Draw primitives
