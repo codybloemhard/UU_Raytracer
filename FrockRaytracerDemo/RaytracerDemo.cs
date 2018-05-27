@@ -15,6 +15,9 @@ namespace FrockRaytracerDemo
         
         public static void Main(string[] args)
         {
+            Settings.RenderMSAALevels = new float[] {0.5f, 2f};
+            Settings.IsAsync = true;
+            
             using (
                 var win = new RaytracerDemo(new Size(1024, 512))) {
                 var world = win.World;

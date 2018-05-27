@@ -14,7 +14,7 @@ namespace FrockRaytracer
     public class Window : GameWindow
     {
         protected ProjectionPlane Projection;
-        public Raster Raster => Projection.Raster;
+        public MultiResolutionRaster Raster => Projection.Raster;
         public World World;
         public Raytracer Raytracer;
 
@@ -60,14 +60,11 @@ namespace FrockRaytracer
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             // Raytrace only if changed
-            if (World.Changed) {
-                Raytracer.Raytrace(World, Raster);
-            } 
+            Raytracer.Raytrace(World, Raster);
             Raytracer.MaintainThreads();
             
             Projection.Render();
             SwapBuffers();
-            World.Changed = false;
         }
 
         /// <summary>

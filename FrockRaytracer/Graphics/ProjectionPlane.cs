@@ -17,7 +17,7 @@ namespace FrockRaytracer.Graphics
 
         public int Texture;
 
-        public Raster Raster;
+        public MultiResolutionRaster Raster;
 
         public ProjectionPlane() { }
 
@@ -50,6 +50,8 @@ namespace FrockRaytracer.Graphics
             Mesh.Buffers.Add(new AttribBuffer<float>(uvs, "vUv", VertexAttribPointerType.Float));
 
             Mesh.Upload(Shader);
+            
+            Raster = new MultiResolutionRaster();
         }
 
         private void MakeTexture()
@@ -68,8 +70,7 @@ namespace FrockRaytracer.Graphics
         /// <param name="size"></param>
         public void Resize(Size size)
         {
-            if(size.Width == Raster.Width && size.Height == Raster.Height) return;
-            Raster = new Raster(size.Width, size.Height);
+            Raster.Resize(size.Width, size.Height, Settings.RenderMSAALevels);
         }
         
         public void Render()
@@ -77,8 +78,8 @@ namespace FrockRaytracer.Graphics
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, Texture);
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb,
-                Raster.Width, Raster.Height, 0, PixelFormat.Rgb,
-                PixelType.UnsignedByte, Raster.Pixels
+                Raster.CurrentRaster.Width, Raster.CurrentRaster.Height, 0, PixelFormat.Rgb,
+                PixelType.UnsignedByte, Raster.CurrentRaster.Pixels
             );
 
             // Set all FXAA Params

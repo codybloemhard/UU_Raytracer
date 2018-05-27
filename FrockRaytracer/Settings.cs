@@ -19,10 +19,15 @@ namespace FrockRaytracer
         public static int MaxDepth = 4;
 
         public static bool IsMultithread = true;
+        public static bool IsAsync = true;
         
+        public static float[] RenderMSAALevels = new float[] {0.5f, 2f};
         
         // Debug
         public static Vector2 DEBUG_AREA_LT = new Vector2(-5, 9);
         public static float DEBUG_AREA_EXT = 10;
+        
+        
+        
     }
 }

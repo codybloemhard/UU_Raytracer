@@ -6,16 +6,18 @@ using FrockRaytracer.Objects.Primitives;
 using FrockRaytracer.Structs;
 using FrockRaytracer.Utils;
 using OpenTK;
+using OpenTK.Graphics.ES11;
 
 namespace FrockRaytracer
 {
     public class Raytracer
     {
         private World world;
-        private Raster raster;
+        private MultiResolutionRaster raster;
         private DebugData ddat = new DebugData();
-        private uint WorkID = 0;
         private List<Thread> Threads = new List<Thread>();
+        private uint WorkID = 0;
+        //private uint 
 
         public void MaintainThreads()
         {
@@ -24,16 +26,21 @@ namespace FrockRaytracer
                 if(!Threads[i].IsAlive) Threads.RemoveAt(i);
             }
             
-            if(hasThreads && Threads.Count == 0) DebugRenderer.DebugDraw(ddat, raster, world);
+            if(hasThreads && Threads.Count == 0) DebugRenderer.DebugDraw(ddat, raster.CurrentRaster, world);
         }
-        
+
         /// <summary>
         /// Render everythign to raster. It is important that world stays the same
         /// </summary>
         /// <param name="_world"></param>
         /// <param name="_raster"></param>
-        public void Raytrace(World _world, Raster _raster, bool async = false)
+        /// <param name="async"></param>
+        public void Raytrace(World _world, MultiResolutionRaster _raster)
         {
+            if(!_world.Changed && _raster.CurrentLevel == _raster.MaxLevel) return;
+            if(!_world.Changed) _raster.SwitchLevel(_raster.CurrentLevel + 1, true);
+            if(_world.Changed) _raster.SwitchLevel(0, false);
+            _world.Changed = false;
             world = _world;
             raster = _raster;
             ddat.Clear();
@@ -50,8 +57,13 @@ namespace FrockRaytracer
                     Threads.Add( new Thread(() => RenderRows(i1 * rpt, (i1 + 1) * rpt, WorkID)));
                     Threads[i].Start();
                 }
-            }
-            else {
+                
+                if (!Settings.IsAsync) {
+                    foreach (var t in Threads) t.Join();
+                    Threads.Clear();
+                    DebugRenderer.DebugDraw(ddat, raster.CurrentRaster, world);
+                }
+            } else {
                 RenderRows(0, raster.Height, WorkID);
             }
         }
@@ -71,14 +83,14 @@ namespace FrockRaytracer
             for (int y = start; y < end; ++y) {
                 if (y == debug_row) is_debug_row = true;
 
-                for (int x = 0; x < raster.WidthHalf; ++x) {
+                for (int x = 0; x < raster.CurrentRaster.WidthHalf; ++x) {
                     // Two workid checkers with a "choke point inbetween" to keep threads from writing over eachother
                     // Bit bad and should lock pixel area instead but yep. Mb later
                     if(workID != WorkID) return; 
                     bool debug = is_debug_row && x == debug_column;
                     if (debug) debug_column += Settings.RaytraceDebugFrequency;
                     
-                    float wt = (float) x / raster.WidthHalf;
+                    float wt = (float) x / raster.CurrentRaster.WidthHalf;
                     float ht = (float) y / raster.Height;
                     
                     Vector3 onPlane = world.Camera.FOVPlane.PointAt(wt, ht);
@@ -87,7 +99,7 @@ namespace FrockRaytracer
                     var color = traceRay(new Ray(world.Camera.Position, onPlane), debug);
                     
                     if(workID != WorkID) return;
-                    raster.setPixel(x, y, color);
+                    raster.CurrentRaster.setPixel(x, y, color);
                 }
             }
         }

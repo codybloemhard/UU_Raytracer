@@ -55,6 +55,7 @@
     <Compile Include="Graphics\Mesh.cs" />
     <Compile Include="Graphics\ProjectionPlane.cs" />
     <Compile Include="Graphics\Shader.cs" />
+    <Compile Include="MultiResolutionRaster.cs" />
     <Compile Include="Objects\Camera.cs" />
     <Compile Include="Objects\Environent.cs" />
     <Compile Include="Objects\EnvironmentBox.cs" />
