@@ -89,7 +89,7 @@ namespace FrockRaytracer
             
             // Check for intersections
             RayHit hit = intersect(ray);
-            if (hit.Obj == null) return ret; // TODO: cube map
+            if (hit.Obj == null) return world.Environent == null ? Vector3.Zero : world.Environent.GetColor(ray);
             if (debug) ddat.PrimaryRays.Add(new Tuple<Ray, RayHit>(ray, hit));
             
             // Calculate color and specular highlights. Pure mirrors dont have diffuse

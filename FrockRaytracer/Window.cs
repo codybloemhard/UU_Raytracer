@@ -3,6 +3,8 @@ using System.Drawing;
 using System.Net.WebSockets;
 using FrockRaytracer.Graphics;
 using FrockRaytracer.Objects;
+using FrockRaytracer.Structs;
+using ImageMagick;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -93,7 +95,7 @@ namespace FrockRaytracer
             GL.Ortho(-1.0, 1.0, -1.0, 1.0, 0.0, 4.0);
         }
 
-        public virtual void Init()  {}
+        public virtual void Init() {}
 
         public virtual void Update() { }
 

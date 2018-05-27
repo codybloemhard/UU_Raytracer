@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Magick.NET-Q16-HDRI-AnyCPU, Version=7.4.6.0, Culture=neutral, PublicKeyToken=2004825badfa91ec">
+      <HintPath>..\packages\Magick.NET-Q16-HDRI-AnyCPU.7.4.6\lib\net40\Magick.NET-Q16-HDRI-AnyCPU.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="OpenTK, Version=3.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4">
       <HintPath>..\packages\OpenTK.3.0.0\lib\net20\OpenTK.dll</HintPath>
     </Reference>
@@ -51,6 +55,8 @@
     <Compile Include="Graphics\ProjectionPlane.cs" />
     <Compile Include="Graphics\Shader.cs" />
     <Compile Include="Objects\Camera.cs" />
+    <Compile Include="Objects\Environent.cs" />
+    <Compile Include="Objects\EnvironmentBox.cs" />
     <Compile Include="Objects\Light.cs" />
     <Compile Include="Objects\Mesh.cs" />
     <Compile Include="Objects\Object.cs" />
@@ -63,16 +69,19 @@
     <Compile Include="Raster.cs" />
     <Compile Include="Raytracer.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="Structs\CheckerboardTexture.cs" />
     <Compile Include="Structs\Material.cs" />
     <Compile Include="Structs\Ray.cs" />
-    <Compile Include="Structs\Texture.cs" />
+    <Compile Include="Structs\Texturing\CheckerboardTexture.cs" />
+    <Compile Include="Structs\Texturing\CubeMapTexture.cs" />
+    <Compile Include="Structs\Texturing\HDRTexture.cs" />
+    <Compile Include="Structs\Texturing\Texture.cs" />
     <Compile Include="Utils\Draw.cs" />
     <Compile Include="Utils\Generics.cs" />
     <Compile Include="Utils\GraphicUtils.cs" />
     <Compile Include="Utils\Mem.cs" />
     <Compile Include="Utils\QuickMaths.cs" />
     <Compile Include="Utils\RayTrans.cs" />
+    <Compile Include="Utils\Vectors.cs" />
     <Compile Include="Window.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>
@@ -83,6 +92,9 @@
     <Content Include="assets\shaders\fxaa_VS.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
