@@ -14,64 +14,79 @@ namespace FrockRaytracer
         private World world;
         private Raster raster;
         private DebugData ddat = new DebugData();
+        private uint WorkID = 0;
         private List<Thread> Threads = new List<Thread>();
 
+        public void MaintainThreads()
+        {
+            bool hasThreads = Threads.Count > 0;
+            for (int i = Threads.Count-1; i >= 0; --i) {
+                if(!Threads[i].IsAlive) Threads.RemoveAt(i);
+            }
+            
+            if(hasThreads && Threads.Count == 0) DebugRenderer.DebugDraw(ddat, raster, world);
+        }
+        
         /// <summary>
         /// Render everythign to raster. It is important that world stays the same
         /// </summary>
         /// <param name="_world"></param>
         /// <param name="_raster"></param>
-        public void Raytrace(World _world, Raster _raster)
+        public void Raytrace(World _world, Raster _raster, bool async = false)
         {
             world = _world;
             raster = _raster;
             ddat.Clear();
             world.Cache();
+            ++WorkID; // Increment work id to let the threads know they have gulag waiting for them
             Threads.Clear();
 
             if (Settings.IsMultithread) {
                 var ConcurrentWorkerCount = Environment.ProcessorCount;
-                var rpt = Window.RAYTRACE_AREA_HEIGHT / ConcurrentWorkerCount;
+                var rpt = raster.Height / ConcurrentWorkerCount;
 
                 for (int i = 0; i < ConcurrentWorkerCount; ++i) {
                     var i1 = i;
-                    Threads.Add( new Thread(() => RenderRows(i1 * rpt, (i1 + 1) * rpt)));
+                    Threads.Add( new Thread(() => RenderRows(i1 * rpt, (i1 + 1) * rpt, WorkID)));
                     Threads[i].Start();
                 }
-
-                for (int i = 0; i < ConcurrentWorkerCount; ++i) Threads[i].Join();
             }
             else {
-                RenderRows(0, Window.RAYTRACE_AREA_HEIGHT);
+                RenderRows(0, raster.Height, WorkID);
             }
-            
-            DebugRenderer.DebugDraw(ddat, raster, world);
         }
-        
+
         /// <summary>
         /// Render a specified y range
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>
-        protected void RenderRows(int start, int end)
+        /// <param name="workID"></param>
+        protected void RenderRows(int start, int end, uint workID)
         {
             bool is_debug_row = false;
             int debug_column = Settings.RaytraceDebugFrequency;
+            int debug_row = (int) (Settings.RaytraceDebugRow * raster.Height);
 
             for (int y = start; y < end; ++y) {
-                if (y == Settings.RaytraceDebugRow) is_debug_row = true;
+                if (y == debug_row) is_debug_row = true;
 
-                for (int x = 0; x < Window.RAYTRACE_AREA_WIDTH; ++x) {
-                    float wt = (float) x / Window.RAYTRACE_AREA_WIDTH;
-                    float ht = (float) y / Window.RAYTRACE_AREA_HEIGHT;
+                for (int x = 0; x < raster.WidthHalf; ++x) {
+                    // Two workid checkers with a "choke point inbetween" to keep threads from writing over eachother
+                    // Bit bad and should lock pixel area instead but yep. Mb later
+                    if(workID != WorkID) return; 
+                    bool debug = is_debug_row && x == debug_column;
+                    if (debug) debug_column += Settings.RaytraceDebugFrequency;
+                    
+                    float wt = (float) x / raster.WidthHalf;
+                    float ht = (float) y / raster.Height;
                     
                     Vector3 onPlane = world.Camera.FOVPlane.PointAt(wt, ht);
                     onPlane.Normalize();
-                    
-                    bool debug = is_debug_row && x == debug_column;
-                    if (debug) debug_column += Settings.RaytraceDebugFrequency;
-
+                   
                     var color = traceRay(new Ray(world.Camera.Position, onPlane), debug);
+                    
+                    if(workID != WorkID) return;
                     raster.setPixel(x, y, color);
                 }
             }

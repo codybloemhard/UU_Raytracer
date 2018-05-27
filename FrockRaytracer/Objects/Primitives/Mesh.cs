@@ -25,7 +25,7 @@ namespace FrockRaytracer.Objects.Primitives
 
         public override bool Intersect(Ray ray, ref RayHit hit)
         {
-            //return box.Intersect(ray, ref hit);
+            return box.Intersect(ray, ref hit);
 
             bool i = false;
             foreach (Polygon p in polygons)

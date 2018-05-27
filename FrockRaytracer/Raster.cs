@@ -10,6 +10,7 @@ namespace FrockRaytracer
     {
         public byte[] Pixels;
         public int Width;
+        public int WidthHalf;
         public int Height;
         public  bool Debug;
 
@@ -20,8 +21,9 @@ namespace FrockRaytracer
         /// <param name="height"></param>
         public Raster(int width, int height) : this()
         {
-            this.Width = width;
-            this.Height = height;
+            Width = width;
+            WidthHalf = Width/2;
+            Height = height;
             Pixels = new byte[width * height * 3];
             Debug = false;
         }
@@ -34,6 +36,7 @@ namespace FrockRaytracer
         {
             Bitmap bmp = new Bitmap(filename);
             Width = bmp.Width;
+            WidthHalf = Width/2;
             Height = bmp.Height;
             Pixels = new byte[Width * Height * 3];
             Debug = false;
@@ -54,7 +57,7 @@ namespace FrockRaytracer
         public void setPixel(int x, int y, byte r, byte g, byte b)
         {
             // If debug is enabled we dont draw on the raytracer side of the window
-            if (Debug && x < Window.RAYTRACE_AREA_WIDTH) return;
+            if (Debug && x < WidthHalf) return;
             if (x < 0 || y < 0 || x >= Width || y >= Height) return;
             int offset = (x + y * Width) * 3;
             Pixels[offset++] = r;
@@ -80,6 +83,20 @@ namespace FrockRaytracer
         public void Clear()
         {
             for (int i = 0; i < Pixels.Length; ++i) Pixels[i] = 0;
+        }
+        
+        /// <summary>
+        /// Clear the Pixels by setting by using memset. A handy c function which is proven to be fast.
+        /// </summary>
+        public void Clear(int x0, int x1, int y0, int y1)
+        {
+            for (int x = x0; x < x1; x++)
+            for (int y = y0; y < y1; y++) {
+                int offset = (x + y * Width) * 3;
+                Pixels[offset++] = 0;
+                Pixels[offset++] = 0;
+                Pixels[offset] = 0;
+            }
         }
     }
 }
