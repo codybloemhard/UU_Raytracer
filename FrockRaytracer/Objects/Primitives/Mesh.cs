@@ -38,7 +38,15 @@ namespace FrockRaytracer.Objects
         {
             for (int i = 0; i < faces.GetLength(0); i++)
             {
-                Polygon p = new Polygon(new Vector3(), new Vector3[] { });
+                Vector3[] newVertices = new Vector3[faces[i].Length];
+                Vector3 pos = Vector3.Zero;
+                for (int j = 0; j < newVertices.Length; j++)
+                {
+                    newVertices[j] = Vertices[faces[i][j]];
+                    pos += newVertices[j];
+                }
+                pos /= newVertices.Length;
+                Polygon p = new Polygon(pos, newVertices);
                 p.Material = Material;
                 polygons.Add(p);
             }
