@@ -189,7 +189,7 @@ namespace FrockRaytracer
 
             var tmp = RayHit.Default();
             foreach (var o in world.Objects) {
-                if (o.Intersect(shadow_ray, ref tmp)) {
+                if (o.Intersect(shadow_ray, ref tmp) && tmp.T < dist) {
                     if (debug) ddat.ShadowRaysOccluded.Add(new Tuple<Ray, RayHit>(shadow_ray, tmp));
                     return new Vector3();
                 } 
