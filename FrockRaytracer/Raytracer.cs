@@ -37,7 +37,7 @@ namespace FrockRaytracer
         /// <param name="async"></param>
         public void Raytrace(World _world, MultiResolutionRaster _raster)
         {
-            if(!_world.Changed && _raster.CurrentLevel == _raster.MaxLevel) return;
+            if(!_world.Changed && (_raster.CurrentLevel == _raster.MaxLevel || Threads.Count > 0)) return;
             if(!_world.Changed) _raster.SwitchLevel(_raster.CurrentLevel + 1, true);
             if(_world.Changed) _raster.SwitchLevel(0, false);
             _world.Changed = false;
