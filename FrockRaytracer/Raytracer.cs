@@ -196,7 +196,10 @@ namespace FrockRaytracer
             }
 
             // Diffuse
-            var color = hit.Obj.Material.Diffuse * Math.Max(0.0f, Vector3.Dot(hit.Normal, light_vec));
+            var materialColor = hit.Obj.Material.Texture == null
+                ? hit.Obj.Material.Diffuse
+                : hit.Obj.Material.Texture.GetColor(hit.Obj.GetUV(hit));
+            var color = materialColor * Math.Max(0.0f, Vector3.Dot(hit.Normal, light_vec));
 
             // Inverse square law
             var light_powah = light.Intensity / (Constants.PI4 * dist_sq);
