@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using FrockRaytracer.Objects;
+using FrockRaytracer.Structs;
+using OpenTK;
 
 namespace FrockRaytracer
 {
@@ -8,6 +10,7 @@ namespace FrockRaytracer
         public List<Primitive> Objects { get; private set; } = new List<Primitive>();
         public List<Light> Lights { get; private set; } = new List<Light>();
         public Camera Camera;
+        public Environent Environent;
         public bool Changed = true;
 
         public World(Camera camera)
@@ -19,12 +22,11 @@ namespace FrockRaytracer
         /// Add an object to world
         /// </summary>
         /// <param name="o"></param>
-        public void  addObject(Primitive o)
+        public void addObject(Primitive o)
         {
             Objects.Add(o);
             Changed = true;
         }
-        
         
         /// <summary>
         /// Add a light to world

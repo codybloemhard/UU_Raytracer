@@ -10,21 +10,24 @@ namespace FrockRaytracerDemo
 {
     internal class RaytracerDemo : Window
     {
-        private const int MOVE_SPHERE_ID = 4;
+        private const int MOVE_SPHERE_ID = 3;
         
         public static void Main(string[] args)
         {
             using (
                 var win = new RaytracerDemo(new Size(1024, 512))) {
                 var world = win.World;
+                
+                var environment = new HDRTexture(@"assets/textures/stpeters_cross.hdr", 50000);
+                world.Environent = new EnvironmentBox(new CubeMapTexture(environment));
 
-                var plane = new Plane(new Vector3(0, 0, 0), Quaternion.Identity) {
+                /*var plane = new Plane(new Vector3(0, 0, 0), Quaternion.Identity) {
                     Material = {
                         Diffuse = new Vector3(0.2f, 0.2f, 0.2f),
                         Texture = new CheckerboardTexture(1)
                     }
                 };
-                world.addObject(plane);
+                world.addObject(plane);*/
                 
                 var sphere_matte = new Sphere(new Vector3(-2.5f, 1, 5.5f), 1, Quaternion.Identity) {
                     Material = {
