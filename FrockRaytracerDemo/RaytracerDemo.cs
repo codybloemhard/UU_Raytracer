@@ -26,7 +26,7 @@ namespace FrockRaytracerDemo
                 world.Environent = new EnvironmentBox(new CubeMapTexture(environment));
                 world.Environent.AmbientLight = new Vector3(0.87f, 0.56f, 0.46f) * 0.1f;
 
-                var plane = new Plane(new Vector3(0, 0, 0), Quaternion.Identity) {
+                var plane = new Plane(new Vector3(0, -2, 0), Quaternion.Identity) {
                     Material = {
                         Diffuse = new Vector3(0.2f, 0.2f, 0.2f),
                         Texture = new CheckerboardTexture(1)
@@ -43,7 +43,7 @@ namespace FrockRaytracerDemo
                         Texture = new CheckerboardTexture(5, 10)
                     }
                 };
-                world.addObject(sphere_matte);
+                //world.addObject(sphere_matte);
                 
                 var sphere_mirror = new Sphere(new Vector3(0, 1, 6f), 1, Quaternion.Identity) {
                     Material = {
@@ -53,7 +53,7 @@ namespace FrockRaytracerDemo
                         IsMirror = true
                     }
                 };
-                world.addObject(sphere_mirror);
+                //world.addObject(sphere_mirror);
                 
                 var sphere_glossy = new Sphere(new Vector3(2.5f, 1, 5.5f), 1, Quaternion.Identity) {
                     Material = {
@@ -65,7 +65,7 @@ namespace FrockRaytracerDemo
                         Reflectivity = 0.6f
                     }
                 };
-                world.addObject(sphere_glossy);
+                //world.addObject(sphere_glossy);
                 
                 var sphere_glass = new Sphere(new Vector3(0, 1, 1.5f), 1, Quaternion.Identity) {
                     Material = {
@@ -80,7 +80,7 @@ namespace FrockRaytracerDemo
                 };
                 //world.addObject(sphere_glass);
 
-                Vector3 A = new Vector3(-1, 0f, 3), B = new Vector3(1, 0f, 3), C = new Vector3(0, 2f, 5);
+                Vector3 A = new Vector3(-.05f, 0f, 1.5f), B = new Vector3(.05f, 0f, 1.5f), C = new Vector3(0, .05f, 1.5f), D = new Vector3(.1f, .05f, 1.5f), E = new Vector3(.05f, 0, 1.5f);
                 var polygon = new Polygon((A + B + C) / 3, new Vector3[] { A, B, C })
                 {
                     Material = {
@@ -89,19 +89,22 @@ namespace FrockRaytracerDemo
                 };
                 //world.addObject(polygon);
 
-                var mesh = new Mesh(new Vector3(0, 0f, 1.5f), Quaternion.Identity)
+                var mesh = new Mesh(new Vector3(5, -2, 5), Quaternion.Identity)
                 {
                     Material = {
-                        Diffuse = new Vector3(.05f)
+                        Diffuse = new Vector3(.2f)
                     },
-                    Scale = new Vector3(.5f)
+                    Scale = new Vector3(.2f)
                 };
-                mesh.ImportMesh("assets/models/lamp.obj");
+                mesh.ImportMesh("assets/models/dragon.obj");
                 world.addObject(mesh);
 
-                var light = new Light(new Vector3(0, 1, 0.5f), Vector3.One, 2000);
+                var light = new Light(new Vector3(0, 12, 2f), Vector3.One, 4000);
                 world.addLight(light);
-                
+
+                var light2 = new Light(new Vector3(5, 0, -2f), Vector3.One, 1000);
+                world.addLight(light2);
+
                 win.Run(30.0, 60.0);
             }
         }

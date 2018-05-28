@@ -9,8 +9,8 @@ namespace FrockRaytracer.Objects.Primitives
 {
     public class Mesh : Primitive
     {
+        public int X = 1, Y = 2, Z = 3;
         public Vector3 Scale;
-
         private AABB box;
         private List<Polygon> polygons = new List<Polygon>();
         public Vector3[] Vertices { get; set; }
@@ -18,10 +18,10 @@ namespace FrockRaytracer.Objects.Primitives
         public int[][] Faces
         {
             get { return faces; }
-            set { faces = value; CreateTriangles(); }
+            set { faces = value; CreatePolygons(); }
         }
 
-        public Mesh(Vector3 position, Quaternion rotation):base(position, rotation, true) { }
+        public Mesh(Vector3 position, Quaternion rotation):base(position, rotation, false) { }
 
         public override bool Intersect(Ray ray, ref RayHit hit)
         {
@@ -33,7 +33,7 @@ namespace FrockRaytracer.Objects.Primitives
             return i;
         }
 
-        private void CreateTriangles()
+        private void CreatePolygons()
         {
             for (int i = 0; i < faces.GetLength(0); i++)
             {
@@ -49,9 +49,8 @@ namespace FrockRaytracer.Objects.Primitives
                 p.Material = Material;
                 polygons.Add(p);
             }
-
             box = CreateBoxes(polygons);
-            (box as AABB).PrintStuff();
+            //(box as AABB).PrintStuff();
         }
 
         private AABB CreateBoxes(List<Polygon> polys)
@@ -103,14 +102,14 @@ namespace FrockRaytracer.Objects.Primitives
             while ((line = file.ReadLine()) != null)
             {
                 if (line.Length == 0) continue;
-                if (line[0] == 'v')
+                if (line[0] == 'v' && line[1] == ' ')
                 {
                     //vertex
                     string[] coords = System.Text.RegularExpressions.Regex.Split(line, @"\s+");
                     verts.Add(new Vector3(
-                        float.Parse(coords[1], CultureInfo.InvariantCulture) * Scale.X + Position.X,
-                        float.Parse(coords[2], CultureInfo.InvariantCulture) * Scale.Y + Position.Y,
-                        float.Parse(coords[3], CultureInfo.InvariantCulture) * Scale.Z + Position.Z));
+                        float.Parse(coords[X], CultureInfo.InvariantCulture) * Scale.X + Position.X,
+                        float.Parse(coords[Y], CultureInfo.InvariantCulture) * Scale.Y + Position.Y,
+                        -float.Parse(coords[Z], CultureInfo.InvariantCulture) * Scale.Z + Position.Z));
                 }
                 else if (line[0] == 'f')
                 {

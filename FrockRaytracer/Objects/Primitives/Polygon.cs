@@ -41,12 +41,15 @@ namespace FrockRaytracer.Objects.Primitives
             float t = Vector3.Dot(plane_vec, normal) / divisor;
             if (t < Constants.EPSILON || t > hit.T) return false; // Check if is relevant hit
 
+            bool l = true, r = true;
             for(int i = 0; i < Vertices.Length; i++) //Check if the hit is on the left of every edge
             {
                 Vector3 v = ray.Origin + ray.Direction * t - Position;
                 Vector2 hitPoint = new Vector2(Vector3.Dot(v, right), Vector3.Dot(v, up));
-                if (isLeft(Vertices[i], Vertices[((i + 1) % Vertices.Length)], hitPoint)) return false;
+                if (isLeft(Vertices[i], Vertices[((i + 1) % Vertices.Length)], hitPoint) > 0) r = false;
+                if (!(isLeft(Vertices[i], Vertices[((i + 1) % Vertices.Length)], hitPoint) < 0)) l = false;
             }
+            if (!l && !r) return false;
 
             if (Vector3.Dot(Normal, ray.Direction) < 0)
                 hit.Normal = Normal;
@@ -57,9 +60,9 @@ namespace FrockRaytracer.Objects.Primitives
             return true;
         }
 
-        private bool isLeft(Vector2 vertice1, Vector2 vertice2, Vector2 point)
+        private float isLeft(Vector2 vertice1, Vector2 vertice2, Vector2 point)
         {
-            return ((vertice2.X - vertice1.X) * (point.Y - vertice1.Y) - (vertice2.Y - vertice1.Y) * (point.X - vertice1.X)) >= 0;
+            return ((vertice2.X - vertice1.X) * (point.Y - vertice1.Y) - (vertice2.Y - vertice1.Y) * (point.X - vertice1.X));
         }
 
         public override AABB GetBox()
