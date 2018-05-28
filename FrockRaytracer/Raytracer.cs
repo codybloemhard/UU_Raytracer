@@ -61,13 +61,16 @@ namespace FrockRaytracer
                 if (reflect_multiplier > Constants.EPSILON)
                 {
                     Ray reflRay = RayTrans.Reflect(ray, hit);
-                    for(int i = 0; i < Settings.MaxReflectionSamples; i++)
+                    uint takeSamples = 0;
+                    if (hit.Obj.Material.Roughness > 0.001f) takeSamples = Settings.MaxReflectionSamples;
+                    else takeSamples = 1;
+                    for (int i = 0; i < takeSamples; i++)
                     {
                         Ray localRay = reflRay;
                         localRay.Direction = RRandom.RandomChange(reflRay.Direction, hit.Obj.Material.Roughness);
                         ret += reflect_multiplier * TraceRay(localRay, debug);
                     }
-                    ret /= Settings.MaxReflectionSamples;
+                    ret /= takeSamples;
                 }
                 if (transmission_multiplier > Constants.EPSILON) {
                     if(hit.Obj.Material.IsRefractive) {

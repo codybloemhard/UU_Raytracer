@@ -29,9 +29,8 @@ namespace FrockRaytracerDemo
                 var plane = new Plane(new Vector3(0, -2, 0), Quaternion.Identity) {
                     Material = {
                         Diffuse = new Vector3(0.2f),
-                        IsDielectic = true,
-                        Reflectivity = 0.7f,
-                        Roughness = 0.1f,
+                        //IsDielectic = true,
+                        Reflectivity = 0.5f,
                         Texture = new DiffuseTexture(@"assets/textures/wall.png", 5f)
                     }
                 };
@@ -95,7 +94,10 @@ namespace FrockRaytracerDemo
                 var mesh = new Mesh(new Vector3(5, -2, 5), Quaternion.Identity)
                 {
                     Material = {
-                        Diffuse = new Vector3(.5f)
+                        Diffuse = new Vector3(.5f),
+                        IsDielectic = true,
+                        Reflectivity = 0.5f,
+                        Roughness = 0.1f
                     },
                     Scale = new Vector3(0.2f)
                 };
