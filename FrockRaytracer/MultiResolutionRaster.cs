@@ -43,9 +43,9 @@
                     int xs = (int) (x * scale), ys = (int) (y * scale);
                     int offset = (x + TargetRaster.Width * y) * 3;
                     int offset_s = (xs + SourceRaster.Width * ys) * 3;
-                    TargetRaster.Pixels[offset++] = SourceRaster.Pixels[offset_s++];
-                    TargetRaster.Pixels[offset++] = SourceRaster.Pixels[offset_s++];
-                    TargetRaster.Pixels[offset] = SourceRaster.Pixels[offset_s];
+                    TargetRaster.Pixels[offset++] = (byte) (SourceRaster.Pixels[offset_s++]*0.7f);
+                    TargetRaster.Pixels[offset++] = (byte) (SourceRaster.Pixels[offset_s++]*0.7f);
+                    TargetRaster.Pixels[offset] = (byte) (SourceRaster.Pixels[offset_s]*0.7f);
                 }
             }
 

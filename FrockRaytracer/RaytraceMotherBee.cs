@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 
 namespace FrockRaytracer
 {
@@ -13,12 +14,15 @@ namespace FrockRaytracer
         public int DebugRow { get; private set; }
         public int AvailableThreads => Environment.ProcessorCount;
 
+        public Random Random;
+
         private List<RaytraceWorker> Workers = new List<RaytraceWorker>();
 
         public RaytraceMotherBee(Raytracer raytracer, MultiResolutionRaster raster)
         {
             Raytracer = raytracer;
             Raster = raster;
+            Random = new Random(1337);
         }
 
         public void MaintainThreads()
@@ -31,12 +35,11 @@ namespace FrockRaytracer
             if (Settings.SplitThreads && Workers.Count > 0) {
                 int remainingThreads = Math.Min(Workers.Count, AvailableThreads - Workers.Count);
                 for (int i = 0; i < remainingThreads; i++) {
-                    var worker = Workers[i].Split();
+                    var worker = Workers[Random.Next(0, remainingThreads)].Split();
                     if (worker != null) {
                         worker.RunAsync();
                         Workers.Add(worker);
                     }
-                       
                 }
             }
 
@@ -44,11 +47,12 @@ namespace FrockRaytracer
                 DebugRenderer.DebugDraw(Raytracer.DebugData, Raster.CurrentRaster, World);
             }
         }
-
+        
         public void StartRender(World world, MultiResolutionRaster raster)
         {
             if(!world.Changed && (raster.CurrentLevel == raster.MaxLevel || Workers.Count > 0)) return;
-            if(!world.Changed) raster.SwitchLevel(raster.CurrentLevel + 1, true);
+            if(!world.Changed) 
+                raster.SwitchLevel(raster.CurrentLevel + 1, true);
             if(world.Changed) raster.SwitchLevel(0, false);
             ++WorkID;
             Workers.Clear();

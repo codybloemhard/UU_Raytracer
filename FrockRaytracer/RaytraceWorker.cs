@@ -82,7 +82,7 @@ namespace FrockRaytracer
             if (HalfRow == CurrentRow) return null;
            
             var ret =  new RaytraceWorker(Mother, HalfRow, EndRow);
-            EndRow = HalfRow;
+            EndRow = HalfRow; // Screams in concurrency
             return ret;
         }
     }
