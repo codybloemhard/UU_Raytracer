@@ -27,11 +27,6 @@ namespace FrockRaytracer.Objects.Primitives
         public override bool Intersect(Ray ray, ref RayHit hit)
         {
             return box.Intersect(ray, ref hit);
-
-            bool i = false;
-            foreach (Polygon p in polygons)
-                if(p.Intersect(ray, ref hit)) i = true;
-            return i;
         }
 
         private void CreatePolygons()
