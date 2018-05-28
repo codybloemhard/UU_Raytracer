@@ -94,7 +94,10 @@ namespace FrockRaytracerDemo
                 var mesh = new Mesh(new Vector3(5, -2, 5), Quaternion.Identity)
                 {
                     Material = {
-                        Diffuse = new Vector3(.5f)
+                        Diffuse = new Vector3(.5f),
+                        IsDielectic = true,
+                        Reflectivity = 0.5f,
+                        Roughness = 0.1f
                     },
                     Scale = new Vector3(0.2f)
                 };

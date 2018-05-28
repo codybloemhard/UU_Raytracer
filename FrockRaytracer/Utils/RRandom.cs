@@ -52,5 +52,13 @@ namespace FrockRaytracer.Utils
             float y = r * (float)Math.Sin(t);
             return new Vector3(x, y, z);
         }
+
+        public static Vector3 RandomChange(Vector3 vec, float power)
+        {
+            Vector3 r = new Vector3((float)ThreadLocalRandom.Instance.NextDouble(),
+                                    (float)ThreadLocalRandom.Instance.NextDouble(),
+                                    (float)ThreadLocalRandom.Instance.NextDouble());
+            return (vec + r * power).Normalized();
+        }
     }
 }
