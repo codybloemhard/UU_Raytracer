@@ -140,7 +140,16 @@ namespace FrockRaytracer
 
                 // Reflect if its worth it
                 if (reflect_multiplier > Constants.EPSILON)
-                    ret = reflect_multiplier * traceRay(RayTrans.Reflect(ray, hit), debug);
+                {
+                    Ray reflRay = RayTrans.Reflect(ray, hit);
+                    for(int i = 0; i < Settings.MaxReflectionSamples; i++)
+                    {
+                        Ray localRay = reflRay;
+                        localRay.Direction = RRandom.RandomChange(reflRay.Direction, hit.Obj.Material.Roughness);
+                        ret += reflect_multiplier * traceRay(localRay, debug);
+                    }
+                    ret /= Settings.MaxReflectionSamples;
+                }
                 if (transmission_multiplier > Constants.EPSILON) {
                     if(hit.Obj.Material.IsRefractive) {
                         var tmp_ray = RayTrans.Refract(ray, hit);

@@ -26,6 +26,7 @@ namespace FrockRaytracer
 
         public static uint MaxLightSamples = 32;
         public static LightSampleMode LSM = LightSampleMode.TRUE_STRATIFIED;
+        public static uint MaxReflectionSamples = 16;
 
         // Debug
         public static Vector2 DEBUG_AREA_LT = new Vector2(-5, 9);
