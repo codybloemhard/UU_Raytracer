@@ -18,6 +18,7 @@ namespace FrockRaytracer
         public RaytraceWorker(RaytraceMotherBee mother, int startRow, int endRow)
         {
             StartRow = startRow;
+            CurrentRow = StartRow;
             EndRow = endRow;
             WorkID = mother.WorkID;
             Mother = mother;
@@ -39,7 +40,7 @@ namespace FrockRaytracer
         {
             bool is_debug_row = false;
             int debug_column = Settings.RaytraceDebugFrequency;
-            for (CurrentRow = StartRow; CurrentRow < EndRow; ++CurrentRow) {
+            for (; CurrentRow < EndRow; ++CurrentRow) {
                 if (CurrentRow == Mother.DebugRow) is_debug_row = true;
                 if(IsCancelled()) return;
 

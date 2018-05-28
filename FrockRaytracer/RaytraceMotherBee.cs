@@ -25,11 +25,20 @@ namespace FrockRaytracer
             Random = new Random(1337);
         }
 
+        /// <summary>
+        /// Update the running workers and and split them if needed.
+        /// </summary>
         public void MaintainThreads()
         {
+            if(!Settings.IsAsync) return;
+            
             bool hasWorkers = Workers.Count > 0;
             for (int i = Workers.Count-1; i >= 0; --i) {
-                if(!Workers[i].IsWorking) Workers.RemoveAt(i);
+                if (!Workers[i].IsWorking) {
+                    Workers.RemoveAt(i);
+                    //if(Workers[i].CurrentRow == Workers[i].EndRow) Workers.RemoveAt(i);
+                    //else Workers[i].RunAsync(); // Windows killd my worker. Lets restart
+                }
             }
 
             if (Settings.SplitThreads && Workers.Count > 0) {
@@ -48,12 +57,18 @@ namespace FrockRaytracer
             }
         }
         
+        /// <summary>
+        /// Start a full render. It does first check if world has changed or the current render can be upscaled
+        /// </summary>
+        /// <param name="world"></param>
+        /// <param name="raster"></param>
         public void StartRender(World world, MultiResolutionRaster raster)
         {
+            // World has not changed and cant upscale
             if(!world.Changed && (raster.CurrentLevel == raster.MaxLevel || Workers.Count > 0)) return;
-            if(!world.Changed) 
-                raster.SwitchLevel(raster.CurrentLevel + 1, true);
-            if(world.Changed) raster.SwitchLevel(0, false);
+            // World has not changed. So upscale
+            if(!world.Changed) raster.SwitchLevel(raster.CurrentLevel + 1, true);
+            if(world.Changed) raster.SwitchLevel(0, false); // World changed. Reset antialias
             ++WorkID;
             Workers.Clear();
             Raytracer.Reset(world);
@@ -63,7 +78,6 @@ namespace FrockRaytracer
 
             if (Settings.IsMultithread) {
                 var rpt = Raster.Height / AvailableThreads;
-                
                 for (int i = 0; i < AvailableThreads; ++i) {
                     Workers.Add(new RaytraceWorker(this, i * rpt, (i + 1) * rpt));
                     Workers[i].RunAsync();
