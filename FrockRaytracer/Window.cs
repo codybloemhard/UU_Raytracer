@@ -8,6 +8,7 @@ using ImageMagick;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Input;
 
 namespace FrockRaytracer
 {
@@ -17,6 +18,7 @@ namespace FrockRaytracer
         public MultiResolutionRaster Raster => Projection.Raster;
         public World World;
         public RaytraceMotherBee MotherBee;
+        private int PresetID = 0;
 
         public Window(Size size)
         {
@@ -24,6 +26,7 @@ namespace FrockRaytracer
             Projection = new ProjectionPlane();
             World = new World(new Camera(new Vector3(0, 1, 0), Quaternion.Identity));
             MotherBee = new RaytraceMotherBee(new Raytracer(), Raster);
+            Settings.FastMediumQualityPreset();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -82,7 +85,48 @@ namespace FrockRaytracer
 
         public virtual void Init() {}
 
-        public virtual void Update() { }
+        public virtual void Update()
+        {
+            var keyState = Keyboard.GetState();
+            // Check for preset keys
+            if (keyState.IsKeyDown(Key.Number1) && PresetID != 0) {
+                Settings.LowQualityPreset();
+                PresetID = 0;
+                MotherBee.Cancel();
+                Raster.SwitchLevel(0, false, true);
+                World.Changed = true;
+            } else if (keyState.IsKeyDown(Key.Number2) && PresetID != 1) {
+                Settings.FastMediumQualityPreset();
+                PresetID = 1;
+                MotherBee.Cancel();
+                Raster.SwitchLevel(0, false, true);
+                World.Changed = true;
+            } else if (keyState.IsKeyDown(Key.Number3) && PresetID != 2) {
+                Settings.MediumQualityPreset();
+                PresetID = 2;
+                MotherBee.Cancel();
+                Raster.SwitchLevel(0, false, true);
+                World.Changed = true;
+            } else if (keyState.IsKeyDown(Key.Number4) && PresetID != 3) {
+                Settings.FastHighQualityPreset();
+                PresetID = 3;
+                MotherBee.Cancel();
+                Raster.SwitchLevel(0, false, true);
+                World.Changed = true;
+            } else if (keyState.IsKeyDown(Key.Number5) && PresetID != 3) {
+                Settings.HighQualityPreset();
+                PresetID = 3;
+                MotherBee.Cancel();
+                Raster.SwitchLevel(0, false, true);
+                World.Changed = true;
+            } else if (keyState.IsKeyDown(Key.Number6) && PresetID != 4) {
+                Settings.UltraQualityPreset();
+                PresetID = 4;
+                MotherBee.Cancel();
+                Raster.SwitchLevel(0, false, true);
+                World.Changed = true;
+            }
+        }
 
         public virtual void Render()
         {

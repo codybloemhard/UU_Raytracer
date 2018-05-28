@@ -29,7 +29,7 @@
             }
         }
 
-        public void SwitchLevel(int level, bool copy)
+        public void SwitchLevel(int level, bool copy = false, bool clear = false)
         {
             if(CurrentLevel == level || level >= Rasters.Length) return;
             if (copy) {
@@ -47,6 +47,8 @@
                     TargetRaster.Pixels[offset++] = (byte) (SourceRaster.Pixels[offset_s++]*0.7f);
                     TargetRaster.Pixels[offset] = (byte) (SourceRaster.Pixels[offset_s]*0.7f);
                 }
+            } else if (clear) {
+                Rasters[level].Clear();
             }
 
             CurrentLevel = level;

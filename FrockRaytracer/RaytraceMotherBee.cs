@@ -26,6 +26,15 @@ namespace FrockRaytracer
         }
 
         /// <summary>
+        /// Cancel the current rende rin progress if any
+        /// </summary>
+        public void Cancel()
+        {
+            WorkID++;
+            Workers.Clear();
+        }
+
+        /// <summary>
         /// Update the running workers and and split them if needed.
         /// </summary>
         public void MaintainThreads()
