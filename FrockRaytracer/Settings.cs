@@ -24,7 +24,7 @@ namespace FrockRaytracer
         
         public static float[] RenderMSAALevels = new float[] {0.5f, 2f};
 
-        public static uint MaxLightSamples = 8;
+        public static uint MaxLightSamples = 32;
         public static LightSampleMode LSM = LightSampleMode.TRUE_STRATIFIED;
 
         // Debug
