@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using FrockRaytracer.Objects;
 
 namespace FrockRaytracer
 {
@@ -22,12 +23,12 @@ namespace FrockRaytracer
         public static bool IsAsync = true;
         
         public static float[] RenderMSAALevels = new float[] {0.5f, 2f};
-        
+
+        public static uint MaxLightSamples = 8;
+        public static LightSampleMode LSM = LightSampleMode.TRUE_STRATIFIED;
+
         // Debug
         public static Vector2 DEBUG_AREA_LT = new Vector2(-5, 9);
         public static float DEBUG_AREA_EXT = 10;
-        
-        
-        
     }
 }

@@ -68,6 +68,7 @@
     <Compile Include="Objects\Primitives\Plane.cs" />
     <Compile Include="Objects\Primitives\Primitive.cs" />
     <Compile Include="Objects\Primitives\Sphere.cs" />
+    <Compile Include="Objects\SpotLight.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Raster.cs" />
     <Compile Include="Raytracer.cs" />

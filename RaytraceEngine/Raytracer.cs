@@ -235,7 +235,7 @@ namespace RaytraceEngine
             return null;
         }
 */
-
+        
         //Calculates the light energy at a certain hit position, from all the light sources in the scene
         private Vector3 CalcLightEnergy(RayScene scene, RayHit hit, bool debug)
         {

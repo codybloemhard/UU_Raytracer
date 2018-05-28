@@ -125,9 +125,8 @@ namespace FrockRaytracer
             Vector3 color = Vector3.Zero;
             if (!hit.Obj.Material.IsMirror) {
                 color += illuminate(ray, hit, ref specular, debug);
-                color += world.Environent.AmbientLight * color;
+                color += world.Environent.AmbientLight;
             }
-            
             
             // Different materials are handled differently. Would be cool to move that into material
             if (hit.Obj.Material.IsMirror) {
@@ -207,12 +206,12 @@ namespace FrockRaytracer
         /// <param name="specular"></param>
         /// <param name="debug"></param>
         /// <returns></returns>
-        protected Vector3 illuminateBy(Light light, Ray ray, RayHit hit, ref Vector3 specular, bool debug)
+        protected Vector3 illuminateBy(Vector3 ppos, Light light, Ray ray, RayHit hit, ref Vector3 specular, bool debug)
         {
             // Calclulate if we are within light range
-            var light_vec = light.Position - hit.Position;
+            var light_vec = ppos - hit.Position;
             float dist_sq = Vector3.Dot(light_vec, light_vec);
-            float intens_sq = light.PointLightCache.IntensitySq;
+            float intens_sq = light.LightCache.IntensitySq;
             if (dist_sq >= intens_sq * Constants.LIGHT_DECAY) return Vector3.Zero;
             
             // Create a shadow ray
@@ -236,16 +235,17 @@ namespace FrockRaytracer
 
             // Inverse square law
             var light_powah = light.Intensity / (Constants.PI4 * dist_sq);
+            light_powah *= light.AngleEnergy(light_vec.Normalized());
 
             // Specular will be used separately
             if (hit.Obj.Material.IsGlossy) {
                 var hardness = Math.Max(.0f, Vector3.Dot(-ray.Direction, QuickMaths.Reflect(-light_vec, hit.Normal)));
-                specular += light.Color * light_powah * hit.Obj.Material.Specular *
+                specular += light.Colour * light_powah * hit.Obj.Material.Specular *
                     (float)Math.Pow(hardness, hit.Obj.Material.Shinyness);
             }
 
-            if (debug) ddat.ShadowRays.Add(new Tuple<Ray, Vector3>(shadow_ray, light.Position));
-            return light.Color * color * light_powah;
+            if (debug) ddat.ShadowRays.Add(new Tuple<Ray, Vector3>(shadow_ray, ppos));
+            return light.Colour * color * light_powah;
         }
        
         /// <summary>
@@ -259,7 +259,19 @@ namespace FrockRaytracer
         protected Vector3 illuminate(Ray ray, RayHit hit, ref Vector3 specular, bool debug)
         {
             var ret = world.Environent.AmbientLight;
-            foreach(var light in world.Lights) ret += illuminateBy(light, ray, hit, ref specular, debug);
+            foreach (var light in world.Lights)
+            {
+                var lPoints = light.GetPoints(Settings.MaxLightSamples, Settings.LSM);
+                var localEnergy = Vector3.Zero;
+                bool first = true;
+                foreach(var lp in lPoints)
+                {
+                    localEnergy += illuminateBy(lp, light, ray, hit, ref specular, debug && first);
+                    first = false;
+                }
+                localEnergy /= lPoints.Length;
+                ret += localEnergy;
+            }
             return ret;
         }
         

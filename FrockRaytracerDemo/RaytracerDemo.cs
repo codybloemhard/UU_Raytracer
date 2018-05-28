@@ -29,7 +29,7 @@ namespace FrockRaytracerDemo
                 var plane = new Plane(new Vector3(0, -2, 0), Quaternion.Identity) {
                     Material = {
                         Diffuse = new Vector3(0.2f),
-                        IsDielectic = true,
+                        //IsDielectic = true,
                         Reflectivity = 0.5f,
                         Texture = new DiffuseTexture(@"assets/textures/wall.png", 5f)
                     }
@@ -96,16 +96,21 @@ namespace FrockRaytracerDemo
                     Material = {
                         Diffuse = new Vector3(.5f)
                     },
-                    Scale = new Vector3(.2f)
+                    Scale = new Vector3(1f)
                 };
-                mesh.ImportMesh("assets/models/dragon.obj");
+                mesh.ImportMesh("assets/models/teapot.obj");
                 world.addObject(mesh);
 
-                var light = new Light(new Vector3(0, 12, 2f), Vector3.One, 4000);
+                var light = new PointLight(new Vector3(0, 5, 5), Vector3.One, 400);
                 world.addLight(light);
 
-                var light2 = new Light(new Vector3(5, 0.2f, -2f), Vector3.One, 500);
-                world.addLight(light2);
+                var spotl = new SpotLight(new Vector3(5, 12, 5), Vector3.One, 2000)
+                {
+                    Normal = -Vector3.UnitY,
+                    AngleMin = 10f,
+                    AngleMax = 25f
+                };
+                world.addLight(spotl);
 
                 win.Run(30.0, 60.0);
             }

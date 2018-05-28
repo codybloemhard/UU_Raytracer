@@ -5,6 +5,7 @@ namespace FrockRaytracer
     public class Constants
     {
         public const float DEG_TO_RAD = 0.01745329251f;
+        public const float RAD_TO_DEG = 57.2957795f;
         public const float LIGHT_IOR = 1.00029f;
         public const float BIG_NUMBER = 999999;
         public const float EPSILON = 0.0001f;
