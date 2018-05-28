@@ -22,14 +22,16 @@ namespace FrockRaytracerDemo
                 var win = new RaytracerDemo(new Size(1024, 512))) {
                 var world = win.World;
                 
-                var environment = new HDRTexture(@"assets/textures/stpeters_cross.hdr", 50000);
+                var environment = new HDRTexture(@"assets/textures/uffizi_cross.hdr", 100000);
                 world.Environent = new EnvironmentBox(new CubeMapTexture(environment));
                 world.Environent.AmbientLight = new Vector3(0.87f, 0.56f, 0.46f) * 0.1f;
 
                 var plane = new Plane(new Vector3(0, -2, 0), Quaternion.Identity) {
                     Material = {
-                        Diffuse = new Vector3(0.2f, 0.2f, 0.2f),
-                        Texture = new CheckerboardTexture(1)
+                        Diffuse = new Vector3(0.2f),
+                        IsDielectic = true,
+                        Reflectivity = 0.5f,
+                        Texture = new DiffuseTexture(@"assets/textures/wall.png", 5f)
                     }
                 };
                 world.addObject(plane);
@@ -92,7 +94,7 @@ namespace FrockRaytracerDemo
                 var mesh = new Mesh(new Vector3(5, -2, 5), Quaternion.Identity)
                 {
                     Material = {
-                        Diffuse = new Vector3(.2f)
+                        Diffuse = new Vector3(.5f)
                     },
                     Scale = new Vector3(.2f)
                 };
@@ -102,7 +104,7 @@ namespace FrockRaytracerDemo
                 var light = new Light(new Vector3(0, 12, 2f), Vector3.One, 4000);
                 world.addLight(light);
 
-                var light2 = new Light(new Vector3(5, 0, -2f), Vector3.One, 1000);
+                var light2 = new Light(new Vector3(5, 0.2f, -2f), Vector3.One, 500);
                 world.addLight(light2);
 
                 win.Run(30.0, 60.0);
