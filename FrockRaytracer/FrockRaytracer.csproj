@@ -60,6 +60,7 @@
     <Compile Include="Objects\Environent.cs" />
     <Compile Include="Objects\EnvironmentBox.cs" />
     <Compile Include="Objects\Light.cs" />
+    <Compile Include="Objects\MultiSampleLight.cs" />
     <Compile Include="Objects\Primitives\AABB.cs" />
     <Compile Include="Objects\Primitives\Mesh.cs" />
     <Compile Include="Objects\Object.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Utils\Mem.cs" />
     <Compile Include="Utils\QuickMaths.cs" />
     <Compile Include="Utils\RayTrans.cs" />
+    <Compile Include="Utils\RRandom.cs" />
     <Compile Include="Utils\Vectors.cs" />
     <Compile Include="Window.cs" />
     <Compile Include="World.cs" />

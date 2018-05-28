@@ -24,7 +24,7 @@ namespace FrockRaytracerDemo
                 
                 var environment = new HDRTexture(@"assets/textures/uffizi_cross.hdr", 100000);
                 world.Environent = new EnvironmentBox(new CubeMapTexture(environment));
-                world.Environent.AmbientLight = new Vector3(0.87f, 0.56f, 0.46f) * 0.1f;
+                world.Environent.AmbientLight = new Vector3(0.87f, 0.56f, 0.46f) * 0.05f;
 
                 var plane = new Plane(new Vector3(0, -2, 0), Quaternion.Identity) {
                     Material = {
@@ -96,21 +96,25 @@ namespace FrockRaytracerDemo
                     Material = {
                         Diffuse = new Vector3(.5f)
                     },
-                    Scale = new Vector3(1f)
+                    Scale = new Vector3(0.2f)
                 };
-                mesh.ImportMesh("assets/models/teapot.obj");
+                mesh.ImportMesh("assets/models/dragon.obj");
                 world.addObject(mesh);
 
-                var light = new PointLight(new Vector3(0, 5, 5), Vector3.One, 400);
+                var light = new SphereAreaLight(new Vector3(3, 10, 4), Vector3.One, 3000)
+                {
+                    Radius = 4f
+                };
                 world.addLight(light);
 
-                var spotl = new SpotLight(new Vector3(5, 12, 5), Vector3.One, 2000)
+                var spotl = new SpotLightMultiSample(new Vector3(5, 8, 5), new Vector3(1f, 1f, 0.1f), 2000)
                 {
                     Normal = -Vector3.UnitY,
                     AngleMin = 10f,
-                    AngleMax = 25f
+                    AngleMax = 25f,
+                    Radius = 2f
                 };
-                world.addLight(spotl);
+                //world.addLight(spotl);
 
                 win.Run(30.0, 60.0);
             }
