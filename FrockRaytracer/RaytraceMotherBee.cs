@@ -28,6 +28,18 @@ namespace FrockRaytracer
                 if(!Workers[i].IsWorking) Workers.RemoveAt(i);
             }
 
+            if (Settings.SplitThreads && Workers.Count > 0) {
+                int remainingThreads = Math.Min(Workers.Count, AvailableThreads - Workers.Count);
+                for (int i = 0; i < remainingThreads; i++) {
+                    var worker = Workers[i].Split();
+                    if (worker != null) {
+                        worker.RunAsync();
+                        Workers.Add(worker);
+                    }
+                       
+                }
+            }
+
             if (hasWorkers && Workers.Count == 0) {
                 DebugRenderer.DebugDraw(Raytracer.DebugData, Raster.CurrentRaster, World);
             }

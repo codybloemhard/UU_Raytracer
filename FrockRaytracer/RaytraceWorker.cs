@@ -71,5 +71,19 @@ namespace FrockRaytracer
         {
             return WorkID != Mother.WorkID;
         }
+
+        /// <summary>
+        /// Splits the work in two of possible
+        /// </summary>
+        /// <returns></returns>
+        public RaytraceWorker Split()
+        {
+            int HalfRow = CurrentRow + (EndRow - CurrentRow)/2;
+            if (HalfRow == CurrentRow) return null;
+           
+            var ret =  new RaytraceWorker(Mother, HalfRow, EndRow);
+            EndRow = HalfRow;
+            return ret;
+        }
     }
 }
