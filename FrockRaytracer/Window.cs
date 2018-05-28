@@ -16,14 +16,14 @@ namespace FrockRaytracer
         protected ProjectionPlane Projection;
         public MultiResolutionRaster Raster => Projection.Raster;
         public World World;
-        public Raytracer Raytracer;
+        public RaytraceMotherBee MotherBee;
 
         public Window(Size size)
         {
             ClientSize = size;
             Projection = new ProjectionPlane();
             World = new World(new Camera(new Vector3(0, 1, 0), Quaternion.Identity));
-            Raytracer = new Raytracer();
+            MotherBee = new RaytraceMotherBee(new Raytracer(), Raster);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -60,8 +60,8 @@ namespace FrockRaytracer
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             // Raytrace only if changed
-            Raytracer.Raytrace(World, Raster);
-            Raytracer.MaintainThreads();
+            MotherBee.StartRender(World, Raster);
+            MotherBee.MaintainThreads();
             
             Projection.Render();
             SwapBuffers();
