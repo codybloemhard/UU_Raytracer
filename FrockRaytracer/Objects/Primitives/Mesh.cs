@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using OpenTK;
 using System.IO;
 using System.Globalization;
+using System.Linq;
 using FrockRaytracer.Structs;
 
 namespace FrockRaytracer.Objects.Primitives
@@ -115,6 +116,7 @@ namespace FrockRaytracer.Objects.Primitives
                 {
                     //face
                     string[] coords = System.Text.RegularExpressions.Regex.Split(line, @"\s+");
+                    coords = coords.Where(x => !string.IsNullOrEmpty(x)).ToArray();
                     int[] newFacs = new int[coords.Length - 1];
                     for(int i = 0; i < newFacs.Length; i++)
                     {
