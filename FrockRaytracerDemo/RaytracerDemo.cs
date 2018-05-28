@@ -11,7 +11,7 @@ namespace FrockRaytracerDemo
 {
     internal class RaytracerDemo : Window
     {
-        private const int MOVE_SPHERE_ID = 3;
+        private const int MOVE_SPHERE_ID = 1;
         
         public static void Main(string[] args)
         {
