@@ -12,6 +12,7 @@ namespace FrockRaytracer.Objects.Primitives
         {
             get { return normal; }
             set {
+                //up and right are two orthonormal vectors on the plane of the polygon, and are used when intersecting it
                 normal = value.Normalized();
                 up = Vector3.Cross(normal, Vector3.UnitX).Normalized();
                 right = Vector3.Cross(normal, up).Normalized();
@@ -23,6 +24,8 @@ namespace FrockRaytracer.Objects.Primitives
 
         public Polygon(Vector3 position, Vector3[] verts) : base(position, Quaternion.Identity, false)
         {
+            //Vertices are specified in 3d coordinates, and are translated to a plane in 3d space (with a normal and a position),
+            //and 2d coordinates on that plane using the vectors up and right
             Vertices = new Vector2[verts.Length];
             Normal = Vector3.Cross(verts[1] - verts[0], verts[2] - verts[0]);
             for(int i = 0; i < verts.Length; i++)
@@ -46,8 +49,8 @@ namespace FrockRaytracer.Objects.Primitives
             {
                 Vector3 v = ray.Origin + ray.Direction * t - Position;
                 Vector2 hitPoint = new Vector2(Vector3.Dot(v, right), Vector3.Dot(v, up));
-                if (isLeft(Vertices[i], Vertices[((i + 1) % Vertices.Length)], hitPoint) > 0) r = false;
-                if (!(isLeft(Vertices[i], Vertices[((i + 1) % Vertices.Length)], hitPoint) < 0)) l = false;
+                if (isLeft(Vertices[i], Vertices[((i + 1) % Vertices.Length)], hitPoint)) r = false;
+                if (!(isLeft(Vertices[i], Vertices[((i + 1) % Vertices.Length)], hitPoint))) l = false;
             }
             if (!l && !r) return false;
 
@@ -60,9 +63,9 @@ namespace FrockRaytracer.Objects.Primitives
             return true;
         }
 
-        private float isLeft(Vector2 vertice1, Vector2 vertice2, Vector2 point)
+        private bool isLeft(Vector2 vertice1, Vector2 vertice2, Vector2 point)
         {
-            return ((vertice2.X - vertice1.X) * (point.Y - vertice1.Y) - (vertice2.Y - vertice1.Y) * (point.X - vertice1.X));
+            return ((vertice2.X - vertice1.X) * (point.Y - vertice1.Y) - (vertice2.Y - vertice1.Y) * (point.X - vertice1.X)) > 0;
         }
 
         public override AABB GetBox()

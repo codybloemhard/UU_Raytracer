@@ -31,6 +31,7 @@ namespace FrockRaytracer.Objects.Primitives
 
         private void CreatePolygons()
         {
+            //Use the given vertices and faces to construct polygons
             for (int i = 0; i < faces.GetLength(0); i++)
             {
                 Vector3[] newVertices = new Vector3[faces[i].Length];
@@ -46,11 +47,13 @@ namespace FrockRaytracer.Objects.Primitives
                 polygons.Add(p);
             }
             box = CreateBoxes(polygons);
-            //(box as AABB).PrintStuff();
         }
 
         private AABB CreateBoxes(List<Polygon> polys)
         {
+            //Create encapsulating boxes to speed up the rendering; this is done top-down
+            
+            //Base case: if a list containing 1 or 2 polygons is given, just put them both in a box and return that box 
             if(polys.Count <= 2)
             {
                 AABB newBox = new AABB(Vector3.Zero, Quaternion.Identity);
@@ -61,6 +64,11 @@ namespace FrockRaytracer.Objects.Primitives
                 newBox.max = minmax[1];
                 return newBox;
             }
+
+            //If the list is longer than 2, we will create two boxes that both contain half of the polygons in the list
+            //The way we divide the polygons is not very smart, we just split the list into 2: we could improve on this by 
+            //sorting the list so that polygons that lie close together get put into the same box. However, despite this,
+            //the boxes still improve performance by a great amount
             List<Polygon> lA, lB;
             lA = polys.GetRange(0, polys.Count / 2);
             lB = polys.GetRange(polys.Count / 2, polys.Count - polys.Count / 2  );
@@ -76,6 +84,7 @@ namespace FrockRaytracer.Objects.Primitives
 
         private Vector3[] MergeBoxes(AABB A, AABB B)
         {
+            //Merge two boxes into one box, and return the min and max vectors of that box
             Vector3 min, max;
             min.X = Math.Min(A.min.X, B.min.X);
             min.Y = Math.Min(A.min.Y, B.min.Y);
@@ -88,12 +97,12 @@ namespace FrockRaytracer.Objects.Primitives
 
         public void ImportMesh(string url)
         {
+            //Read any .obj file and create polygons out of it
             List<Vector3> verts = new List<Vector3>();
             List<int[]> facs = new List<int[]>();
 
             string line;
 
-            // Read the file and display it line by line.  
             StreamReader file = new StreamReader("../../"+ url);
             while ((line = file.ReadLine()) != null)
             {

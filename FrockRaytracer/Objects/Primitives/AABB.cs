@@ -12,6 +12,7 @@ namespace FrockRaytracer.Objects.Primitives
     {
         public Vector3 min, max;
         public AABB(Vector3 position, Quaternion rotation) : base(position, rotation, true){ }
+        //Every box contains two primitives, which can also be other boxes
         public Primitive A, B;
 
         //source: powerpoint of lecture 'acceleration'
@@ -34,17 +35,11 @@ namespace FrockRaytracer.Objects.Primitives
             tmin = Math.Max(tmin, Math.Min(tz1, tz2));
             tmax = Math.Min(tmax, Math.Max(tz1, tz2));
 
+            //If a ray does not intersect the box, just return false and don't intersect the underlying polygons
             if (tmax < tmin || tmax < 0) return false;
 
+            //If the box is hit, intersect the two primitives inside the box as well, and return their intersection
             return A.Intersect(ray, ref hit) | B.Intersect(ray, ref hit);
-        }
-
-        public void PrintStuff()
-        {
-            if (!(A is AABB) || !(B is AABB)) { Console.WriteLine("Polygonz"); return; }
-            Console.WriteLine("Min: {0}, max: {1}", min, max);
-            (A as AABB).PrintStuff();
-            (B as AABB).PrintStuff();
         }
     }
 }
