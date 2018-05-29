@@ -41,3 +41,9 @@ sampling method die veel betere resultaten geeft met minder noise.
 2 passes. One upscaled and second on full size with anti alias. Y render
  image at 1/8th resolution then half then full. I renders first half then 2xAA.
  O renders first half res then 4xAA. P renders 4xAA standard
+
+ ##Sources
+
+//source of sampling on sphere, stratified by myself.
+//https://www.gamasutra.com/view/news/169816/Indepth_Generating_uniformly_distributed_points_on_a_sphere.php
+
