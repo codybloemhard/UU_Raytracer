@@ -1,0 +1,9 @@
+file(GLOB_RECURSE SOURCE_FILES
+        "*.h"
+        "*.cpp"
+        "*.hpp"
+        )
+
+add_executable(main ${SOURCE_FILES})
+
+target_link_libraries(main raytrace)
