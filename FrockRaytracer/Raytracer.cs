@@ -62,7 +62,7 @@ namespace FrockRaytracer
                 {
                     Ray reflRay = RayTrans.Reflect(ray, hit);
                     uint takeSamples = 0;
-                    if (hit.Obj.Material.Roughness > 0.001f) takeSamples = Settings.MaxReflectionSamples;
+                    if (hit.Obj.Material.Roughness > 0.001f && ray.Refldepth <= 1) takeSamples = Settings.MaxReflectionSamples;
                     else takeSamples = 1;
                     for (int i = 0; i < takeSamples; i++)
                     {
@@ -192,7 +192,7 @@ namespace FrockRaytracer
             var ret = World.Environent.AmbientLight;
             foreach (var light in World.Lights)
             {
-                var lPoints = light.GetPoints(Settings.MaxLightSamples, Settings.LSM);
+                var lPoints = light.GetPoints((uint)(Math.Max(Settings.MaxReflectionSamples / (Math.Pow(2, ray.Refldepth)), 1)), Settings.LSM);
                 var localEnergy = Vector3.Zero;
                 bool first = true;
                 foreach(var lp in lPoints)

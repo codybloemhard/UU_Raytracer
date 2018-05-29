@@ -8,14 +8,16 @@ namespace FrockRaytracer.Structs
         public Vector3 Origin;
         public Vector3 Direction;
         public short Outside;
-        public uint Depth;
+        public uint Depth, Refldepth;
 
-        public Ray(Vector3 origin, Vector3 direction, short outside, uint depth)
+        public Ray(Vector3 origin, Vector3 direction, short outside, uint depth, uint rdepth = 999)
         {
             Origin = origin;
             Direction = direction;
             Outside = outside;
             Depth = depth;
+            Refldepth = rdepth;
+            if (Refldepth == 999) Refldepth = Depth;
         }
 
 
@@ -25,6 +27,7 @@ namespace FrockRaytracer.Structs
             Direction = direction;
             Outside = 1;
             Depth = 1;
+            Refldepth = 1;
         }
 
         public bool isOutside()

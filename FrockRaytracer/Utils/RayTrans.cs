@@ -15,7 +15,7 @@ namespace FrockRaytracer.Utils
         /// <returns></returns>
         public static Ray Reflect(Ray ray, RayHit hit) {
             var dir = QuickMaths.Reflect(ray.Direction, hit.Normal);
-            return new Ray(hit.Position + dir * Constants.EPSILON, dir, ray.Outside, ray.Depth + 1);
+            return new Ray(hit.Position + dir * Constants.EPSILON, dir, ray.Outside, ray.Depth + 1, ray.Refldepth + 1);
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace FrockRaytracer.Utils
 
             var dir = QuickMaths.Refract(ray.Direction, hit.Normal, eta);
             short outside = (short) (hit.Obj.IsVolumetric ? (ray.isOutside() ? -1 : 1) : 1);
-            return new Ray(hit.Position + dir * Constants.EPSILON, dir, outside, ray.Depth + 1);
+            return new Ray(hit.Position + dir * Constants.EPSILON, dir, outside, ray.Depth + 1, ray.Refldepth);
         }
     }
 }
