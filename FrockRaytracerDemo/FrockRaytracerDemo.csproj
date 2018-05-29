@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MeshesScene.cs" />
     <Compile Include="SpheresScene.cs" />
     <Compile Include="RaytracerDemo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
