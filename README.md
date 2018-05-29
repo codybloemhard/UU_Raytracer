@@ -4,6 +4,11 @@ Erwin Glazenburg 	6224474
 Egor Dmitriev 		6100120
 Cody Bloemhard		6231888
 
+## Contents
+* Mandatory ray tracer: FrockGameEngine.sln
+* Shortest ray tracer: folder "Shortest Raytracer"
+* Fastest ray tracer: folder "Fastest Raytracer"
+
 ## Bonus features:
 *	Spotlight:
 De spotlight is gewoon een point light maar de AngleEnergy is nu afhankelijk
