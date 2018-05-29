@@ -103,24 +103,26 @@ namespace FrockRaytracerDemo
             };
             //world.addObject(polygon);
 
-            var mesh = new Mesh(new Vector3(5, -2, 5), Quaternion.Identity) {
+            var mesh = new Mesh(new Vector3(5, 0, 5), Quaternion.Identity) {
                 Material = {
-                    Diffuse = new Vector3(.5f),
-                    IsDielectic = true,
-                    Reflectivity = 0.5f,
-                    Roughness = 0.1f
+                    Diffuse = new Vector3(.5f)
                 },
-                Scale = new Vector3(1f)
+                Scale = new Vector3(1f),
             };
             mesh.ImportMesh("assets/models/teapot.obj");
             world.addObject(mesh);
 
-            var light = new SphereAreaLight(new Vector3(3, 10, 4), Vector3.One, 3000) {
+
+
+            var light = new SphereAreaLight(new Vector3(3, 10, 4), Vector3.One, 1500) {
                 Radius = 4f
             };
-            world.addLight(light);
+            //world.addLight(light);
 
-            var spotl = new SpotLightMultiSample(new Vector3(5, 8, 5), new Vector3(1f, 1f, 0.1f), 2000) {
+            var light2 = new PointLight(new Vector3(0, 10, 0), Vector3.One, 1500);
+            world.addLight(light2);
+
+            var spotl = new SpotLightMultiSample(new Vector3(5, 8, 5), new Vector3(1f, 1f, 0.1f), 1500) {
                 Normal = -Vector3.UnitY,
                 AngleMin = 10f,
                 AngleMax = 25f,
@@ -155,26 +157,26 @@ namespace FrockRaytracerDemo
             }
 
             if (keyState.IsKeyDown(Key.W)) {
-                World.Objects[MOVE_SPHERE_ID].Position =
-                    World.Objects[MOVE_SPHERE_ID].Position + new Vector3(0, 0, 0.1f);
+                World.Camera.Position =
+                    World.Camera.Position + new Vector3(0, 0, 0.1f);
                 World.Changed = true;
             }
 
             if (keyState.IsKeyDown(Key.S)) {
-                World.Objects[MOVE_SPHERE_ID].Position =
-                    World.Objects[MOVE_SPHERE_ID].Position + new Vector3(0, 0, -0.1f);
+                World.Camera.Position =
+                    World.Camera.Position + new Vector3(0, 0, -0.1f);
                 World.Changed = true;
             }
 
             if (keyState.IsKeyDown(Key.D)) {
-                World.Objects[MOVE_SPHERE_ID].Position =
-                    World.Objects[MOVE_SPHERE_ID].Position + new Vector3(0.1f, 0, 0);
+                World.Camera.Position =
+                    World.Camera.Position + new Vector3(0.1f, 0, 0);
                 World.Changed = true;
             }
 
             if (keyState.IsKeyDown(Key.A)) {
-                World.Objects[MOVE_SPHERE_ID].Position =
-                    World.Objects[MOVE_SPHERE_ID].Position + new Vector3(-0.1f, 0, 0);
+                World.Camera.Position =
+                    World.Camera.Position + new Vector3(-0.1f, 0, 0);
                 World.Changed = true;
             }
         }

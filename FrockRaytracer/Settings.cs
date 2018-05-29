@@ -42,7 +42,7 @@ namespace FrockRaytracer
             LSM = LightSampleMode.FAKE;
             MaxLightSamples = 1;
             MaxReflectionSamples = 1;
-            RenderMSAALevels = new float[] {0.5f, 1f};
+            RenderMSAALevels = new float[] { 1f/8, 1f};
         }
         
         public static void FastMediumQualityPreset()

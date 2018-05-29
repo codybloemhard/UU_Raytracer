@@ -18,7 +18,7 @@ namespace FrockRaytracer
         public MultiResolutionRaster Raster => Projection.Raster;
         public World World;
         public RaytraceMotherBee MotherBee;
-        private int PresetID = 0;
+        private int PresetID = 2;
 
         public Window(Size size)
         {
@@ -93,36 +93,42 @@ namespace FrockRaytracer
                 Settings.LowQualityPreset();
                 PresetID = 0;
                 MotherBee.Cancel();
+                Raster.Resize(Raster.BaseWidth, Raster.BaseHeight, Settings.RenderMSAALevels);
                 Raster.SwitchLevel(0, false, true);
                 World.Changed = true;
             } else if (keyState.IsKeyDown(Key.Number2) && PresetID != 1) {
                 Settings.FastMediumQualityPreset();
                 PresetID = 1;
                 MotherBee.Cancel();
+                Raster.Resize(Raster.BaseWidth, Raster.BaseHeight, Settings.RenderMSAALevels);
                 Raster.SwitchLevel(0, false, true);
                 World.Changed = true;
             } else if (keyState.IsKeyDown(Key.Number3) && PresetID != 2) {
                 Settings.MediumQualityPreset();
                 PresetID = 2;
                 MotherBee.Cancel();
+                Raster.Resize(Raster.BaseWidth, Raster.BaseHeight, Settings.RenderMSAALevels);
                 Raster.SwitchLevel(0, false, true);
                 World.Changed = true;
             } else if (keyState.IsKeyDown(Key.Number4) && PresetID != 3) {
                 Settings.FastHighQualityPreset();
                 PresetID = 3;
                 MotherBee.Cancel();
+                Raster.Resize(Raster.BaseWidth, Raster.BaseHeight, Settings.RenderMSAALevels);
                 Raster.SwitchLevel(0, false, true);
                 World.Changed = true;
             } else if (keyState.IsKeyDown(Key.Number5) && PresetID != 3) {
                 Settings.HighQualityPreset();
                 PresetID = 3;
                 MotherBee.Cancel();
+                Raster.Resize(Raster.BaseWidth, Raster.BaseHeight, Settings.RenderMSAALevels);
                 Raster.SwitchLevel(0, false, true);
                 World.Changed = true;
             } else if (keyState.IsKeyDown(Key.Number6) && PresetID != 4) {
                 Settings.UltraQualityPreset();
                 PresetID = 4;
                 MotherBee.Cancel();
+                Raster.Resize(Raster.BaseWidth, Raster.BaseHeight, Settings.RenderMSAALevels);
                 Raster.SwitchLevel(0, false, true);
                 World.Changed = true;
             }
