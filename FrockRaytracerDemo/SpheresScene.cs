@@ -135,11 +135,11 @@ namespace FrockRaytracerDemo
                 }
             });
             
-            world.addLight(new SphereAreaLight(new Vector3(2, 6, 3), Vector3.One, 300) { Radius = 1f });
-            world.addLight(new SphereAreaLight(new Vector3(-4, 2, 1), Vector3.One, 200) { Radius = 1f });
+            world.addLight(new SphereAreaLight(new Vector3(2, 6, 3), new Vector3(1, 0.196f, 0.306f), 300) { Radius = 1f });
+            world.addLight(new SphereAreaLight(new Vector3(-4, 2, 1), new Vector3(0.176f, 0.78f, 1), 200) { Radius = 1f });
             world.addLight(new SphereAreaLight(new Vector3(0, 9, 6), new Vector3(0.965f, 0.847f, 0.682f), 300) { Radius = 1f });
             
-            return world;
+            return world; 
         }
     }
 }
