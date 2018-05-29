@@ -93,10 +93,9 @@ namespace FrockRaytracer
             FXAAEnableFXAA = true;
             MaxDepth = 4;
             LSM = LightSampleMode.FAKE;
-            MaxLightSamples = 32;
+            MaxLightSamples = 8;
             MaxReflectionSamples = 16;
         }
-        
         
         public static void HighQualityPreset()
         {

@@ -19,7 +19,10 @@ namespace FrockRaytracerDemo
             
             world.addObject(new Plane(new Vector3(0, 0, 0), Quaternion.Identity) {
                 Material = {
-                    Texture = new DiffuseTexture("assets/textures/wall.png") { TextureScale = 4f }
+                    Texture = new DiffuseTexture("assets/textures/wall.png") { TextureScale = 4f },
+                    IsDielectic = true,
+                    Reflectivity = 0.7f,
+                    Roughness = 0.3f
                 }
             });
             
@@ -135,8 +138,8 @@ namespace FrockRaytracerDemo
                 }
             });
             
-            world.addLight(new SphereAreaLight(new Vector3(2, 6, 3), new Vector3(1, 0.196f, 0.306f), 300) { Radius = 1f });
-            world.addLight(new SphereAreaLight(new Vector3(-4, 2, 1), new Vector3(0.176f, 0.78f, 1), 200) { Radius = 1f });
+            world.addLight(new SphereAreaLight(new Vector3(2, 6, 3), new Vector3(0.5f, 0.1f, 0.4f), 300) { Radius = 1f });
+            world.addLight(new SphereAreaLight(new Vector3(-4, 2, 1), new Vector3(0.1f, 0.4f, 0.2f), 200) { Radius = 1f });
             world.addLight(new SphereAreaLight(new Vector3(0, 9, 6), new Vector3(0.965f, 0.847f, 0.682f), 300) { Radius = 1f });
             
             return world; 
