@@ -15,18 +15,20 @@ Deze werken als normale reflecties maar we nemen het gemmiddelde van meerdere
 rays. Elke ray heeft een random offset zodat er licht wordt gereflecteerd
 vanuit meerdere hoeken. De hoeveelheid samples die worden genomen licht aan
 je quality en supersampling preset.
-* Polygons en meshes:
+* Polygons en meshes en Accelleration structure:
 We hebben flexibele polygons met een arbritrair aantal vertices. Deze kunnen 
 gebruikt worden om een mesh te maken, die je kan laden vanuit een .obj file.
 Een mesh gebruikt AABB boxes om intersections te versnellen, door polygons in
 steeds kleinere boxes te verdelen.
 *	AntiAliasing
-* Textured and HDR Skybox
+* 	Textured and HDR Skybox
 *	Triangles and .OBJ Models
 *	Refraction
 *	Stochastic Area Lights
-* Accelleration structure
-* Multi threaded rendering
+Voor de area lights worden er random punten gemaakt binnen een volume of oppervlakte.
+Alle punten worden gechecked en er wordt een gemiddelde genomen. Er is een stratisfied
+sampling method die veel betere resultaten geeft met minder noise.
+* 	Multi threaded rendering
 
 ## Controls
 * Use **Z, X, C, V to switch between scenes**
