@@ -101,7 +101,7 @@ namespace FrockRaytracer
         {
             FXAAEnableFXAA = true;
             MaxDepth = 4;
-            LSM = LightSampleMode.RANDOM_PRECALC_STRATIFIED;
+            LSM = LightSampleMode.TRUE_STRATIFIED;
             MaxLightSamples = 32;
             MaxReflectionSamples = 16;
         }
@@ -110,7 +110,7 @@ namespace FrockRaytracer
         {
             FXAAEnableFXAA = true;
             MaxDepth = 5;
-            LSM = LightSampleMode.RANDOM_PRECALC_STRATIFIED;
+            LSM = LightSampleMode.TRUE_STRATIFIED;
             MaxLightSamples = 64;
             MaxReflectionSamples = 32;
         }

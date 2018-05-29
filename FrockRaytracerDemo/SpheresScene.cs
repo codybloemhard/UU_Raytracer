@@ -137,9 +137,17 @@ namespace FrockRaytracerDemo
                 }
             });
             
+            world.addObject(new Sphere(new Vector3(.5f, 2, 3), 1f, Quaternion.Identity) {
+                Material = {
+                    IsDielectic = true,
+                    Reflectivity = 0.1f,
+                    Texture = new DiffuseTexture("assets/textures/eye.jpg")
+                }
+            });
             
-            world.addLight(new PointLight(new Vector3(2, 6, 3), Vector3.One, 300));
-            world.addLight(new PointLight(new Vector3(-4, 2, 1), Vector3.One, 200));
+            
+            world.addLight(new PointLight(new Vector3(2, 6, 3), new Vector3(0.949f, 0.106f, 0.247f), 300));
+            world.addLight(new PointLight(new Vector3(-4, 2, 1), new Vector3(0.216f, 1f, 0.545f), 200));
             world.addLight(new SphereAreaLight(new Vector3(0, 9, 6), new Vector3(0.965f, 0.847f, 0.682f), 300, 256 ));
 
 
