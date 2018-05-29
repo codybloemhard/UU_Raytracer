@@ -11,7 +11,6 @@ namespace FrockRaytracerDemo
     {
         public const int SceneID = 1;
 
-        
         public static World CreateSphereScene()
         {
             var world = new World(new Camera(new Vector3(3,4,0.5f), 
@@ -20,38 +19,37 @@ namespace FrockRaytracerDemo
             
             world.addObject(new Plane(new Vector3(0, 0, 0), Quaternion.Identity) {
                 Material = {
-                    Diffuse = new Vector3(0.6f),
-                    Texture = new CheckerboardTexture()
+                    Texture = new DiffuseTexture("assets/textures/wall.png") { TextureScale = 4f }
                 }
             });
             
             world.addObject(new Plane(new Vector3(0, 0, 10), new Quaternion(MathHelper.DegreesToRadians(90), 0 ,0)) {
                 Material = {
-                    Diffuse = new Vector3(0.6f),
+                    Texture = new DiffuseTexture("assets/textures/wood.png") { TextureScale = 8f }
                 }
             });
             
             world.addObject(new Plane(new Vector3(0, 0, 0), new Quaternion(MathHelper.DegreesToRadians(-90), 0 ,0)) {
                 Material = {
-                    Diffuse = new Vector3(0.6f),
+                    Texture = new DiffuseTexture("assets/textures/wood.png") { TextureScale = 8f }
                 }
             });
 
             world.addObject(new Plane(new Vector3(-6, 0, 0), new Quaternion(0, 0 , MathHelper.DegreesToRadians(90))) {
                 Material = {
-                    Diffuse = new Vector3(0.6f),
+                    Texture = new DiffuseTexture("assets/textures/wood.png") { TextureScale = 8f }
                 }
             });
             
             world.addObject(new Plane(new Vector3(6, 0, 0), new Quaternion(0, 0 , MathHelper.DegreesToRadians(-90))) {
                 Material = {
-                    Diffuse = new Vector3(0.6f),
+                    Texture = new DiffuseTexture("assets/textures/wood.png") { TextureScale = 8f }
                 }
             });
             
             world.addObject(new Plane(new Vector3(0, 12, 0), new Quaternion(MathHelper.DegreesToRadians(180), 0 , 0)) {
                 Material = {
-                    Diffuse = new Vector3(0.6f),
+                    Texture = new DiffuseTexture("assets/textures/wood.png") { TextureScale = 8f }
                 }
             });
             
@@ -137,12 +135,10 @@ namespace FrockRaytracerDemo
                 }
             });
             
+            world.addLight(new SphereAreaLight(new Vector3(2, 6, 3), Vector3.One, 300) { Radius = 1f });
+            world.addLight(new SphereAreaLight(new Vector3(-4, 2, 1), Vector3.One, 200) { Radius = 1f });
+            world.addLight(new SphereAreaLight(new Vector3(0, 9, 6), new Vector3(0.965f, 0.847f, 0.682f), 300) { Radius = 1f });
             
-            world.addLight(new PointLight(new Vector3(2, 6, 3), Vector3.One, 300));
-            world.addLight(new PointLight(new Vector3(-4, 2, 1), Vector3.One, 200));
-            world.addLight(new SphereAreaLight(new Vector3(0, 9, 6), new Vector3(0.965f, 0.847f, 0.682f), 300, 256 ));
-
-
             return world;
         }
     }
