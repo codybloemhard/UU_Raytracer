@@ -83,6 +83,11 @@ namespace FrockRaytracer.Objects
             Rotation = (Rotation * new Quaternion(v)).Normalized();
         }
 
+        public void SetFOV(float fov)
+        {
+            Fovy = fov * aspect;
+        }
+        
         public override void Cache()
         {
             if (position_cached) return;
