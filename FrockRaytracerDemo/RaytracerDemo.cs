@@ -133,50 +133,6 @@ namespace FrockRaytracerDemo
         {
             base.Update();
 
-            var keyState = Keyboard.GetState();
-            if (keyState.IsKeyDown(Key.Down)) {
-                World.Camera.RotateBy(new Vector3(3, 0, 0));
-                World.Changed = true;
-            }
-
-            if (keyState.IsKeyDown(Key.Up)) {
-                World.Camera.RotateBy(new Vector3(-3, 0, 0));
-                World.Changed = true;
-            }
-
-            if (keyState.IsKeyDown(Key.Right)) {
-                World.Camera.RotateBy(new Vector3(0, 3, 0));
-                World.Changed = true;
-            }
-
-            if (keyState.IsKeyDown(Key.Left)) {
-                World.Camera.RotateBy(new Vector3(0, -3, 0));
-                World.Changed = true;
-            }
-
-            if (keyState.IsKeyDown(Key.W)) {
-                World.Objects[MOVE_SPHERE_ID].Position =
-                    World.Objects[MOVE_SPHERE_ID].Position + new Vector3(0, 0, 0.1f);
-                World.Changed = true;
-            }
-
-            if (keyState.IsKeyDown(Key.S)) {
-                World.Objects[MOVE_SPHERE_ID].Position =
-                    World.Objects[MOVE_SPHERE_ID].Position + new Vector3(0, 0, -0.1f);
-                World.Changed = true;
-            }
-
-            if (keyState.IsKeyDown(Key.D)) {
-                World.Objects[MOVE_SPHERE_ID].Position =
-                    World.Objects[MOVE_SPHERE_ID].Position + new Vector3(0.1f, 0, 0);
-                World.Changed = true;
-            }
-
-            if (keyState.IsKeyDown(Key.A)) {
-                World.Objects[MOVE_SPHERE_ID].Position =
-                    World.Objects[MOVE_SPHERE_ID].Position + new Vector3(-0.1f, 0, 0);
-                World.Changed = true;
-            }
         }
     }
 }

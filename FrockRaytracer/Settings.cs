@@ -34,7 +34,32 @@ namespace FrockRaytracer
         // Debug
         public static Vector2 DEBUG_AREA_LT = new Vector2(-5, 9);
         public static float DEBUG_AREA_EXT = 10;
+        
+        public static void LowAAPreset()
+        {
+            RenderMSAALevels = new float[] {0.125f, 0.5f, 1f};
+        }
 
+        public static void MiddleAAPreset()
+        {
+            RenderMSAALevels = new float[] {0.5f, 1f};
+        }
+        
+        public static void HighAAPreset()
+        {
+            RenderMSAALevels = new float[] {0.5f, 2f};
+        }
+        
+        public static void UltraAPreset()
+        {
+            RenderMSAALevels = new float[] {0.5f, 4f};
+        }
+        
+        public static void PhotoPreset()
+        {
+            RenderMSAALevels = new float[] {4f};
+        }
+        
         public static void LowQualityPreset()
         {
             FXAAEnableFXAA = true;
@@ -42,7 +67,6 @@ namespace FrockRaytracer
             LSM = LightSampleMode.FAKE;
             MaxLightSamples = 1;
             MaxReflectionSamples = 1;
-            RenderMSAALevels = new float[] {0.5f, 1f};
         }
         
         public static void FastMediumQualityPreset()
@@ -52,7 +76,6 @@ namespace FrockRaytracer
             LSM = LightSampleMode.FAKE;
             MaxLightSamples = 8;
             MaxReflectionSamples = 4;
-            RenderMSAALevels = new float[] {0.5f, 2f};
         }
         
         public static void MediumQualityPreset()
@@ -62,7 +85,6 @@ namespace FrockRaytracer
             LSM = LightSampleMode.RANDOM_PRECALC_STRATIFIED;
             MaxLightSamples = 8;
             MaxReflectionSamples = 4;
-            RenderMSAALevels = new float[] {0.5f, 2f};
         }
         
         public static void FastHighQualityPreset()
@@ -72,7 +94,6 @@ namespace FrockRaytracer
             LSM = LightSampleMode.FAKE;
             MaxLightSamples = 32;
             MaxReflectionSamples = 16;
-            RenderMSAALevels = new float[] {0.5f, 2f};
         }
         
         
@@ -83,7 +104,6 @@ namespace FrockRaytracer
             LSM = LightSampleMode.RANDOM_PRECALC_STRATIFIED;
             MaxLightSamples = 32;
             MaxReflectionSamples = 16;
-            RenderMSAALevels = new float[] {0.5f, 2f};
         }
         
         public static void UltraQualityPreset()
@@ -93,7 +113,6 @@ namespace FrockRaytracer
             LSM = LightSampleMode.RANDOM_PRECALC_STRATIFIED;
             MaxLightSamples = 64;
             MaxReflectionSamples = 32;
-            RenderMSAALevels = new float[] {0.5f, 1f, 2f};
         }
     }
 }

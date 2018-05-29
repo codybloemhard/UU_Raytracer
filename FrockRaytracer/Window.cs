@@ -18,7 +18,7 @@ namespace FrockRaytracer
         public MultiResolutionRaster Raster => Projection.Raster;
         public World World;
         public RaytraceMotherBee MotherBee;
-        private int PresetID = 0;
+        private int PresetID = 1, AAPreset = 2;
 
         public Window(Size size)
         {
@@ -83,51 +83,114 @@ namespace FrockRaytracer
             GL.Ortho(-1.0, 1.0, -1.0, 1.0, 0.0, 4.0);
         }
 
+        protected void PresetChanged(int presetID, bool aaPreset = false)
+        {
+            if((!aaPreset && presetID == PresetID) || (aaPreset && presetID == AAPreset)) return;
+            if (!aaPreset) PresetID = presetID;
+            else AAPreset = presetID;
+            
+            MotherBee.Cancel();
+            Raster.Resize(Raster.BaseWidth, Raster.BaseHeight, Settings.RenderMSAALevels);
+            Raster.SwitchLevel(0, false, true);
+            World.Changed = true;
+        }
+
         public virtual void Init() {}
 
         public virtual void Update()
         {
+            if(!Focused) return;
+            
+            // Preset management
             var keyState = Keyboard.GetState();
             // Check for preset keys
-            if (keyState.IsKeyDown(Key.Number1) && PresetID != 0) {
+            if (keyState.IsKeyDown(Key.Number1)) {
                 Settings.LowQualityPreset();
-                PresetID = 0;
-                MotherBee.Cancel();
-                Raster.SwitchLevel(0, false, true);
-                World.Changed = true;
-            } else if (keyState.IsKeyDown(Key.Number2) && PresetID != 1) {
+                PresetChanged(0);
+            } else if (keyState.IsKeyDown(Key.Number2)) {
                 Settings.FastMediumQualityPreset();
-                PresetID = 1;
-                MotherBee.Cancel();
-                Raster.SwitchLevel(0, false, true);
-                World.Changed = true;
-            } else if (keyState.IsKeyDown(Key.Number3) && PresetID != 2) {
+                PresetChanged(1);
+            } else if (keyState.IsKeyDown(Key.Number3)) {
                 Settings.MediumQualityPreset();
-                PresetID = 2;
-                MotherBee.Cancel();
-                Raster.SwitchLevel(0, false, true);
-                World.Changed = true;
-            } else if (keyState.IsKeyDown(Key.Number4) && PresetID != 3) {
+                PresetChanged(2);
+            } else if (keyState.IsKeyDown(Key.Number4)) {
                 Settings.FastHighQualityPreset();
-                PresetID = 3;
-                MotherBee.Cancel();
-                Raster.SwitchLevel(0, false, true);
-                World.Changed = true;
-            } else if (keyState.IsKeyDown(Key.Number5) && PresetID != 3) {
+                PresetChanged(3);
+            } else if (keyState.IsKeyDown(Key.Number5)) {
+                Settings.FastHighQualityPreset();
+                PresetChanged(4);
+            } else if (keyState.IsKeyDown(Key.Number6) ) {
                 Settings.HighQualityPreset();
-                PresetID = 3;
-                MotherBee.Cancel();
-                Raster.SwitchLevel(0, false, true);
-                World.Changed = true;
-            } else if (keyState.IsKeyDown(Key.Number6) && PresetID != 4) {
+                PresetChanged(5);
+            } else if (keyState.IsKeyDown(Key.Number7)) {
                 Settings.UltraQualityPreset();
-                PresetID = 4;
-                MotherBee.Cancel();
-                Raster.SwitchLevel(0, false, true);
+                PresetChanged(6);
+            } else if (keyState.IsKeyDown(Key.Y)) {
+                Settings.LowAAPreset();
+                PresetChanged(0, true);
+            } else if (keyState.IsKeyDown(Key.U)) {
+                Settings.MiddleAAPreset();
+                PresetChanged(1, true);
+            } else if (keyState.IsKeyDown(Key.I)) {
+                Settings.HighAAPreset();
+                PresetChanged(2, true);
+            } else if (keyState.IsKeyDown(Key.O)) {
+                Settings.UltraAPreset();
+                PresetChanged(3, true);
+            } else if (keyState.IsKeyDown(Key.P)) {
+                Settings.PhotoPreset();
+                PresetChanged(4, true);
+            }
+            
+            
+            // Camera Movement
+            if (keyState.IsKeyDown(Key.Down)) {
+                World.Camera.RotateBy(new Vector3(3, 0, 0));
                 World.Changed = true;
             }
+            if (keyState.IsKeyDown(Key.Up)) {
+                World.Camera.RotateBy(new Vector3(-3, 0, 0));
+                World.Changed = true;
+            }
+            if (keyState.IsKeyDown(Key.Right)) {
+                World.Camera.RotateBy(new Vector3(0, 3, 0));
+                World.Changed = true;
+            }
+            if (keyState.IsKeyDown(Key.Left)) {
+                World.Camera.RotateBy(new Vector3(0, -3, 0));
+                World.Changed = true;
+            }
+            if (keyState.IsKeyDown(Key.W)) {
+                World.Camera.Position +=  new Vector3(0, 0, 0.1f);
+                World.Changed = true;
+            }
+            if (keyState.IsKeyDown(Key.S)) {
+                World.Camera.Position +=  new Vector3(0, 0, -0.1f);
+                World.Changed = true;
+            }
+            if (keyState.IsKeyDown(Key.D)) {
+                World.Camera.Position += new Vector3(0, 0, 0.1f);
+                World.Changed = true;
+            }
+            if (keyState.IsKeyDown(Key.A)) {
+                World.Camera.Position += new Vector3(0, 0, -0.1f);
+                World.Changed = true;
+            }
+            if (keyState.IsKeyDown(Key.E)) {
+                World.Camera.Position += new Vector3(0, 0.1f, 0);
+                World.Changed = true;
+            }
+            if (keyState.IsKeyDown(Key.Q)) {
+                World.Camera.Position += new Vector3(0, -0.1f, 0);
+                World.Changed = true;
+            }
+            if (keyState.IsKeyDown(Key.R)) {
+                World.Camera.Rotation +=Quaternion.Identity;
+                World.Changed = true;
+            }
+            
         }
-
+        
         public virtual void Render()
         {
         }

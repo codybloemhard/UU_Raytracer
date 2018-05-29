@@ -18,7 +18,7 @@
 
         public void Resize(int width, int height, float[] resolutionLevels)
         {
-            if (width == BaseWidth && height == BaseHeight) return;
+            if (width == BaseWidth && height == BaseHeight && resolutionLevels == ResolutionLevels) return;
             CurrentLevel = 0;
             BaseWidth = width;
             BaseHeight = height;
