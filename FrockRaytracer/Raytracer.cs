@@ -64,6 +64,7 @@ namespace FrockRaytracer
                     uint takeSamples = 0;
                     if (hit.Obj.Material.Roughness > 0.001f && ray.Refldepth <= 1) takeSamples = Settings.MaxReflectionSamples;
                     else takeSamples = 1;
+                    //Take many samples for rough reflections
                     for (int i = 0; i < takeSamples; i++)
                     {
                         Ray localRay = reflRay;
@@ -192,6 +193,7 @@ namespace FrockRaytracer
             var ret = World.Environent.AmbientLight;
             foreach (var light in World.Lights)
             {
+                //Sample many points to get nice soft shadows
                 var lPoints = light.GetPoints((uint)(Math.Max(Settings.MaxReflectionSamples / (Math.Pow(2, ray.Refldepth)), 1)), Settings.LSM);
                 var localEnergy = Vector3.Zero;
                 bool first = true;
@@ -200,6 +202,7 @@ namespace FrockRaytracer
                     localEnergy += illuminateBy(lp, light, ray, hit, ref specular, debug && first);
                     first = false;
                 }
+                //average out
                 localEnergy /= lPoints.Length;
                 ret += localEnergy;
             }

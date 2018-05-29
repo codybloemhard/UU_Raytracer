@@ -8,6 +8,7 @@ namespace FrockRaytracer.Utils
     public static class RRandom
     {
         // Sorry forgot the source
+        //Used for random in multiple threads
         public static class ThreadLocalRandom
         {
             private static readonly Random globalRandom = new Random();
@@ -43,6 +44,7 @@ namespace FrockRaytracer.Utils
 
         //source of sampling on sphere, stratified by myself.
         //https://www.gamasutra.com/view/news/169816/Indepth_Generating_uniformly_distributed_points_on_a_sphere.php
+        //Used to have less noise in the shadows
         public static Vector3 RndUnitStratified(int steps, int stepZ, int stepT)
         {
             float z = (float)((ThreadLocalRandom.Instance.NextDouble() / steps) + (stepZ * (1f / steps))) * 2f - 1f;
@@ -52,7 +54,7 @@ namespace FrockRaytracer.Utils
             float y = r * (float)Math.Sin(t);
             return new Vector3(x, y, z);
         }
-
+        //This is used to get a random offset for rough reflections
         public static Vector3 RandomChange(Vector3 vec, float power)
         {
             Vector3 r = new Vector3((float)ThreadLocalRandom.Instance.NextDouble(),

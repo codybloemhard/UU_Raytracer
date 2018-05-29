@@ -2,6 +2,7 @@
 
 namespace FrockRaytracer.Objects
 {
+    //Used in the settings
     public enum LightSampleMode
     {
         FAKE, RANDOM_PRECALC_STRATIFIED, TRUE_STRATIFIED
@@ -11,7 +12,7 @@ namespace FrockRaytracer.Objects
     {
         public float IntensitySq;
     }
-
+    //Basic light structure
     public abstract class Light : Object
     {
         public Vector3 Colour { get; set; }
@@ -26,9 +27,9 @@ namespace FrockRaytracer.Objects
                 LightCache.IntensitySq = intensity * intensity;
             }
         }
-
+        //Return multiple points for softshadows
         public abstract Vector3[] GetPoints(uint maxSamples, LightSampleMode mode);
-
+        //Energy based on angle
         public abstract float AngleEnergy(Vector3 toLight);
 
         public Light(Vector3 pos, Quaternion rot) : base(pos, rot) { }
@@ -36,11 +37,12 @@ namespace FrockRaytracer.Objects
 
     public class PointLight : Light
     {
+        //just one point
         public override Vector3[] GetPoints(uint maxSamples, LightSampleMode mode)
         {
             return new Vector3[] { Position };
         }
-
+        //Light to all directions
         public override float AngleEnergy(Vector3 toLight)
         {
             return 1f;

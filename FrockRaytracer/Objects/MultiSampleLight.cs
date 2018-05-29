@@ -4,6 +4,7 @@ using FrockRaytracer.Utils;
 
 namespace FrockRaytracer.Objects
 {
+    //Area lights
     public abstract class MultiSampleLight : PointLight
     {
         protected int uniqSamples = 128;
@@ -16,7 +17,7 @@ namespace FrockRaytracer.Objects
         }
 
         public abstract Vector3[] TrueStratified(uint max);
-
+        //Return set of points based on setting
         public override Vector3[] GetPoints(uint maxSamples, LightSampleMode lsm)
         {
             int size = 1 + (int)Math.Abs(maxSamples - 1);
@@ -46,7 +47,7 @@ namespace FrockRaytracer.Objects
                 for (int j = 0; j < steps; j++)
                     allPoints[a++] = Position + RRandom.RndUnitStratified(steps, i, j) * Radius;
         }
-
+        //points on surface of a sphere
         public override Vector3[] TrueStratified(uint max)
         {
             int a = 0;
