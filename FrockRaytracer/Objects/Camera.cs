@@ -69,7 +69,12 @@ namespace FrockRaytracer.Objects
 
         public void LookAt(Vector3 v)
         {
-            Rotation = new Quaternion(v);
+            float angle = (float) Math.Atan2(v.X, v.Z);
+            var qx = 0;
+            var qy = 1 * (float)Math.Sin(angle / 2);
+            var qz = 0;
+            var qw = (float)Math.Cos(angle / 2);
+            Rotation = new Quaternion(qx, qy, qz, qw);
         }
 
         public void RotateBy(Vector3 v)
