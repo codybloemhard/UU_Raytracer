@@ -65,7 +65,7 @@ namespace FrockRaytracer
             }
 
             // Draw a debug line to indictae which row of pixels it debugged
-            if (Settings.DrawDebugLine) {
+            /*if (Settings.DrawDebugLine) { 
                 raster.Debug = false;
                 int debugRow = (int) (Settings.RaytraceDebugRow * raster.Height);
                 Draw.Line(raster, 0, debugRow, raster.WidthHalf, debugRow, new Vector3(.3f, .3f, .3f));
@@ -74,7 +74,7 @@ namespace FrockRaytracer
                 }
 
                 raster.Debug = true;
-            }
+            }*/
 
 
             //Draw all rays. Primary rays shift color when depth increases

@@ -3,14 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine", "Engine\Engine.csproj", "{74BAC526-3335-41CC-95F5-6463AB7FBA54}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame", "DemoGame\DemoGame.csproj", "{B8836E66-621F-4921-A23A-25722EAC4F07}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaytraceEngine", "RaytraceEngine\RaytraceEngine.csproj", "{10AA02DE-988D-474D-81CD-C622BE4CC575}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoRaytraceGame", "DemoRaytraceGame\DemoRaytraceGame.csproj", "{BF708464-71D5-4FE1-A3E4-12D90D1F740E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrockRaytracer", "FrockRaytracer\FrockRaytracer.csproj", "{44340E40-20EC-48E4-B7DA-720806E5633F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrockRaytracerDemo", "FrockRaytracerDemo\FrockRaytracerDemo.csproj", "{68B36AA3-261C-4364-820C-5C9E2612F795}"
@@ -21,22 +13,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{74BAC526-3335-41CC-95F5-6463AB7FBA54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{74BAC526-3335-41CC-95F5-6463AB7FBA54}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{74BAC526-3335-41CC-95F5-6463AB7FBA54}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{74BAC526-3335-41CC-95F5-6463AB7FBA54}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B8836E66-621F-4921-A23A-25722EAC4F07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B8836E66-621F-4921-A23A-25722EAC4F07}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B8836E66-621F-4921-A23A-25722EAC4F07}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B8836E66-621F-4921-A23A-25722EAC4F07}.Release|Any CPU.Build.0 = Release|Any CPU
-		{10AA02DE-988D-474D-81CD-C622BE4CC575}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{10AA02DE-988D-474D-81CD-C622BE4CC575}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{10AA02DE-988D-474D-81CD-C622BE4CC575}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{10AA02DE-988D-474D-81CD-C622BE4CC575}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BF708464-71D5-4FE1-A3E4-12D90D1F740E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BF708464-71D5-4FE1-A3E4-12D90D1F740E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BF708464-71D5-4FE1-A3E4-12D90D1F740E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BF708464-71D5-4FE1-A3E4-12D90D1F740E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{44340E40-20EC-48E4-B7DA-720806E5633F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{44340E40-20EC-48E4-B7DA-720806E5633F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44340E40-20EC-48E4-B7DA-720806E5633F}.Release|Any CPU.ActiveCfg = Release|Any CPU
