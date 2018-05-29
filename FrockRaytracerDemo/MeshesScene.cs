@@ -8,9 +8,9 @@ namespace FrockRaytracerDemo
 {
     public class MeshesScene
     {
-        public const int SceneID = 3;
+        public const int SceneID = 1999;
 
-        public static World CreateMeshesScene()
+        public static World Create()
         {
             var world = new World(new Camera(new Vector3(3, 4, 0.5f),
                 new Quaternion(MathHelper.DegreesToRadians(0), MathHelper.DegreesToRadians(-0), 0)));
@@ -61,7 +61,7 @@ namespace FrockRaytracerDemo
                     IsDielectic = true,
                     Reflectivity = .2f
                 },
-                Scale = new Vector3(1)
+                Scale = new Vector3(1.5f)
             };
             mesh3.ImportMesh("assets/models/airplane.obj");
             world.addObject(mesh3);
@@ -84,6 +84,9 @@ namespace FrockRaytracerDemo
 
             var light2 = new PointLight(new Vector3(8, 8f, 0), Vector3.One, 1500);
             world.addLight(light2);
+
+            var light3 = new PointLight(new Vector3(30, 30, 40), Vector3.One, 1000);
+            world.addLight(light3);
 
             return world;
         }
