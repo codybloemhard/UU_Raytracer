@@ -46,8 +46,9 @@ namespace FrockRaytracer.Objects.Primitives
         public override void Cache()
         {
             if (position_cached) return;
-            normal = Rotation * Vector3.UnitY;
-            
+            normal = Matrix3.CreateFromQuaternion(Rotation) * Vector3.UnitY;
+
+           
             u = new Vector3(Normal.Y, Normal.Z, -Normal.X);
             v = Vector3.Cross(u, Normal);
             u.Normalize();

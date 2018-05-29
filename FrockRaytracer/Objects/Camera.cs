@@ -67,6 +67,11 @@ namespace FrockRaytracer.Objects
             }
         }
 
+        public void LookAt(Vector3 v)
+        {
+            Rotation = new Quaternion(v);
+        }
+
         public void RotateBy(Vector3 v)
         {
             v *= Constants.DEG_TO_RAD;

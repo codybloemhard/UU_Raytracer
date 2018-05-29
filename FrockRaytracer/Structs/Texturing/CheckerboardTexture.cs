@@ -1,4 +1,5 @@
-﻿using OpenTK;
+﻿using System;
+using OpenTK;
 
 namespace FrockRaytracer.Structs
 {
@@ -6,7 +7,7 @@ namespace FrockRaytracer.Structs
     {
         public float DownScaleX, DownScaleY;
 
-        public CheckerboardTexture(float downScale)
+        public CheckerboardTexture(float downScale = 1)
         {
             DownScaleX = DownScaleY = downScale;
         }
@@ -19,7 +20,7 @@ namespace FrockRaytracer.Structs
 
         public Vector3 GetColor(Vector2 uv)
         {
-            return (((int) (uv.X * DownScaleX) + (int) (uv.Y * DownScaleY)) & 1) == 0 ? Vector3.One : Vector3.Zero;
+            return (((int) Math.Round(uv.X * DownScaleX) + (int) Math.Round(uv.Y * DownScaleY)) & 1) == 0 ? Vector3.One : Vector3.Zero;
         }
     }
 }

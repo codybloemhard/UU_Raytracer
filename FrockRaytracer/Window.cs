@@ -169,11 +169,11 @@ namespace FrockRaytracer
                 World.Changed = true;
             }
             if (keyState.IsKeyDown(Key.D)) {
-                World.Camera.Position += new Vector3(0, 0, 0.1f);
+                World.Camera.Position += new Vector3(0.1f, 0, 0);
                 World.Changed = true;
             }
             if (keyState.IsKeyDown(Key.A)) {
-                World.Camera.Position += new Vector3(0, 0, -0.1f);
+                World.Camera.Position += new Vector3(-0.1f, 0, 0);
                 World.Changed = true;
             }
             if (keyState.IsKeyDown(Key.E)) {
