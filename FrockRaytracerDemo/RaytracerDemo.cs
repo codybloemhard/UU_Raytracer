@@ -44,10 +44,10 @@ namespace FrockRaytracerDemo
                 MotherBee.Cancel();
                 SceneID = SpheresScene.SceneID;
                 World = SpheresScene.CreateSphereScene();
-            } else if (keyState.IsKeyDown(Key.X) && SceneID != TestScene.SceneID) {
+            } else if (keyState.IsKeyDown(Key.X) && SceneID != MirrorRoomScene.SceneID) {
                 MotherBee.Cancel();
-                SceneID = TestScene.SceneID;
-                World = TestScene.CreateTestScene();
+                SceneID = MirrorRoomScene.SceneID;
+                World = MirrorRoomScene.CreateTestScene();
             } else if (keyState.IsKeyDown(Key.C) && SceneID != StanfordScene.SceneID) {
                 MotherBee.Cancel();
                 SceneID = StanfordScene.SceneID;
