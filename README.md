@@ -28,7 +28,10 @@ steeds kleinere boxes te verdelen.
 Voor de area lights worden er random punten gemaakt binnen een volume of oppervlakte.
 Alle punten worden gechecked en er wordt een gemiddelde genomen. Er is een stratisfied
 sampling method die veel betere resultaten geeft met minder noise.
-* 	Multi threaded rendering
+
+* 	Multi threaded rendering. If a thread is done, it is assigned to split the woork of another ongoing thread. 
+* Render responsiveness. First raytracer renders in low resolution to easily nagigate through the world. Once done the current image is upscaled and then the higher resolution is drawn over it.
+
 
 ## Controls
 * Use **Z, X, C, V to switch between scenes**
@@ -46,4 +49,8 @@ sampling method die veel betere resultaten geeft met minder noise.
 
 //source of sampling on sphere, stratified by myself.
 //https://www.gamasutra.com/view/news/169816/Indepth_Generating_uniformly_distributed_points_on_a_sphere.php
+// FXAA
+//https://github.com/McNopper/OpenGL/blob/master/Example42/shader/fxaa.frag.glsl
+// Hdr image reading
+// https://github.com/dlemstra/Magick.NET
 
