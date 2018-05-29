@@ -49,4 +49,8 @@ sampling method die veel betere resultaten geeft met minder noise.
 
 //source of sampling on sphere, stratified by myself.
 //https://www.gamasutra.com/view/news/169816/Indepth_Generating_uniformly_distributed_points_on_a_sphere.php
+// FXAA
+//https://github.com/McNopper/OpenGL/blob/master/Example42/shader/fxaa.frag.glsl
+// Hdr image reading
+// https://github.com/dlemstra/Magick.NET
 
