@@ -29,7 +29,8 @@ namespace FrockRaytracer.Objects.Primitives
         }
 
         public override bool Intersect(Ray ray, ref RayHit hit)
-        { 
+        {
+            //Based on source: http://www.lighthouse3d.com/tutorials/maths/ray-triangle-intersection/
             Vector3 edge1, edge2, h, s, q;
             float a, f, u, v;
             edge1 = vertices[1] - vertices[0];
