@@ -14,14 +14,16 @@ namespace FrockRaytracer
         public Thread Thread;
         public RaytraceMotherBee Mother;
         public bool IsWorking => Thread != null && Thread.IsAlive;
+        private readonly bool half;
 
-        public RaytraceWorker(RaytraceMotherBee mother, int startRow, int endRow)
+        public RaytraceWorker(RaytraceMotherBee mother, int startRow, int endRow, bool half)
         {
             StartRow = startRow;
             CurrentRow = StartRow;
             EndRow = endRow;
             WorkID = mother.WorkID;
             Mother = mother;
+            this.half = half;
         }
 
         /// <summary>
@@ -43,14 +45,17 @@ namespace FrockRaytracer
             for (; CurrentRow < EndRow; ++CurrentRow) {
                 if (CurrentRow == Mother.DebugRow) is_debug_row = true;
                 if(IsCancelled()) return;
-
-                for (int x = 0; x < Mother.Raster.CurrentRaster.WidthHalf; ++x) {
+                int w = Mother.Raster.CurrentRaster.Width;
+                int ww = Mother.Raster.CurrentRaster.WidthHalf;
+                if (half)
+                    w = ww;
+                for (int x = 0; x < w; ++x) {
                     if(IsCancelled()) return;
 
                     bool debug = is_debug_row && x == debug_column;
                     if (debug) debug_column += Settings.RaytraceDebugFrequency;
-                    
-                    float wt = (float) x / Mother.Raster.CurrentRaster.WidthHalf;
+
+                    float wt = (float) x / w;
                     float ht = (float) CurrentRow / Mother.Raster.Height;
                     
                     var onPlane = Mother.World.Camera.FOVPlane.PointAt(wt, ht);
@@ -81,8 +86,8 @@ namespace FrockRaytracer
         {
             int HalfRow = CurrentRow + (EndRow - CurrentRow)/2;
             if (HalfRow == CurrentRow) return null;
-           
-            var ret =  new RaytraceWorker(Mother, HalfRow, EndRow);
+
+            var ret = new RaytraceWorker(Mother, HalfRow, EndRow, half);
             EndRow = HalfRow; // Screams in concurrency
             return ret;
         }

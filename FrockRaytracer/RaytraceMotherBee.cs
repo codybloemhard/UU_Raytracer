@@ -17,12 +17,14 @@ namespace FrockRaytracer
         public Random Random;
 
         private List<RaytraceWorker> Workers = new List<RaytraceWorker>();
+        private bool useDebug;
 
-        public RaytraceMotherBee(Raytracer raytracer, MultiResolutionRaster raster)
+        public RaytraceMotherBee(Raytracer raytracer, MultiResolutionRaster raster, bool useDebug = true)
         {
             Raytracer = raytracer;
             Raster = raster;
             Random = new Random(1337);
+            this.useDebug = useDebug;
         }
 
         /// <summary>
@@ -60,7 +62,7 @@ namespace FrockRaytracer
                     }
                 }
             }
-
+            if (!useDebug) return;
             if (hasWorkers && Workers.Count == 0) {
                 DebugRenderer.DebugDraw(Raytracer.DebugData, Raster.CurrentRaster, World);
             }
@@ -88,20 +90,22 @@ namespace FrockRaytracer
             if (Settings.IsMultithread) {
                 var rpt = Raster.Height / AvailableThreads;
                 for (int i = 0; i < AvailableThreads; ++i) {
-                    Workers.Add(new RaytraceWorker(this, i * rpt, (i + 1) * rpt));
+                    Workers.Add(new RaytraceWorker(this, i * rpt, (i + 1) * rpt, useDebug));
                     Workers[i].RunAsync();
                 }
                 
                 if (!Settings.IsAsync) {
                     foreach (var worker in Workers) worker.Thread.Join();
                     Workers.Clear();
-                    DebugRenderer.DebugDraw(Raytracer.DebugData, Raster.CurrentRaster, World);
+                    if(useDebug)
+                        DebugRenderer.DebugDraw(Raytracer.DebugData, Raster.CurrentRaster, World);
                 }
             }
             else {
-                var worker = new RaytraceWorker(this, 0, Raster.Height);
+                var worker = new RaytraceWorker(this, 0, Raster.Height, useDebug);
                 worker.Run();
-                DebugRenderer.DebugDraw(Raytracer.DebugData, Raster.CurrentRaster, World);
+                if(useDebug)
+                    DebugRenderer.DebugDraw(Raytracer.DebugData, Raster.CurrentRaster, World);
             }
         }
         

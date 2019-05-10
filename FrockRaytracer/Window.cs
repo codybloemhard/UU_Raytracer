@@ -25,7 +25,7 @@ namespace FrockRaytracer
             ClientSize = size;
             Projection = new ProjectionPlane();
             World = new World(new Camera(new Vector3(0, 1, 0), Quaternion.Identity));
-            MotherBee = new RaytraceMotherBee(new Raytracer(), Raster);
+            MotherBee = new RaytraceMotherBee(new Raytracer(), Raster, false);
             Settings.FastMediumQualityPreset();
         }
 
@@ -119,7 +119,7 @@ namespace FrockRaytracer
             } else if (keyState.IsKeyDown(Key.Number5)) {
                 Settings.FastHighQualityPreset();
                 PresetChanged(4);
-            } else if (keyState.IsKeyDown(Key.Number6) ) {
+            } else if (keyState.IsKeyDown(Key.Number6)) {
                 Settings.HighQualityPreset();
                 PresetChanged(5);
             } else if (keyState.IsKeyDown(Key.Number7)) {
@@ -141,8 +141,7 @@ namespace FrockRaytracer
                 Settings.PhotoPreset();
                 PresetChanged(4, true);
             }
-            
-            
+
             // Camera Movement
             if (keyState.IsKeyDown(Key.Down)) {
                 World.Camera.RotateBy(new Vector3(3, 0, 0));

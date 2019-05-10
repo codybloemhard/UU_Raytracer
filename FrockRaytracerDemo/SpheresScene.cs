@@ -14,14 +14,14 @@ namespace FrockRaytracerDemo
         public static World CreateSphereScene()
         {
             var world = new World(new Camera(new Vector3(3,4,0.5f), 
-                new Quaternion(MathHelper.DegreesToRadians(20), MathHelper.DegreesToRadians(-20), 0)));
+                new Quaternion(MathHelper.DegreesToRadians(20), MathHelper.DegreesToRadians(-20), 0), 16f/9f));
             world.Environent = new Environent();
             
             world.addObject(new Plane(new Vector3(0, 0, 0), Quaternion.Identity) {
                 Material = {
                     Texture = new DiffuseTexture("assets/textures/wall.png") { TextureScale = 4f },
                     IsDielectic = true,
-                    Reflectivity = 0.7f,
+                    Reflectivity = 0.5f,
                     Roughness = 0.3f
                 }
             });
@@ -99,7 +99,8 @@ namespace FrockRaytracerDemo
                     IsGlossy = true,
                     Shinyness = 1,
                     IsDielectic = true,
-                    Reflectivity = 0.1f,
+                    Reflectivity = 0.7f,
+                    Roughness = 0.3f,
                 }
             });
             
@@ -111,7 +112,8 @@ namespace FrockRaytracerDemo
                     IsGlossy = true,
                     Shinyness = 10,
                     IsDielectic = true,
-                    Reflectivity = 0.02f,
+                    Reflectivity = 0.7f,
+                    Roughness = 0.3f,
                 }
             });
             

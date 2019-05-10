@@ -60,7 +60,7 @@ namespace FrockRaytracer
         {
             RenderMSAALevels = new float[] {4f};
         }
-        
+
         public static void LowQualityPreset()
         {
             FXAAEnableFXAA = true;
@@ -105,11 +105,11 @@ namespace FrockRaytracer
             MaxLightSamples = 16;
             MaxReflectionSamples = 16;
         }
-        
+
         public static void UltraQualityPreset()
         {
-            FXAAEnableFXAA = true;
-            MaxDepth = 5;
+            FXAAEnableFXAA = false;
+            MaxDepth = 4;
             LSM = LightSampleMode.TRUE_STRATIFIED;
             MaxLightSamples = 32;
             MaxReflectionSamples = 32;
